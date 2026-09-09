@@ -4,8 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes">
   <meta name="theme-color" content="#151217">
-  <meta name="description" content="Interactive possible escape-location maps for Halloween: The Game.">
-  <title>Halloween: The Game Escape Map</title>
+  <meta name="description" content="Interactive Halloween: The Game maps with escape locations, addresses, street names, and grid references.">
+  <meta name="application-name" content="HTG Maps">
+  <meta name="apple-mobile-web-app-title" content="HTG Maps">
+  <title>HTG Maps</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./assets/app/apple-touch-icon.png">
   <link rel="stylesheet" href="./core/p8riot-core.css">
@@ -18,8 +20,7 @@
   <header class="app-header">
     <div class="brand-block">
       <p class="eyebrow">Halloween: The Game</p>
-      <h1>Escape Map</h1>
-      <p class="tagline">Potential escape spawn locations and required items</p>
+      <h1>Maps by <a class="creator-link" href="https://linktr.ee/p8riot" target="_blank" rel="noopener noreferrer">p8riot</a></h1>
     </div>
 
     <div class="map-picker">
@@ -58,16 +59,15 @@
             Keyboard users can use arrow keys to pan, plus and minus to zoom, and zero to reset.
           </p>
           <img id="mapImage" class="map-image" alt="" draggable="false">
+          <div id="gridLayer" class="map-overlay grid-layer" aria-hidden="true"></div>
+          <div id="streetLayer" class="map-overlay street-layer" aria-label="Street names"></div>
+          <div id="addressLayer" class="map-overlay address-layer" aria-label="House addresses"></div>
           <div id="markerLayer" class="marker-layer" aria-label="Possible escape locations"></div>
           <div class="map-hint" aria-hidden="true">Drag · wheel/pinch to zoom</div>
         </div>
       </section>
 
-      <aside class="escape-panel" aria-labelledby="legendTitle">
-        <div class="panel-heading">
-          <p class="toolbar-kicker">Always visible</p>
-          <h2 id="legendTitle">Escape legend</h2>
-        </div>
+      <aside class="escape-panel" aria-label="Escape information and map settings">
 
         <p class="spawn-note">
           These are possible spawn locations. The exits present in a match can vary.
@@ -79,6 +79,53 @@
           <h3>Selected location</h3>
           <p>Select any escape icon on the map to see its location details here.</p>
         </section>
+
+        <aside class="player-tip" aria-labelledby="playerTipTitle">
+          <h3 id="playerTipTitle">Player Tip — House Addresses</h3>
+          <p>
+            Michael Myers cannot see house addresses on his in-game map. If survivors are using
+            proximity chat, they can call out a house address to coordinate without giving Michael
+            the same location information.
+          </p>
+        </aside>
+
+        <section class="layer-panel" aria-labelledby="layerTitle">
+          <h3 id="layerTitle">Map settings</h3>
+          <div class="layer-options">
+            <div class="layer-option">
+              <label class="layer-toggle"><input id="toggleEscapes" type="checkbox" checked> Escape locations</label>
+              <div class="layer-opacity">
+                <label for="opacityEscapes">Opacity</label>
+                <input id="opacityEscapes" type="range" min="10" max="100" step="5" value="100">
+                <output id="opacityEscapesValue" for="opacityEscapes">100%</output>
+              </div>
+            </div>
+            <div class="layer-option">
+              <label class="layer-toggle"><input id="toggleAddresses" type="checkbox" checked> House addresses</label>
+              <div class="layer-opacity">
+                <label for="opacityAddresses">Opacity</label>
+                <input id="opacityAddresses" type="range" min="10" max="100" step="5" value="85">
+                <output id="opacityAddressesValue" for="opacityAddresses">85%</output>
+              </div>
+            </div>
+            <div class="layer-option">
+              <label class="layer-toggle"><input id="toggleStreets" type="checkbox" checked> Street names</label>
+              <div class="layer-opacity">
+                <label for="opacityStreets">Opacity</label>
+                <input id="opacityStreets" type="range" min="10" max="100" step="5" value="80">
+                <output id="opacityStreetsValue" for="opacityStreets">80%</output>
+              </div>
+            </div>
+            <div class="layer-option">
+              <label class="layer-toggle"><input id="toggleGrid" type="checkbox"> A–G / 1–8 grid</label>
+              <div class="layer-opacity">
+                <label for="opacityGrid">Opacity</label>
+                <input id="opacityGrid" type="range" min="10" max="100" step="5" value="35">
+                <output id="opacityGridValue" for="opacityGrid">35%</output>
+              </div>
+            </div>
+          </div>
+        </section>
       </aside>
     </div>
   </main>
@@ -87,24 +134,23 @@
     <div class="footer-controls">
       <label for="themeSelect">Theme</label>
       <select id="themeSelect" class="footer-select">
-        <option value="midnight-manor">Midnight Manor</option>
-        <option value="jack-o-lantern-glow">Jack-o'-Lantern Glow</option>
-        <option value="witching-hour">Witching Hour</option>
-        <option value="graveyard-fog">Graveyard Fog</option>
-        <option value="zombie-night">Zombie Night</option>
-        <option value="blood-moon">Blood Moon</option>
+        <option value="midnight-manor">Haddonfield Night</option>
+        <option value="jack-o-lantern-glow">Halloween Night</option>
+        <option value="witching-hour">The Shape</option>
+        <option value="graveyard-fog">Smith's Grove</option>
+        <option value="zombie-night">The Boogeyman</option>
+        <option value="blood-moon">Blackest Eyes</option>
       </select>
 
       <button id="installButton" type="button" class="footer-button" hidden>Install app</button>
     </div>
 
     <div class="footer-meta">
-      <span>Halloween Escape Map 0.1.0 Development Build 2</span>
+      <span>HTG Maps 1.0.4</span>
       <span aria-hidden="true"> · </span>
       <span>
         Built with
         <span class="p8riotcore-brand"><a href="https://linktr.ee/p8riot" target="_blank" rel="noopener noreferrer">p8riot</a>Core</span>
-        0.2.0 Alpha 1
       </span>
     </div>
   </footer>
@@ -114,7 +160,7 @@
       <div class="dialog-heading">
         <div>
           <p class="toolbar-kicker">Installable PWA</p>
-          <h2 id="installTitle">Install Halloween Escape Map</h2>
+          <h2 id="installTitle">Install HTG Maps</h2>
         </div>
         <button type="button" class="dialog-close" data-p8-dialog-close aria-label="Close install instructions">×</button>
       </div>

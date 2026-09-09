@@ -10,6 +10,21 @@
   var viewport = document.getElementById("mapViewport");
   var mapImage = document.getElementById("mapImage");
   var markerLayer = document.getElementById("markerLayer");
+  var addressLayer = document.getElementById("addressLayer");
+  var streetLayer = document.getElementById("streetLayer");
+  var gridLayer = document.getElementById("gridLayer");
+  var toggleEscapes = document.getElementById("toggleEscapes");
+  var toggleAddresses = document.getElementById("toggleAddresses");
+  var toggleStreets = document.getElementById("toggleStreets");
+  var toggleGrid = document.getElementById("toggleGrid");
+  var opacityEscapes = document.getElementById("opacityEscapes");
+  var opacityAddresses = document.getElementById("opacityAddresses");
+  var opacityStreets = document.getElementById("opacityStreets");
+  var opacityGrid = document.getElementById("opacityGrid");
+  var opacityEscapesValue = document.getElementById("opacityEscapesValue");
+  var opacityAddressesValue = document.getElementById("opacityAddressesValue");
+  var opacityStreetsValue = document.getElementById("opacityStreetsValue");
+  var opacityGridValue = document.getElementById("opacityGridValue");
   var mapTitle = document.getElementById("currentMapTitle");
   var mapTabs = document.getElementById("mapTabs");
   var mapSelect = document.getElementById("mapSelect");
@@ -31,6 +46,21 @@
     interacted: false,
     selectedId: null,
     markerNodes: [],
+    addressNodes: [],
+    streetNodes: [],
+    gridNodes: [],
+    overlays: {
+      escapes: true,
+      addresses: true,
+      streets: true,
+      grid: false
+    },
+    overlayOpacity: {
+      escapes: 1,
+      addresses: 0.85,
+      streets: 0.8,
+      grid: 0.35
+    },
     activePointers: new Map(),
     drag: null,
     pinch: null
@@ -170,6 +200,216 @@
     );
   }
 
+
+  function currentOverlays() {
+    return currentMap().overlays || { addresses: [], streets: [], grid: null };
+  }
+
+  function renderReferenceOverlays() {
+    var overlays = currentOverlays();
+    addressLayer.textContent = "";
+    streetLayer.textContent = "";
+    gridLayer.textContent = "";
+    state.addressNodes = [];
+    state.streetNodes = [];
+    state.gridNodes = [];
+
+    (overlays.addresses || []).forEach(function (item) {
+      var label = document.createElement("span");
+      label.className = "map-label address-label";
+      label.textContent = item.label;
+      label.setAttribute("aria-label", "House address " + item.label);
+      addressLayer.appendChild(label);
+      state.addressNodes.push({ element: label, item: item });
+    });
+
+    (overlays.streets || []).forEach(function (item) {
+      var label = document.createElement("span");
+      label.className = "map-label street-label";
+      label.textContent = item.label;
+      label.setAttribute("aria-label", "Street " + item.label);
+      streetLayer.appendChild(label);
+      state.streetNodes.push({ element: label, item: item });
+    });
+
+    if (overlays.grid) {
+      var surface = document.createElement("div");
+      surface.className = "grid-surface";
+      gridLayer.appendChild(surface);
+      state.gridSurface = surface;
+
+      (overlays.grid.columns || []).forEach(function (value, index) {
+        var node = document.createElement("span");
+        node.className = "grid-label";
+        node.textContent = value;
+        gridLayer.appendChild(node);
+        state.gridNodes.push({
+          element: node,
+          kind: "column",
+          index: index,
+          count: overlays.grid.columns.length
+        });
+      });
+
+      (overlays.grid.rows || []).forEach(function (value, index) {
+        var node = document.createElement("span");
+        node.className = "grid-label";
+        node.textContent = value;
+        gridLayer.appendChild(node);
+        state.gridNodes.push({
+          element: node,
+          kind: "row",
+          index: index,
+          count: overlays.grid.rows.length
+        });
+      });
+    } else {
+      state.gridSurface = null;
+    }
+
+    syncOverlayVisibility();
+    updateOverlayPositions();
+  }
+
+  function overlayControlSet(name) {
+    if (name === "escapes") {
+      return { toggle: toggleEscapes, slider: opacityEscapes, output: opacityEscapesValue, layer: markerLayer, label: "Escape locations" };
+    }
+    if (name === "addresses") {
+      return { toggle: toggleAddresses, slider: opacityAddresses, output: opacityAddressesValue, layer: addressLayer, label: "House addresses" };
+    }
+    if (name === "streets") {
+      return { toggle: toggleStreets, slider: opacityStreets, output: opacityStreetsValue, layer: streetLayer, label: "Street names" };
+    }
+    return { toggle: toggleGrid, slider: opacityGrid, output: opacityGridValue, layer: gridLayer, label: "Map grid" };
+  }
+
+  function syncOverlayVisibility() {
+    ["escapes", "addresses", "streets", "grid"].forEach(function (name) {
+      var controls = overlayControlSet(name);
+      var enabled = state.overlays[name] === true;
+      var opacity = state.overlayOpacity[name];
+
+      controls.layer.hidden = !enabled;
+      controls.layer.style.opacity = String(opacity);
+      controls.toggle.checked = enabled;
+      controls.slider.disabled = !enabled;
+      controls.slider.value = String(Math.round(opacity * 100));
+      controls.output.value = Math.round(opacity * 100) + "%";
+      controls.output.textContent = controls.output.value;
+    });
+  }
+
+  function updateOverlayPositions() {
+    var map = currentMap();
+
+    state.addressNodes.forEach(function (entry) {
+      entry.element.style.left = state.tx + entry.item.x * state.scale + "px";
+      entry.element.style.top = state.ty + entry.item.y * state.scale + "px";
+    });
+
+    state.streetNodes.forEach(function (entry) {
+      entry.element.style.left = state.tx + entry.item.x * state.scale + "px";
+      entry.element.style.top = state.ty + entry.item.y * state.scale + "px";
+      entry.element.style.transform =
+        "translate(-50%, -50%) rotate(" + (entry.item.rotation || 0) + "deg)";
+    });
+
+    if (state.gridSurface) {
+      var renderedWidth = map.width * state.scale;
+      var renderedHeight = map.height * state.scale;
+      var overlays = currentOverlays();
+      var colCount = overlays.grid.columns.length;
+      var rowCount = overlays.grid.rows.length;
+
+      state.gridSurface.style.left = state.tx + "px";
+      state.gridSurface.style.top = state.ty + "px";
+      state.gridSurface.style.width = renderedWidth + "px";
+      state.gridSurface.style.height = renderedHeight + "px";
+      state.gridSurface.style.setProperty("--grid-col-size", renderedWidth / colCount + "px");
+      state.gridSurface.style.setProperty("--grid-row-size", renderedHeight / rowCount + "px");
+
+      state.gridNodes.forEach(function (entry) {
+        var x;
+        var y;
+        if (entry.kind === "column") {
+          x = state.tx + ((entry.index + 0.5) / entry.count) * renderedWidth;
+          y = state.ty + Math.max(14, Math.min(24, renderedHeight * 0.025));
+        } else {
+          x = state.tx + Math.max(14, Math.min(24, renderedWidth * 0.025));
+          y = state.ty + ((entry.index + 0.5) / entry.count) * renderedHeight;
+        }
+        entry.element.style.left = x + "px";
+        entry.element.style.top = y + "px";
+      });
+    }
+  }
+
+  function persistOverlayState() {
+    if (storageStore) {
+      storageStore.set("map-overlays", {
+        escapes: state.overlays.escapes,
+        addresses: state.overlays.addresses,
+        streets: state.overlays.streets,
+        grid: state.overlays.grid,
+        opacity: {
+          escapes: state.overlayOpacity.escapes,
+          addresses: state.overlayOpacity.addresses,
+          streets: state.overlayOpacity.streets,
+          grid: state.overlayOpacity.grid
+        }
+      });
+    }
+  }
+
+  function setOverlay(name, enabled, announceChange) {
+    state.overlays[name] = enabled === true;
+    syncOverlayVisibility();
+    persistOverlayState();
+    if (announceChange) {
+      announce(overlayControlSet(name).label + (enabled ? " shown." : " hidden."));
+    }
+  }
+
+  function setOverlayOpacity(name, percent, announceChange) {
+    var numeric = Number(percent);
+    if (!Number.isFinite(numeric)) {
+      return;
+    }
+    numeric = Math.max(10, Math.min(100, numeric));
+    state.overlayOpacity[name] = numeric / 100;
+    syncOverlayVisibility();
+    persistOverlayState();
+    if (announceChange) {
+      announce(overlayControlSet(name).label + " opacity " + Math.round(numeric) + " percent.");
+    }
+  }
+
+  function setupOverlayControls() {
+    [
+      ["escapes", toggleEscapes, opacityEscapes],
+      ["addresses", toggleAddresses, opacityAddresses],
+      ["streets", toggleStreets, opacityStreets],
+      ["grid", toggleGrid, opacityGrid]
+    ].forEach(function (entry) {
+      var name = entry[0];
+      var toggle = entry[1];
+      var slider = entry[2];
+
+      toggle.addEventListener("change", function () {
+        setOverlay(name, toggle.checked, true);
+      });
+
+      slider.addEventListener("input", function () {
+        setOverlayOpacity(name, slider.value, false);
+      });
+
+      slider.addEventListener("change", function () {
+        setOverlayOpacity(name, slider.value, true);
+      });
+    });
+  }
+
   function renderMarkers() {
     var map = currentMap();
     markerLayer.textContent = "";
@@ -213,6 +453,45 @@
     });
 
     updateMarkerPositions();
+  }
+
+  function nearestAddressFor(map, location) {
+    var overlays = map.overlays || {};
+    var addresses = overlays.addresses || [];
+    if (!addresses.length) {
+      return null;
+    }
+
+    var nearest = null;
+    var nearestDistance = Infinity;
+    addresses.forEach(function (address) {
+      var dx = location.x - address.x;
+      var dy = location.y - address.y;
+      var distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < nearestDistance) {
+        nearest = address;
+        nearestDistance = distance;
+      }
+    });
+    return nearest;
+  }
+
+  function gridReferenceFor(map, location) {
+    var overlays = map.overlays || {};
+    var grid = overlays.grid;
+    if (!grid || !grid.columns || !grid.columns.length || !grid.rows || !grid.rows.length) {
+      return null;
+    }
+
+    var colIndex = Math.max(
+      0,
+      Math.min(grid.columns.length - 1, Math.floor((location.x / map.width) * grid.columns.length))
+    );
+    var rowIndex = Math.max(
+      0,
+      Math.min(grid.rows.length - 1, Math.floor((location.y / map.height) * grid.rows.length))
+    );
+    return grid.columns[colIndex] + grid.rows[rowIndex];
   }
 
   function renderSelectedLocation() {
@@ -261,6 +540,33 @@
       )
     );
     selectedLocation.appendChild(summary);
+
+    var nearestAddress = nearestAddressFor(map, location);
+    var gridReference = gridReferenceFor(map, location);
+    if (nearestAddress || gridReference) {
+      var callout = document.createElement("dl");
+      callout.className = "selected-callout";
+
+      if (nearestAddress) {
+        var addressTerm = document.createElement("dt");
+        addressTerm.textContent = "Nearest address";
+        var addressValue = document.createElement("dd");
+        addressValue.textContent = nearestAddress.label;
+        callout.appendChild(addressTerm);
+        callout.appendChild(addressValue);
+      }
+
+      if (gridReference) {
+        var gridTerm = document.createElement("dt");
+        gridTerm.textContent = "Grid";
+        var gridValue = document.createElement("dd");
+        gridValue.textContent = gridReference;
+        callout.appendChild(gridTerm);
+        callout.appendChild(gridValue);
+      }
+
+      selectedLocation.appendChild(callout);
+    }
 
     var needed = document.createElement("p");
     needed.style.marginTop = "7px";
@@ -314,6 +620,7 @@
     mapImage.alt = map.name + " map";
     syncSelectorState();
     renderLegend();
+    renderReferenceOverlays();
     renderMarkers();
     renderSelectedLocation();
 
@@ -361,6 +668,7 @@
       state.scale +
       ")";
     updateMarkerPositions();
+    updateOverlayPositions();
   }
 
   function updateMarkerPositions() {
@@ -626,8 +934,27 @@
 
       var installedState = storageStore.get("install-known", false);
       installKnown = installedState && installedState.value === true;
+
+      var overlayState = storageStore.get("map-overlays", null);
+      if (overlayState && overlayState.value && typeof overlayState.value === "object") {
+        ["escapes", "addresses", "streets", "grid"].forEach(function (key) {
+          if (typeof overlayState.value[key] === "boolean") {
+            state.overlays[key] = overlayState.value[key];
+          }
+        });
+
+        if (overlayState.value.opacity && typeof overlayState.value.opacity === "object") {
+          ["escapes", "addresses", "streets", "grid"].forEach(function (key) {
+            var savedOpacity = Number(overlayState.value.opacity[key]);
+            if (Number.isFinite(savedOpacity)) {
+              state.overlayOpacity[key] = Math.max(0.1, Math.min(1, savedOpacity));
+            }
+          });
+        }
+      }
     }
 
+    syncOverlayVisibility();
     applyTheme(initialTheme, false);
 
     themeSelect.addEventListener("change", function () {
@@ -715,7 +1042,7 @@
       scope: "./"
     }).then(function (result) {
       if (!result.ok && result.error) {
-        console.info("[Halloween Escape Map] PWA helper:", result.error);
+        console.info("[HTG Maps] PWA helper:", result.error);
       }
       updateInstallButton();
     });
@@ -793,6 +1120,7 @@
 
   renderSelectors();
   setupStorageAndTheme();
+  setupOverlayControls();
   setupDialog();
   renderMap();
   setupPwa();

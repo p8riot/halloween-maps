@@ -1,7 +1,7 @@
 window.p8riotAppConfig = {
-  name: "Halloween: The Game Escape Map",
-  shortName: "Halloween Escape Map",
-  version: "0.1.0",
+  name: "HTG Maps",
+  shortName: "HTG Maps",
+  version: "1.0.4",
   coreVersion: "0.2.0",
   modules: {
     storage: true,

@@ -1,5 +1,4 @@
-/* Halloween Escape Map 0.1.0 Development Build 2 */
-const CACHE_NAME = "halloween-escape-map-v0.1.0-dev2";
+const CACHE_NAME = "halloween-escape-map-v1.0.4";
 const APP_SHELL = [
   "./",
   "./index.html",

@@ -1,7 +1,7 @@
 {
-  "name": "Halloween: The Game Escape Map",
-  "short_name": "Halloween Escape Map",
-  "description": "Interactive possible escape-location maps for Halloween: The Game.",
+  "name": "HTG Maps",
+  "short_name": "HTG Maps",
+  "description": "Interactive Halloween: The Game maps with escape locations, addresses, street names, and grid references.",
   "id": "./",
   "start_url": "./",
   "scope": "./",

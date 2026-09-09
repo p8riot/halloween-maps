@@ -1,23 +1,71 @@
-# Halloween: The Game Escape Map
+# HTG Maps
 
-Development Build 2 of a static-first interactive map PWA.
+Static-first interactive map PWA for Halloween: The Game.
 
 ## Current product identity
-- Product: Halloween: The Game Escape Map
-- Product version: 0.1.0 Development Build 2
-- Core: p8riot Core 0.2.0 Alpha 1 (pre-Stable)
+- Product: HTG Maps
+- Product version: 1.0.4
+- PWA cache: `halloween-escape-map-v1.0.4`
 
+The browser tab, install/app name, and product identity are `HTG Maps`. The header keeps
+`Halloween: The Game` and displays `Maps by p8riot`, with `p8riot` linked to the canonical Linktree.
+The visible footer shows the product version and `p8riotCore` attribution without displaying Core version/build.
+Core compatibility identity remains internal release metadata for QA and runtime checks.
 
-## Development Build 2 changes
-- Fixed the footer Theme selector so both the closed control and its opened native option list use high-contrast text/surfaces.
-- Audited all four map datasets against the user-supplied reference screenshots as well as the saved interactive-map source.
-- No escape coordinates or counts required correction: the Build 1 dataset already contains every reference escape marker shown in the screenshots.
+## Version 1.0.4
+- Renamed the six visible themes to Halloween-film-inspired names while preserving their internal theme IDs so saved user theme preferences continue to work.
+- Theme names are now: **Haddonfield Night**, **Halloween Night**, **The Shape**, **Smith's Grove**, **The Boogeyman**, and **Blackest Eyes**.
+- Removed obsolete build/update-history comments from product CSS and service-worker source.
+- Normalized product source whitespace and re-audited `app.js` for unused named functions and single-use declared variables; no safe dead-code removals were identified, so working interaction logic was preserved rather than refactored unnecessarily.
+- Preserved all map data, overlays, opacity settings, local preference persistence, themes, install behavior, selected-location callouts, and p8riotCore runtime files.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.4`.
 
-Reference screenshot audit:
-- East Haddonfield: 5 Storm Cellar, 1 Escape Gate, 4 Car — 10 total
-- Haddonfield Heights: 8 Storm Cellar, 3 Escape Gate, 4 Car — 15 total
-- Haddonfield Town Center: 3 Storm Cellar, 1 Escape Gate, 4 Car — 8 total
-- Orange Grove Estates: 4 Storm Cellar, 3 Escape Gate, 5 Car — 12 total
+## Version 1.0.3
+- Responsive priority is now explicitly mobile first, tablet second, then wide desktop.
+- Phones and tablets use the compact native map selector instead of horizontal tabs.
+- Phone/tablet layouts remain single-column so the interactive map stays first and the information/settings panel follows below.
+- Tablet map height is expanded to use available touch-screen space; phone header/toolbar spacing is reduced to protect map area.
+- Wide desktop retains the persistent side-panel/tabs layout.
+- Existing local preferences, map/escape/address/street/grid data, themes, PWA mechanics, and storage namespace are unchanged.
+
+## Version 1.0.2
+- Renamed the product from the previous Escape Map identity to **HTG Maps**.
+- Browser tab title is now exactly `HTG Maps`.
+- PWA manifest `name` and `short_name` are now exactly `HTG Maps` for installed-app/home-screen presentation.
+- Added `application-name` and `apple-mobile-web-app-title` metadata using `HTG Maps`.
+- Header remains `Halloween: The Game` and now reads `Maps by p8riot`, with only `p8riot` linked to `https://linktr.ee/p8riot`.
+- Removed the redundant header subtitle `Potential escape spawn locations and required items`; that information remains in the side panel.
+- Footer product identity is now `HTG Maps 1.0.2`; the existing p8riotCore attribution remains without exposing Core version/build.
+- Preserved the existing storage namespace so theme and overlay preferences survive the rename.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.2`.
+- Preserved map data, overlays, opacity persistence, selected-location callouts, themes, pan/zoom, install behavior, and HD assets.
+
+## Version 1.0.1
+- Removed the redundant `Always visible` kicker and `Escape legend` heading.
+- Prioritized escape content at the top of the side panel.
+- Moved `Player Tip — House Addresses` below escape/selected-location content.
+- Moved `Map settings` below the Player Tip.
+- Simplified the visible footer identity to `Halloween Escape Map 1.0.1`.
+- Removed the visible p8riotCore version/build from the footer while preserving the canonical p8riotCore attribution link.
+- Preserved all Build 4 map data, overlay opacity controls, saved overlay preferences, themes, selected-location address/grid callouts, PWA/install behavior, and map assets.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.1`.
+
+## Development Build 4
+- Added an opacity slider for each map overlay: Escape Locations, House Addresses, Street Names, and Grid.
+- Overlay visibility and opacity settings persist locally using the existing `halloween-escape-map` storage namespace.
+- Preserved backward compatibility with the Development Build 3 `map-overlays` saved-state shape.
+- Selected escape details now show the nearest confirmed house address when address data exists.
+- Selected escape details now show the A–G / 1–8 grid cell calculated from the escape coordinate.
+- Added `CHANGELOG.md` as the product's ongoing creation/update history.
+- Preserved all four HD maps, address/street datasets, escape coordinates, themes, install behavior, and p8riotCore runtime files.
+
+Default overlay presentation:
+- Escape Locations: ON, 100%
+- House Addresses: ON, 85%
+- Street Names: ON, 80%
+- A–G / 1–8 Grid: OFF, 35%
+
+If a user changes any of these values, the saved value is restored on later browser or installed-PWA launches while the same site data remains available.
 
 ## Included maps
 - East Haddonfield
@@ -25,66 +73,56 @@ Reference screenshot audit:
 - Haddonfield Town Center
 - Orange Grove Estates
 
-Each map uses the supplied 4096x4096 source image and the supplied escape coordinates.
-The source map data provides category-level escape requirements; no per-marker item variation
-was present in the supplied map widget data.
+Each map uses the supplied 4096×4096 HD source image. Screenshots supplied later are reference material for escape verification and map annotations only; they are not used as map artwork.
 
 ## Escape marker system
-- Storm Cellar: red ring + door/escape pictogram
-- Escape Gate: green ring + door/escape pictogram
+- Storm Cellar: red ring + escape-door pictogram
+- Escape Gate: green ring + escape-door pictogram
 - Car: blue ring + car pictogram
 
-All possible escape markers are visible by default. Hover/focus shows the escape requirements.
-Selecting a marker also places the requirements in the persistent details panel.
+Escape colors are semantic and remain consistent across cosmetic themes.
+
+## Selected-location callouts
+Selecting an escape marker shows:
+- escape type and possible-location number;
+- nearest confirmed house address, when available;
+- A–G / 1–8 grid cell, when grid data exists;
+- required escape items.
+
+`Nearest address` means the address-label coordinate with the shortest map-coordinate distance to the selected escape. It does not claim the escape is physically attached to that property.
 
 ## GitHub Pages deployment
-This package uses only relative URLs, so it can be deployed at a GitHub Pages project path.
+This package uses relative URLs and can be deployed at a GitHub Pages project path.
 
-1. Put the contents of this directory at the published repository path.
-2. Enable GitHub Pages for the chosen branch/folder.
-3. Open the HTTPS GitHub Pages URL.
-4. Reload once after the first service-worker registration if testing offline control immediately.
-
-Do not rename public files casually after release; update the service-worker precache list
-and cache identity whenever cached assets change.
+1. Replace the published repository contents with this build while preserving paths/casing.
+2. Keep `index.html` at the publishing root.
+3. Allow GitHub Pages to finish deployment.
+4. Reload/reopen the site so the 1.0.2 service worker can replace the prior cache.
+5. Re-test install/update/offline behavior on the real HTTPS origin.
 
 ## PWA
-`manifest.webmanifest` and `sw.js` are product-owned.
-The current cache identity is `halloween-escape-map-v0.1.0-dev2`.
+`manifest.webmanifest` and `sw.js` are product-owned. Browser use does not require installation.
 
-The footer Install button:
-- invokes the browser install prompt when p8riot PWA Helper reports one;
-- otherwise opens Android, iPhone/iPad, and desktop installation instructions;
-- is hidden in standalone display mode;
-- remembers a successful install in browsers where the install event is available;
-- reappears when a future browser install prompt indicates the app is no longer installed.
-
-Browsers do not expose one universal live uninstall event, so uninstall re-detection is
-best-effort and re-evaluated when the site is revisited/focused and when install eligibility returns.
+The footer Install option uses the bundled p8riot PWA Helper where supported and falls back to platform-specific instructions. Browsers do not expose one universal live uninstall event, so uninstall re-detection remains best-effort.
 
 ## Themes
-The first build includes six Halloween-named color themes:
-- Midnight Manor
-- Jack-o'-Lantern Glow
-- Witching Hour
-- Graveyard Fog
-- Zombie Night
-- Blood Moon
+Included color themes:
+- Haddonfield Night
+- Halloween Night
+- The Shape
+- Smith's Grove
+- The Boogeyman
+- Blackest Eyes
 
-Theme selection is persisted with p8riot Storage. Real theme background images are intentionally
-not bundled yet; `assets/themes/` is reserved for the artwork to be supplied later.
-
-Escape marker colors remain semantic and do not change with themes.
+Theme choice is persisted locally. Theme background artwork remains reserved for a later product update.
 
 ## Adding future maps
-Add a new HD local map image and one object in `data/maps.js` with:
-- unique `id`
-- `name`
-- image path
-- width/height
-- `locations` containing type/x/y/number
-
-Map selectors and marker/legend rendering are data-driven and do not assume exactly four maps.
+Add a new HD local map image and one data object in `data/maps.js` with a unique ID, name, image dimensions, escape locations, and optional address/street/grid overlays. The UI is data-driven and does not assume exactly four maps.
 
 ## Runtime
-No npm, Node.js, CDN, hosted font, bundler, or development server is required at runtime.
+Normal use requires no npm, Node.js, CDN, hosted font, bundler, compilation step, or development server.
+
+See:
+- `CHANGELOG.md` for creation/update history.
+- `SOURCE-NOTES.md` for source/reference provenance.
+- `QA-REPORT.md` for verified, warning, and not-tested status.

@@ -1,35 +1,39 @@
 {
-  "product": "Halloween: The Game Escape Map",
-  "productVersion": "0.1.0",
-  "build": "Development Build 2",
+  "product": "HTG Maps",
+  "productVersion": "1.0.4",
   "coreVersion": "0.2.0",
   "coreBuild": "Alpha 1",
   "releaseChannel": "development",
   "files": [
     {
+      "path": "CHANGELOG.md",
+      "bytes": 6936,
+      "sha256": "3fab6a0cbb25e231775bab66bc881e7f2116aa63d12e26fc17a13ec76316e18f"
+    },
+    {
       "path": "QA-REPORT.md",
-      "bytes": 4734,
-      "sha256": "769c86dd679630efad64a9880f818941c846d855b2ffd3fed31554807f8f6a92"
+      "bytes": 2706,
+      "sha256": "e543399edd27597591d82ad0d45a81e776de45c81d74ebcfc3fa5d9e41e13ee7"
     },
     {
       "path": "README.md",
-      "bytes": 3719,
-      "sha256": "510e5737841a149c429783a991970dd74c0b7d2c4daaa590ba8bf7f009908df5"
+      "bytes": 7467,
+      "sha256": "042965b62d3ae5eb74d6c982930af404f1c08e33d5ab545d76d435627238850d"
     },
     {
       "path": "SOURCE-NOTES.md",
-      "bytes": 1856,
-      "sha256": "e524ea5a947c1974f408614591a13b6a328e9842a869474147436b6782f1959c"
+      "bytes": 4865,
+      "sha256": "ec5a653010b5c1a32ace09bedda2cad9d7e16ab03450096ce2d73de9963f9127"
     },
     {
       "path": "app-config.js",
-      "bytes": 277,
-      "sha256": "32d4b6567af272f101cf488bf9ae07484ccc8175ba692823a63316ce95062014"
+      "bytes": 243,
+      "sha256": "80c3485c3d85320b7bd680ecf7b17bfc79ca76635ac1931bf00cc8ff2daf90c4"
     },
     {
       "path": "app.js",
-      "bytes": 22186,
-      "sha256": "e630bdaf31f374cdb877de69b8b3ff98e114c020a63b6cdc3df0373b561cbef8"
+      "bytes": 33844,
+      "sha256": "af8cc03d7921243485101bdca2add66ad2c123e48d70f84ba5d5039da7d0000c"
     },
     {
       "path": "assets/app/apple-touch-icon.png",
@@ -113,28 +117,28 @@
     },
     {
       "path": "data/maps.js",
-      "bytes": 9116,
-      "sha256": "5cc14b3f2100002fccdb5949257f8920b1cc179d4158956f79f9b23ceacbed27"
+      "bytes": 20085,
+      "sha256": "fd48621d11d3ad58e2921dcc0c48909549d0ce55d9f494c77d23aeb7e764554c"
     },
     {
       "path": "index.html",
-      "bytes": 7229,
-      "sha256": "1348c80bc3e1df63b13f3553ceb34f62a1a9fc078a52607250a9f70b3e5f4adb"
+      "bytes": 9979,
+      "sha256": "0172e9648ff5285a14e2bd79b2b52e0d3d6da122702027f5298c17f92e40759d"
     },
     {
       "path": "manifest.webmanifest",
-      "bytes": 626,
-      "sha256": "1fd7de9dabdaa7c05be9f80b3c05897ad039728707c4d72f71e70da367991d58"
+      "bytes": 631,
+      "sha256": "35cc1767fb4345517e41c9dfdbe8110643a59d569db985b30a7f1d1661cc5d63"
     },
     {
       "path": "styles.css",
-      "bytes": 17773,
-      "sha256": "128f4d0ac04f7446033f59769f263735ca4c7af1377cc1fba23165b81f2f6fae"
+      "bytes": 24163,
+      "sha256": "3ca67ff25185e4bad8ac13ae95134faf363c3c5b0040915241965a08397a22f3"
     },
     {
       "path": "sw.js",
-      "bytes": 2317,
-      "sha256": "6884fe56501367e7794322b4036573b3afe4ecb91e527c4ccffcb65abd025ce7"
+      "bytes": 2259,
+      "sha256": "3f34eb0d332cf5d51f46cb5cbe78060d373651e6e43dbc1a955047d7a0587679"
     }
   ]
 }
