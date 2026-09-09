@@ -82,3 +82,13 @@ The Version 1.0.1 update changes product UI hierarchy/version presentation only.
 The user-facing product name changed to `HTG Maps`. Historical source/provenance sections retain
 their original build terminology where needed for traceability. The rename does not alter map,
 escape, address, street, grid, or item-requirement source data.
+
+## 1.0.16 escape-marker accuracy references
+
+Marker coordinates were recalibrated from the four user-supplied screenshots dated 2026-09-09:
+- Haddonfield Heights
+- Haddonfield Town Center
+- East Haddonfield
+- Orange Grove Estates
+
+The screenshots were used only as escape-marker position references. The bundled 4096×4096 map artwork remains the runtime map source.

@@ -1,19 +1,20 @@
 {
   "product": "HTG Maps",
-  "productVersion": "1.0.4",
+  "productVersion": "1.0.16",
   "coreVersion": "0.2.0",
   "coreBuild": "Alpha 1",
   "releaseChannel": "development",
+  "baseline": "exact user-supplied HTG-Maps-1.0.15.zip",
   "files": [
     {
       "path": "CHANGELOG.md",
-      "bytes": 6936,
-      "sha256": "3fab6a0cbb25e231775bab66bc881e7f2116aa63d12e26fc17a13ec76316e18f"
+      "bytes": 13232,
+      "sha256": "8986b570bbee42cbbab8218dd3018d267f776e75c1e8c0c852cec74af41c082c"
     },
     {
       "path": "QA-REPORT.md",
-      "bytes": 2706,
-      "sha256": "e543399edd27597591d82ad0d45a81e776de45c81d74ebcfc3fa5d9e41e13ee7"
+      "bytes": 1805,
+      "sha256": "b98dc33a87bddb2c3a64041a97bfc268ac4d83f3eb5323bc1a34feb29cf54bf2"
     },
     {
       "path": "README.md",
@@ -22,33 +23,43 @@
     },
     {
       "path": "SOURCE-NOTES.md",
-      "bytes": 4865,
-      "sha256": "ec5a653010b5c1a32ace09bedda2cad9d7e16ab03450096ce2d73de9963f9127"
+      "bytes": 5233,
+      "sha256": "e4761512e1a719ba363d1f01ca9438c9e038498353c1679a9c38e959b6d9b07c"
     },
     {
       "path": "app-config.js",
-      "bytes": 243,
-      "sha256": "80c3485c3d85320b7bd680ecf7b17bfc79ca76635ac1931bf00cc8ff2daf90c4"
+      "bytes": 244,
+      "sha256": "1a02f54175ac7663f416e0fe9e02d4fc54b2a7bb3c96a3b2129565bcf02d21a9"
     },
     {
       "path": "app.js",
-      "bytes": 33844,
-      "sha256": "af8cc03d7921243485101bdca2add66ad2c123e48d70f84ba5d5039da7d0000c"
+      "bytes": 44500,
+      "sha256": "5926c4f771d95d4a8cfc746c8981a0bf6d9ef8915eae6cd876fa0c491bc91682"
     },
     {
       "path": "assets/app/apple-touch-icon.png",
-      "bytes": 3441,
-      "sha256": "4968bce740a3ad44fa9984d0ebb5e0f43904e81cf3b4bf2cfb4a3385f952be35"
+      "bytes": 28823,
+      "sha256": "883858e0b9ebbb8c2da4ab05dede7e1f7e02822ab39a28953b91e5e2a748534e"
+    },
+    {
+      "path": "assets/app/favicon-1.0.7.png",
+      "bytes": 1797,
+      "sha256": "d72901c45d885a0842eca452637eedbb493cbb5014d00ca15256aaad4c621825"
+    },
+    {
+      "path": "assets/app/favicon-32.png",
+      "bytes": 1641,
+      "sha256": "35c0aea27a0eb48a940c503b45348c97232a10f579b1a1ad45d3574049eda02e"
     },
     {
       "path": "assets/app/icon-192.png",
-      "bytes": 3796,
-      "sha256": "9a9b7e94700ffd12eb944673f00d1775e73786a8b63da04a27d1e4d10c96f141"
+      "bytes": 32644,
+      "sha256": "07f4f8fe1c9f38845f0aa128f7170e0ee216d5e5390703be772781cdf684b5f1"
     },
     {
       "path": "assets/app/icon-512.png",
-      "bytes": 11132,
-      "sha256": "5a755b5542e3a1fa8129dc11e17af7f3705ce697db9cdba8a07234f0d368e76b"
+      "bytes": 210069,
+      "sha256": "396f218fe65bcd06f3fa1577bfbe23cce9a97930f746cc9fa7b3015c52dc5c24"
     },
     {
       "path": "assets/icons/car.svg",
@@ -117,13 +128,13 @@
     },
     {
       "path": "data/maps.js",
-      "bytes": 20085,
-      "sha256": "fd48621d11d3ad58e2921dcc0c48909549d0ce55d9f494c77d23aeb7e764554c"
+      "bytes": 20282,
+      "sha256": "9aeefba322bbf5a9fb4800001ec80d3aa3d14994d0f7b4898e7f1c740440ccd6"
     },
     {
       "path": "index.html",
-      "bytes": 9979,
-      "sha256": "0172e9648ff5285a14e2bd79b2b52e0d3d6da122702027f5298c17f92e40759d"
+      "bytes": 10647,
+      "sha256": "190dc534849f9b02186709a01f80bd3b9e2b14b86106e8f7440d68ed154e45ff"
     },
     {
       "path": "manifest.webmanifest",
@@ -132,13 +143,13 @@
     },
     {
       "path": "styles.css",
-      "bytes": 24163,
-      "sha256": "3ca67ff25185e4bad8ac13ae95134faf363c3c5b0040915241965a08397a22f3"
+      "bytes": 30281,
+      "sha256": "9ae708deddcb31464d2502903d6ec1f0a63c66087c3323e9087f3e719291f5f6"
     },
     {
       "path": "sw.js",
-      "bytes": 2259,
-      "sha256": "3f34eb0d332cf5d51f46cb5cbe78060d373651e6e43dbc1a955047d7a0587679"
+      "bytes": 2296,
+      "sha256": "daff7125f632aef2988d4ef4fe6b73a14c396ae1a4eee8faddb52e6669e87a6f"
     }
   ]
 }

@@ -2,6 +2,13 @@
 
 This file records what was created or changed in each product build. It is separate from `QA-REPORT.md`, which records validation evidence, and `SOURCE-NOTES.md`, which records source/reference provenance.
 
+## 1.0.16
+- Recalibrated all 45 escape-marker coordinates against the four user-supplied reference screenshots and the bundled 4096×4096 map artwork.
+- Corrected every Storm Cellar, Escape Gate, and Car marker center to the screenshot-derived reference position, including the large East Haddonfield and Haddonfield Heights offsets.
+- Re-applied top-to-bottom numbering within each escape type after coordinate correction; Haddonfield Heights Storm Cellars 1 and 2 were renumbered to preserve the numbering rule.
+- Preserved marker IDs, escape types, required-item data, addresses, streets, map artwork, storage semantics, and interaction behavior.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.16`.
+
 ## 1.0.15
 - Removed the redundant selected-address summary line that repeated the map name above the Address/Grid details.
 - Removed the `Current map` kicker so the map toolbar shows only the active map name.

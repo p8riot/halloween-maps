@@ -43,71 +43,71 @@ window.HalloweenEscapeData = {
           "id": "east-haddonfield-car-1",
           "type": "car",
           "number": 1,
-          "x": 2674.527,
-          "y": 1199.894
+          "x": 2681.3,
+          "y": 1205.3
         },
         {
           "id": "east-haddonfield-car-2",
           "type": "car",
           "number": 2,
-          "x": 803.897,
-          "y": 2013.109
+          "x": 929.9,
+          "y": 2104.6
         },
         {
           "id": "east-haddonfield-car-3",
           "type": "car",
           "number": 4,
-          "x": 2906.422,
-          "y": 2430.646
+          "x": 2938.2,
+          "y": 2408.9
         },
         {
           "id": "east-haddonfield-car-4",
           "type": "car",
           "number": 3,
-          "x": 1874.19,
-          "y": 2405.009
+          "x": 1856.3,
+          "y": 2388.6
         },
         {
           "id": "east-haddonfield-gate-1",
           "type": "gate",
           "number": 1,
-          "x": 526.401,
-          "y": 2956.583
+          "x": 537.7,
+          "y": 2611.7
         },
         {
           "id": "east-haddonfield-cellar-1",
           "type": "cellar",
           "number": 5,
-          "x": 2558.312,
-          "y": 2685.453
+          "x": 2546.0,
+          "y": 2686.2
         },
         {
           "id": "east-haddonfield-cellar-2",
           "type": "cellar",
           "number": 1,
-          "x": 2230.5,
-          "y": 1191.998
+          "x": 2228.2,
+          "y": 1205.3
         },
         {
           "id": "east-haddonfield-cellar-3",
           "type": "cellar",
           "number": 2,
-          "x": 779.511,
-          "y": 1386.712
+          "x": 781.2,
+          "y": 1387.8
         },
         {
           "id": "east-haddonfield-cellar-4",
           "type": "cellar",
           "number": 4,
-          "x": 1714.588,
-          "y": 2476.543
+          "x": 1721.0,
+          "y": 2490.1
         },
         {
           "id": "east-haddonfield-cellar-5",
           "type": "cellar",
           "number": 3,
-          "x": 3403.949,
-          "y": 2103.083
+          "x": 3411.5,
+          "y": 2118.2
         }
       ],
       "overlays": {
@@ -245,106 +245,106 @@ window.HalloweenEscapeData = {
           "id": "haddonfield-heights-cellar-1",
           "type": "cellar",
           "number": 5,
-          "x": 1926.516,
-          "y": 2357.034
+          "x": 1934.7,
+          "y": 2334.1
         },
         {
           "id": "haddonfield-heights-car-1",
           "type": "car",
           "number": 3,
-          "x": 2295.647,
-          "y": 2433.502
+          "x": 2317.5,
+          "y": 2428.4
         },
         {
           "id": "haddonfield-heights-car-2",
           "type": "car",
           "number": 1,
-          "x": 2470.0,
-          "y": 948.102
+          "x": 2479.9,
+          "y": 923.9
         },
         {
           "id": "haddonfield-heights-car-3",
           "type": "car",
           "number": 4,
-          "x": 1219.532,
-          "y": 3404.111
+          "x": 1168.0,
+          "y": 3408.2
         },
         {
           "id": "haddonfield-heights-car-4",
           "type": "car",
           "number": 2,
-          "x": 1807.365,
-          "y": 1960.133
+          "x": 1800.6,
+          "y": 1924.2
         },
         {
           "id": "haddonfield-heights-gate-1",
           "type": "gate",
           "number": 2,
-          "x": 3767.408,
-          "y": 1017.972
+          "x": 3769.5,
+          "y": 1025.7
         },
         {
           "id": "haddonfield-heights-gate-2",
           "type": "gate",
           "number": 3,
-          "x": 2651.65,
-          "y": 3290.781
+          "x": 2659.4,
+          "y": 3281.8
         },
         {
           "id": "haddonfield-heights-gate-3",
           "type": "gate",
           "number": 1,
-          "x": 2078.894,
-          "y": 522.556
+          "x": 2070.4,
+          "y": 520.5
         },
         {
           "id": "haddonfield-heights-cellar-2",
           "type": "cellar",
           "number": 3,
-          "x": 3507.5,
-          "y": 1246.001
+          "x": 3500.6,
+          "y": 1294.2
         },
         {
           "id": "haddonfield-heights-cellar-3",
           "type": "cellar",
           "number": 6,
-          "x": 3284.541,
-          "y": 2366.259
+          "x": 3298.2,
+          "y": 2362.0
         },
         {
           "id": "haddonfield-heights-cellar-4",
           "type": "cellar",
           "number": 7,
-          "x": 2386.464,
-          "y": 3025.721
+          "x": 2370.7,
+          "y": 3073.3
         },
         {
           "id": "haddonfield-heights-cellar-5",
           "type": "cellar",
           "number": 8,
-          "x": 1027.475,
-          "y": 3267.559
+          "x": 1027.1,
+          "y": 3246.9
         },
         {
           "id": "haddonfield-heights-cellar-6",
           "type": "cellar",
           "number": 4,
-          "x": 1133.314,
-          "y": 1916.224
+          "x": 934.4,
+          "y": 1500.4
         },
         {
           "id": "haddonfield-heights-cellar-7",
           "type": "cellar",
-          "number": 1,
-          "x": 1659.58,
-          "y": 1116.521
+          "number": 2,
+          "x": 1626.6,
+          "y": 1158.3
         },
         {
           "id": "haddonfield-heights-cellar-8",
           "type": "cellar",
-          "number": 2,
-          "x": 2185.763,
-          "y": 1145.178
+          "number": 1,
+          "x": 2184.1,
+          "y": 1152.1
         }
       ],
       "overlays": {
@@ -514,57 +514,57 @@ window.HalloweenEscapeData = {
           "id": "haddonfield-town-center-car-1",
           "type": "car",
           "number": 3,
-          "x": 2764.867,
-          "y": 2693.897
+          "x": 2779.4,
+          "y": 2720.0
         },
         {
           "id": "haddonfield-town-center-car-2",
           "type": "car",
           "number": 2,
-          "x": 2766.0,
-          "y": 1677.842
+          "x": 2779.6,
+          "y": 1648.7
         },
         {
           "id": "haddonfield-town-center-car-3",
           "type": "car",
           "number": 1,
-          "x": 1294.98,
-          "y": 1590.852
+          "x": 1304.0,
+          "y": 1560.8
         },
         {
           "id": "haddonfield-town-center-car-4",
           "type": "car",
           "number": 4,
-          "x": 2148.0,
-          "y": 3291.774
+          "x": 2206.6,
+          "y": 3292.7
         },
         {
           "id": "haddonfield-town-center-gate-1",
           "type": "gate",
           "number": 1,
-          "x": 3388.813,
-          "y": 3556.94
+          "x": 3419.3,
+          "y": 3562.4
         },
         {
           "id": "haddonfield-town-center-cellar-1",
           "type": "cellar",
           "number": 1,
-          "x": 854.185,
-          "y": 1776.205
+          "x": 926.7,
+          "y": 1749.4
         },
         {
           "id": "haddonfield-town-center-cellar-2",
           "type": "cellar",
           "number": 2,
-          "x": 2218.0,
-          "y": 1947.969
+          "x": 2233.8,
+          "y": 1911.4
         },
         {
           "id": "haddonfield-town-center-cellar-3",
           "type": "cellar",
           "number": 3,
-          "x": 2428.0,
-          "y": 2960.116
+          "x": 2462.7,
+          "y": 2969.3
         }
       ],
       "overlays": {
@@ -721,85 +721,85 @@ window.HalloweenEscapeData = {
           "id": "orange-grove-estates-car-1",
           "type": "car",
           "number": 2,
-          "x": 1524.0,
-          "y": 1396.192
+          "x": 1522.0,
+          "y": 1394.9
         },
         {
           "id": "orange-grove-estates-car-2",
           "type": "car",
           "number": 3,
-          "x": 2316.0,
-          "y": 1896.318
+          "x": 2269.1,
+          "y": 1886.0
         },
         {
           "id": "orange-grove-estates-car-3",
           "type": "car",
           "number": 1,
-          "x": 2116.0,
-          "y": 1124.323
+          "x": 2168.0,
+          "y": 1125.6
         },
         {
           "id": "orange-grove-estates-car-4",
           "type": "car",
           "number": 4,
-          "x": 1592.0,
-          "y": 2723.9
+          "x": 1609.7,
+          "y": 2646.6
         },
         {
           "id": "orange-grove-estates-car-5",
           "type": "car",
           "number": 5,
-          "x": 2296.0,
-          "y": 3191.358
+          "x": 2303.0,
+          "y": 3205.0
         },
         {
           "id": "orange-grove-estates-gate-1",
           "type": "gate",
           "number": 3,
-          "x": 1519.5,
-          "y": 3683.129
+          "x": 1515.8,
+          "y": 3676.2
         },
         {
           "id": "orange-grove-estates-gate-2",
           "type": "gate",
           "number": 1,
-          "x": 2143.025,
-          "y": 453.25
+          "x": 2134.2,
+          "y": 459.4
         },
         {
           "id": "orange-grove-estates-gate-3",
           "type": "gate",
           "number": 2,
-          "x": 3365.828,
-          "y": 507.012
+          "x": 3358.9,
+          "y": 560.1
         },
         {
           "id": "orange-grove-estates-cellar-1",
           "type": "cellar",
           "number": 4,
-          "x": 1448.865,
-          "y": 3538.454
+          "x": 1441.7,
+          "y": 3474.4
         },
         {
           "id": "orange-grove-estates-cellar-2",
           "type": "cellar",
           "number": 1,
-          "x": 2467.605,
-          "y": 693.213
+          "x": 2464.0,
+          "y": 701.6
         },
         {
           "id": "orange-grove-estates-cellar-3",
           "type": "cellar",
           "number": 3,
-          "x": 2649.553,
-          "y": 3360.719
+          "x": 2659.7,
+          "y": 3339.5
         },
         {
           "id": "orange-grove-estates-cellar-4",
           "type": "cellar",
           "number": 2,
-          "x": 3592.309,
-          "y": 2435.323
+          "x": 3568.0,
+          "y": 2417.4
         }
       ],
       "overlays": {
