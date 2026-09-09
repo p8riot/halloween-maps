@@ -33,6 +33,14 @@
   var themeSelect = document.getElementById("themeSelect");
   var installButton = document.getElementById("installButton");
   var installDialog = document.getElementById("installDialog");
+  var showTipsButton = document.getElementById("showTipsButton");
+  var onboardingTour = document.getElementById("onboardingTour");
+  var tourStep = document.getElementById("tourStep");
+  var tourTitle = document.getElementById("tourTitle");
+  var tourText = document.getElementById("tourText");
+  var tourSkipButton = document.getElementById("tourSkipButton");
+  var tourBackButton = document.getElementById("tourBackButton");
+  var tourNextButton = document.getElementById("tourNextButton");
   var appStatus = document.getElementById("appStatus");
 
   var state = {
@@ -56,13 +64,13 @@
       escapes: true,
       addresses: true,
       streets: true,
-      grid: false
+      grid: true
     },
     overlayOpacity: {
-      escapes: 1,
-      addresses: 0.85,
-      streets: 0.8,
-      grid: 0.35
+      escapes: 0.5,
+      addresses: 0.5,
+      streets: 0.5,
+      grid: 0.5
     },
     activePointers: new Map(),
     drag: null,
@@ -74,6 +82,10 @@
   var pwaApi = null;
   var installedThisSession = false;
   var installKnown = false;
+  var onboardingComplete = false;
+  var onboardingStepIndex = 0;
+  var onboardingTarget = null;
+  var onboardingOpener = null;
 
   function announce(message) {
     appStatus.textContent = "";
@@ -1297,6 +1309,9 @@
           });
         }
       }
+
+      var onboardingState = storageStore.get("onboarding-tour-v1-complete", false);
+      onboardingComplete = onboardingState && onboardingState.value === true;
     }
 
     syncOverlayVisibility();
@@ -1318,6 +1333,180 @@
       ? themeSelect.options[themeSelect.selectedIndex].textContent
       : "Theme";
     announce(label + " theme applied.");
+  }
+
+
+  var onboardingSteps = [
+    {
+      target: ".map-picker",
+      title: "Choose a map",
+      text: "Use the map selector to switch between Haddonfield locations."
+    },
+    {
+      target: "#mapViewport",
+      title: "Explore the map",
+      text: "Drag to move. Use the wheel, pinch, or the plus and minus controls to zoom. Tap an escape marker to see its details."
+    },
+    {
+      target: ".layer-panel",
+      title: "Customize the overlays",
+      text: "Map settings controls escape locations, addresses, street names, and the grid. New users start with all four overlays on at 50% opacity, and your changes save automatically."
+    }
+  ];
+
+  function clearOnboardingTarget() {
+    if (onboardingTarget) {
+      onboardingTarget.classList.remove("tour-target-highlight");
+      onboardingTarget = null;
+    }
+  }
+
+  function positionOnboardingTour() {
+    if (!onboardingTour || onboardingTour.hidden || !onboardingTarget) {
+      return;
+    }
+
+    var margin = 12;
+    var gap = 12;
+    var targetRect = onboardingTarget.getBoundingClientRect();
+    var tourRect = onboardingTour.getBoundingClientRect();
+    var maxLeft = Math.max(margin, window.innerWidth - tourRect.width - margin);
+    var maxTop = Math.max(margin, window.innerHeight - tourRect.height - margin);
+    var left = Math.max(margin, Math.min(maxLeft, targetRect.left));
+    var top;
+
+    if (targetRect.bottom + gap + tourRect.height <= window.innerHeight - margin) {
+      top = targetRect.bottom + gap;
+    } else if (targetRect.top - gap - tourRect.height >= margin) {
+      top = targetRect.top - gap - tourRect.height;
+    } else {
+      top = maxTop;
+    }
+
+    onboardingTour.style.left = Math.round(left) + "px";
+    onboardingTour.style.top = Math.round(Math.max(margin, Math.min(maxTop, top))) + "px";
+  }
+
+  function ensureOnboardingTargetVisible(target) {
+    var rect = target.getBoundingClientRect();
+    var verticalMargin = 72;
+    if (rect.bottom < verticalMargin || rect.top > window.innerHeight - verticalMargin) {
+      target.scrollIntoView({ block: "center", inline: "nearest" });
+    }
+  }
+
+  function renderOnboardingStep() {
+    var step = onboardingSteps[onboardingStepIndex];
+    var target = document.querySelector(step.target);
+    if (!target) {
+      finishOnboardingTour(true);
+      return;
+    }
+
+    clearOnboardingTarget();
+    onboardingTarget = target;
+    onboardingTarget.classList.add("tour-target-highlight");
+    ensureOnboardingTargetVisible(onboardingTarget);
+
+    tourStep.textContent = "Tip " + (onboardingStepIndex + 1) + " of " + onboardingSteps.length;
+    tourTitle.textContent = step.title;
+    tourText.textContent = step.text;
+    tourBackButton.hidden = onboardingStepIndex === 0;
+    tourNextButton.textContent = onboardingStepIndex === onboardingSteps.length - 1 ? "Got it" : "Next";
+
+    onboardingTour.hidden = false;
+    window.requestAnimationFrame(function () {
+      positionOnboardingTour();
+      tourNextButton.focus();
+    });
+    announce(step.title + ". " + step.text);
+  }
+
+  function finishOnboardingTour(markComplete) {
+    if (!onboardingTour) {
+      return;
+    }
+
+    onboardingTour.hidden = true;
+    clearOnboardingTarget();
+    onboardingTour.style.left = "";
+    onboardingTour.style.top = "";
+    window.removeEventListener("resize", positionOnboardingTour);
+    window.removeEventListener("scroll", positionOnboardingTour, true);
+
+    if (markComplete) {
+      onboardingComplete = true;
+      if (storageStore) {
+        storageStore.set("onboarding-tour-v1-complete", true);
+      }
+    }
+
+    if (onboardingOpener && typeof onboardingOpener.focus === "function" && onboardingOpener.isConnected) {
+      onboardingOpener.focus();
+    }
+    onboardingOpener = null;
+    announce("Tips closed. You can replay them from Map settings.");
+  }
+
+  function startOnboardingTour(opener) {
+    if (!onboardingTour || !tourNextButton) {
+      return;
+    }
+
+    onboardingOpener = opener || (
+      document.activeElement && document.activeElement !== document.body
+        ? document.activeElement
+        : null
+    );
+    onboardingStepIndex = 0;
+    window.addEventListener("resize", positionOnboardingTour);
+    window.addEventListener("scroll", positionOnboardingTour, true);
+    renderOnboardingStep();
+  }
+
+  function setupOnboardingTour() {
+    if (!onboardingTour || !showTipsButton) {
+      return;
+    }
+
+    showTipsButton.addEventListener("click", function () {
+      startOnboardingTour(showTipsButton);
+    });
+
+    tourSkipButton.addEventListener("click", function () {
+      finishOnboardingTour(true);
+    });
+
+    tourBackButton.addEventListener("click", function () {
+      if (onboardingStepIndex > 0) {
+        onboardingStepIndex -= 1;
+        renderOnboardingStep();
+      }
+    });
+
+    tourNextButton.addEventListener("click", function () {
+      if (onboardingStepIndex >= onboardingSteps.length - 1) {
+        finishOnboardingTour(true);
+        return;
+      }
+      onboardingStepIndex += 1;
+      renderOnboardingStep();
+    });
+
+    onboardingTour.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        finishOnboardingTour(true);
+      }
+    });
+
+    if (storageStore && !onboardingComplete) {
+      window.setTimeout(function () {
+        if (!onboardingComplete && onboardingTour.hidden) {
+          startOnboardingTour(null);
+        }
+      }, 450);
+    }
   }
 
   function setupDialog() {
@@ -1468,5 +1657,6 @@
   setupOverlayControls();
   setupDialog();
   renderMap();
+  setupOnboardingTour();
   setupPwa();
 })();

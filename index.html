@@ -93,38 +93,41 @@
         </aside>
 
         <section class="layer-panel" aria-labelledby="layerTitle">
-          <h3 id="layerTitle">Map settings</h3>
+          <div class="layer-panel-heading">
+            <h3 id="layerTitle">Map settings</h3>
+            <button id="showTipsButton" type="button" class="tour-replay-button">Show tips</button>
+          </div>
           <div class="layer-options">
             <div class="layer-option">
               <label class="layer-toggle"><input id="toggleEscapes" type="checkbox" checked> Escape locations</label>
               <div class="layer-opacity">
                 <label for="opacityEscapes">Opacity</label>
-                <input id="opacityEscapes" type="range" min="10" max="100" step="5" value="100">
-                <output id="opacityEscapesValue" for="opacityEscapes">100%</output>
+                <input id="opacityEscapes" type="range" min="10" max="100" step="5" value="50">
+                <output id="opacityEscapesValue" for="opacityEscapes">50%</output>
               </div>
             </div>
             <div class="layer-option">
               <label class="layer-toggle"><input id="toggleAddresses" type="checkbox" checked> House addresses</label>
               <div class="layer-opacity">
                 <label for="opacityAddresses">Opacity</label>
-                <input id="opacityAddresses" type="range" min="10" max="100" step="5" value="85">
-                <output id="opacityAddressesValue" for="opacityAddresses">85%</output>
+                <input id="opacityAddresses" type="range" min="10" max="100" step="5" value="50">
+                <output id="opacityAddressesValue" for="opacityAddresses">50%</output>
               </div>
             </div>
             <div class="layer-option">
               <label class="layer-toggle"><input id="toggleStreets" type="checkbox" checked> Street names</label>
               <div class="layer-opacity">
                 <label for="opacityStreets">Opacity</label>
-                <input id="opacityStreets" type="range" min="10" max="100" step="5" value="80">
-                <output id="opacityStreetsValue" for="opacityStreets">80%</output>
+                <input id="opacityStreets" type="range" min="10" max="100" step="5" value="50">
+                <output id="opacityStreetsValue" for="opacityStreets">50%</output>
               </div>
             </div>
             <div class="layer-option">
-              <label class="layer-toggle"><input id="toggleGrid" type="checkbox"> A–J / 1–10 grid</label>
+              <label class="layer-toggle"><input id="toggleGrid" type="checkbox" checked> A–J / 1–10 grid</label>
               <div class="layer-opacity">
                 <label for="opacityGrid">Opacity</label>
-                <input id="opacityGrid" type="range" min="10" max="100" step="5" value="35">
-                <output id="opacityGridValue" for="opacityGrid">35%</output>
+                <input id="opacityGrid" type="range" min="10" max="100" step="5" value="50">
+                <output id="opacityGridValue" for="opacityGrid">50%</output>
               </div>
             </div>
           </div>
@@ -152,7 +155,7 @@
       </div>
 
       <div class="footer-meta">
-        <span>HTG Maps 1.0.17</span>
+        <span>HTG Maps 1.0.18</span>
         <span aria-hidden="true"> · </span>
         <span>
           Built with
@@ -210,6 +213,30 @@
       </div>
     </div>
   </dialog>
+
+
+  <div
+    id="onboardingTour"
+    class="onboarding-tour"
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="tourTitle"
+    aria-describedby="tourText"
+    hidden
+  >
+    <div class="onboarding-tour-card">
+      <p id="tourStep" class="onboarding-tour-step"></p>
+      <h2 id="tourTitle" class="onboarding-tour-title"></h2>
+      <p id="tourText" class="onboarding-tour-text"></p>
+      <div class="onboarding-tour-actions">
+        <button id="tourSkipButton" type="button" class="tour-secondary-button">Skip tips</button>
+        <div class="onboarding-tour-nav">
+          <button id="tourBackButton" type="button" class="tour-secondary-button">Back</button>
+          <button id="tourNextButton" type="button" class="tour-primary-button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div id="appStatus" class="sr-only" role="status" aria-live="polite"></div>
 
