@@ -1,7 +1,7 @@
 window.p8riotAppConfig = {
   name: "HTG Maps",
   shortName: "HTG Maps",
-  version: "1.0.5",
+  version: "1.0.6",
   coreVersion: "0.2.0",
   modules: {
     storage: true,

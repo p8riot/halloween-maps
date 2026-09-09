@@ -272,6 +272,21 @@ a:focus-visible,
 
 .brand-block {
   min-width: 240px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.brand-copy {
+  min-width: 0;
 }
 
 .eyebrow,
@@ -297,15 +312,6 @@ h1 {
   line-height: 1.05;
 }
 
-.creator-link {
-  color: var(--accent-2);
-  text-decoration-thickness: 2px;
-  text-underline-offset: .12em;
-}
-
-.creator-link:hover {
-  color: var(--text);
-}
 
 .map-picker {
   min-width: 0;
@@ -954,6 +960,13 @@ h1 {
 
   .brand-block {
     min-width: 0;
+    gap: 8px;
+  }
+
+  .brand-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 9px;
   }
 
   .tagline {
@@ -1364,13 +1377,23 @@ h1 {
     padding-right: max(10px, env(safe-area-inset-right));
   }
 
+  .brand-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+  }
+
+  .brand-block {
+    gap: 7px;
+  }
+
   .eyebrow {
-    font-size: .64rem;
-    letter-spacing: .1em;
+    font-size: .61rem;
+    letter-spacing: .09em;
   }
 
   h1 {
-    font-size: clamp(1.25rem, 7vw, 1.55rem);
+    font-size: clamp(1.15rem, 6vw, 1.4rem);
   }
 
   .app-main {
