@@ -93,6 +93,90 @@ body[data-theme="blood-moon"] {
     linear-gradient(145deg, #0b0708, #210d11 58%, #090607);
 }
 
+body[data-theme="myers-house"] {
+  --bg: #0b0d0d;
+  --bg-2: #151817;
+  --surface: rgba(22, 25, 24, 0.96);
+  --surface-2: rgba(31, 36, 34, 0.96);
+  --accent: #8f9b92;
+  --accent-2: #d4ddd6;
+  --focus: #edf3ee;
+  --theme-art:
+    radial-gradient(circle at 75% 16%, rgba(226, 232, 222, .10), transparent 18%),
+    linear-gradient(160deg, rgba(63, 75, 68, .12), transparent 35%),
+    linear-gradient(145deg, #070909, #161b18 58%, #080909);
+}
+
+body[data-theme="october-31st"] {
+  --bg: #120b05;
+  --bg-2: #241207;
+  --surface: rgba(34, 22, 13, 0.96);
+  --surface-2: rgba(48, 29, 15, 0.96);
+  --accent: #ff8a1f;
+  --accent-2: #ffd06a;
+  --focus: #ffe2a0;
+  --theme-art:
+    radial-gradient(circle at 18% 16%, rgba(255, 141, 32, .24), transparent 17%),
+    radial-gradient(circle at 82% 76%, rgba(196, 70, 14, .18), transparent 24%),
+    linear-gradient(145deg, #0c0805, #281207 58%, #0b0704);
+}
+
+body[data-theme="lauries-porch"] {
+  --bg: #0b1013;
+  --bg-2: #111c22;
+  --surface: rgba(17, 28, 34, 0.96);
+  --surface-2: rgba(24, 39, 47, 0.96);
+  --accent: #4f93a9;
+  --accent-2: #9ed8e5;
+  --focus: #cdeff4;
+  --theme-art:
+    radial-gradient(circle at 22% 18%, rgba(144, 204, 218, .15), transparent 20%),
+    linear-gradient(180deg, rgba(80, 128, 144, .08), transparent 45%),
+    linear-gradient(145deg, #080d10, #12222a 58%, #081014);
+}
+
+body[data-theme="haddonfield-memorial"] {
+  --bg: #0b1113;
+  --bg-2: #132025;
+  --surface: rgba(18, 31, 36, 0.96);
+  --surface-2: rgba(25, 43, 49, 0.96);
+  --accent: #4b9da2;
+  --accent-2: #8fd4d4;
+  --focus: #b9eceb;
+  --theme-art:
+    radial-gradient(circle at 80% 20%, rgba(90, 176, 181, .17), transparent 18%),
+    radial-gradient(circle at 20% 76%, rgba(59, 114, 125, .13), transparent 24%),
+    linear-gradient(145deg, #080d0f, #122126 58%, #080e10);
+}
+
+body[data-theme="night-he-came-home"] {
+  --bg: #08090a;
+  --bg-2: #111214;
+  --surface: rgba(18, 19, 21, 0.97);
+  --surface-2: rgba(29, 30, 33, 0.97);
+  --accent: #d7d7d1;
+  --accent-2: #ffffff;
+  --focus: #ffffff;
+  --theme-art:
+    radial-gradient(circle at 82% 16%, rgba(255, 255, 245, .15) 0 4%, transparent 13%),
+    linear-gradient(180deg, rgba(200, 205, 200, .05), transparent 40%),
+    linear-gradient(145deg, #060708, #141517 58%, #070809);
+}
+
+body[data-theme="final-girl"] {
+  --bg: #10090c;
+  --bg-2: #211016;
+  --surface: rgba(31, 17, 23, 0.96);
+  --surface-2: rgba(45, 23, 31, 0.96);
+  --accent: #b64f68;
+  --accent-2: #f1a4b5;
+  --focus: #ffd0da;
+  --theme-art:
+    radial-gradient(circle at 18% 18%, rgba(225, 103, 133, .16), transparent 18%),
+    radial-gradient(circle at 80% 75%, rgba(123, 40, 61, .17), transparent 24%),
+    linear-gradient(145deg, #0a0708, #231018 58%, #090708);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -1138,10 +1222,10 @@ h1 {
 
 .layer-opacity {
   display: grid;
-  grid-template-columns: auto minmax(70px, 1fr) 42px;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 6px;
-  min-height: 34px;
+  gap: 2px 8px;
+  min-width: 0;
 }
 
 .layer-opacity label,
@@ -1156,8 +1240,10 @@ h1 {
 }
 
 .layer-opacity input[type="range"] {
+  grid-column: 1 / -1;
   width: 100%;
   min-width: 0;
+  min-height: 32px;
   margin: 0;
   accent-color: var(--accent);
 }
