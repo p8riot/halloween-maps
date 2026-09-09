@@ -1,0 +1,140 @@
+{
+  "product": "Halloween: The Game Escape Map",
+  "productVersion": "0.1.0",
+  "build": "Development Build 2",
+  "coreVersion": "0.2.0",
+  "coreBuild": "Alpha 1",
+  "releaseChannel": "development",
+  "files": [
+    {
+      "path": "QA-REPORT.md",
+      "bytes": 4734,
+      "sha256": "769c86dd679630efad64a9880f818941c846d855b2ffd3fed31554807f8f6a92"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3719,
+      "sha256": "510e5737841a149c429783a991970dd74c0b7d2c4daaa590ba8bf7f009908df5"
+    },
+    {
+      "path": "SOURCE-NOTES.md",
+      "bytes": 1856,
+      "sha256": "e524ea5a947c1974f408614591a13b6a328e9842a869474147436b6782f1959c"
+    },
+    {
+      "path": "app-config.js",
+      "bytes": 277,
+      "sha256": "32d4b6567af272f101cf488bf9ae07484ccc8175ba692823a63316ce95062014"
+    },
+    {
+      "path": "app.js",
+      "bytes": 22186,
+      "sha256": "e630bdaf31f374cdb877de69b8b3ff98e114c020a63b6cdc3df0373b561cbef8"
+    },
+    {
+      "path": "assets/app/apple-touch-icon.png",
+      "bytes": 3441,
+      "sha256": "4968bce740a3ad44fa9984d0ebb5e0f43904e81cf3b4bf2cfb4a3385f952be35"
+    },
+    {
+      "path": "assets/app/icon-192.png",
+      "bytes": 3796,
+      "sha256": "9a9b7e94700ffd12eb944673f00d1775e73786a8b63da04a27d1e4d10c96f141"
+    },
+    {
+      "path": "assets/app/icon-512.png",
+      "bytes": 11132,
+      "sha256": "5a755b5542e3a1fa8129dc11e17af7f3705ce697db9cdba8a07234f0d368e76b"
+    },
+    {
+      "path": "assets/icons/car.svg",
+      "bytes": 420,
+      "sha256": "c1cd18a8ce50016a4547beb28fd10eb2f1b3c427d14f340211189645528542c3"
+    },
+    {
+      "path": "assets/icons/escape-door.svg",
+      "bytes": 398,
+      "sha256": "d0543a8b325d6689242b4c8f07e2306b784e0d76babdedced850ff8e4b136d89"
+    },
+    {
+      "path": "assets/maps/east-haddonfield.jpg",
+      "bytes": 1212670,
+      "sha256": "819d9af4eb8f94ce0321ca2fcec2e3d6da0d73f2587c97cdec021df273d01271"
+    },
+    {
+      "path": "assets/maps/haddonfield-heights.jpg",
+      "bytes": 1300206,
+      "sha256": "6995a8bfb9c4bafaa85d9e2c88effc2876b1705b9276356df5c14c58007802e2"
+    },
+    {
+      "path": "assets/maps/haddonfield-town-center.jpg",
+      "bytes": 1352925,
+      "sha256": "ec5ca6043229bcfb0059a699ef3c8450ce59103779cf53b9850c919db6340d64"
+    },
+    {
+      "path": "assets/maps/orange-grove-estates.jpg",
+      "bytes": 1360705,
+      "sha256": "b9e35c2e10135a4e2818bf5682b05d8b5f13899ce39b7a77cae8ce57e1812aad"
+    },
+    {
+      "path": "assets/themes/README.txt",
+      "bytes": 161,
+      "sha256": "587c0cb8fb0e4972cb2124a6af4cbb2fe4b1409eda2b0d1ef34c1be0b25370f0"
+    },
+    {
+      "path": "core/modules/p8riot-dialog.css",
+      "bytes": 1721,
+      "sha256": "6cefa49fe1b25ab68a51f2a5e83169c64c2c59a6aa139d2fbfb836eff0170e4d"
+    },
+    {
+      "path": "core/modules/p8riot-dialog.js",
+      "bytes": 17749,
+      "sha256": "868326b32d5a568889c0c6697d8bed932443f806db7a07daefef86dc5c6707d8"
+    },
+    {
+      "path": "core/modules/p8riot-pwa.js",
+      "bytes": 11859,
+      "sha256": "8bbb326918b8601789f9afeb2cae20a27c9e2cdf5fc2443367d1d749b5862723"
+    },
+    {
+      "path": "core/modules/p8riot-storage.js",
+      "bytes": 10936,
+      "sha256": "14f5734f51042d8682d6019f57f11832b47e674e57032d433fe978c017528e5f"
+    },
+    {
+      "path": "core/p8riot-core.css",
+      "bytes": 2848,
+      "sha256": "9b29e48f6ded1c6799e649f6420fd7a9edd19b9c6d55b1343d918b365e0ac469"
+    },
+    {
+      "path": "core/p8riot-core.js",
+      "bytes": 24072,
+      "sha256": "649185296345ea341fa2287bce393ef06bb2af776ed928cd25c223b07a5a1144"
+    },
+    {
+      "path": "data/maps.js",
+      "bytes": 9116,
+      "sha256": "5cc14b3f2100002fccdb5949257f8920b1cc179d4158956f79f9b23ceacbed27"
+    },
+    {
+      "path": "index.html",
+      "bytes": 7229,
+      "sha256": "1348c80bc3e1df63b13f3553ceb34f62a1a9fc078a52607250a9f70b3e5f4adb"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 626,
+      "sha256": "1fd7de9dabdaa7c05be9f80b3c05897ad039728707c4d72f71e70da367991d58"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 17773,
+      "sha256": "128f4d0ac04f7446033f59769f263735ca4c7af1377cc1fba23165b81f2f6fae"
+    },
+    {
+      "path": "sw.js",
+      "bytes": 2317,
+      "sha256": "6884fe56501367e7794322b4036573b3afe4ecb91e527c4ccffcb65abd025ce7"
+    }
+  ]
+}

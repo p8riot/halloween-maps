@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes">
+  <meta name="theme-color" content="#151217">
+  <meta name="description" content="Interactive possible escape-location maps for Halloween: The Game.">
+  <title>Halloween: The Game Escape Map</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./assets/app/apple-touch-icon.png">
+  <link rel="stylesheet" href="./core/p8riot-core.css">
+  <link rel="stylesheet" href="./core/modules/p8riot-dialog.css">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-theme="midnight-manor">
+  <a class="skip-link" href="#mapViewport">Skip to interactive map</a>
+
+  <header class="app-header">
+    <div class="brand-block">
+      <p class="eyebrow">Halloween: The Game</p>
+      <h1>Escape Map</h1>
+      <p class="tagline">Potential escape spawn locations and required items</p>
+    </div>
+
+    <div class="map-picker">
+      <label class="mobile-map-label" for="mapSelect">Map</label>
+      <select id="mapSelect" class="map-select" aria-label="Choose map"></select>
+      <div id="mapTabs" class="map-tabs" role="tablist" aria-label="Choose map"></div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="workspace">
+      <section id="mapPanel" class="map-panel" role="tabpanel" aria-labelledby="currentMapTitle">
+        <div class="map-toolbar">
+          <div>
+            <p class="toolbar-kicker">Current map</p>
+            <h2 id="currentMapTitle">Loading map…</h2>
+          </div>
+          <div class="map-controls" aria-label="Map controls">
+            <button type="button" class="icon-button" data-map-action="zoom-out" aria-label="Zoom out">−</button>
+            <button type="button" class="icon-button" data-map-action="reset" aria-label="Reset and fit map">⌂</button>
+            <button type="button" class="icon-button" data-map-action="zoom-in" aria-label="Zoom in">+</button>
+          </div>
+        </div>
+
+        <div
+          id="mapViewport"
+          class="map-viewport"
+          tabindex="0"
+          role="region"
+          aria-label="Interactive escape map"
+          aria-describedby="mapHelp"
+        >
+          <p id="mapHelp" class="sr-only">
+            Drag to move the map. Use the mouse wheel or plus and minus buttons to zoom.
+            On touch screens, drag with one finger and pinch with two fingers.
+            Keyboard users can use arrow keys to pan, plus and minus to zoom, and zero to reset.
+          </p>
+          <img id="mapImage" class="map-image" alt="" draggable="false">
+          <div id="markerLayer" class="marker-layer" aria-label="Possible escape locations"></div>
+          <div class="map-hint" aria-hidden="true">Drag · wheel/pinch to zoom</div>
+        </div>
+      </section>
+
+      <aside class="escape-panel" aria-labelledby="legendTitle">
+        <div class="panel-heading">
+          <p class="toolbar-kicker">Always visible</p>
+          <h2 id="legendTitle">Escape legend</h2>
+        </div>
+
+        <p class="spawn-note">
+          These are possible spawn locations. The exits present in a match can vary.
+        </p>
+
+        <div id="legendList" class="legend-list"></div>
+
+        <section id="selectedLocation" class="selected-location" aria-live="polite">
+          <h3>Selected location</h3>
+          <p>Select any escape icon on the map to see its location details here.</p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-controls">
+      <label for="themeSelect">Theme</label>
+      <select id="themeSelect" class="footer-select">
+        <option value="midnight-manor">Midnight Manor</option>
+        <option value="jack-o-lantern-glow">Jack-o'-Lantern Glow</option>
+        <option value="witching-hour">Witching Hour</option>
+        <option value="graveyard-fog">Graveyard Fog</option>
+        <option value="zombie-night">Zombie Night</option>
+        <option value="blood-moon">Blood Moon</option>
+      </select>
+
+      <button id="installButton" type="button" class="footer-button" hidden>Install app</button>
+    </div>
+
+    <div class="footer-meta">
+      <span>Halloween Escape Map 0.1.0 Development Build 2</span>
+      <span aria-hidden="true"> · </span>
+      <span>
+        Built with
+        <span class="p8riotcore-brand"><a href="https://linktr.ee/p8riot" target="_blank" rel="noopener noreferrer">p8riot</a>Core</span>
+        0.2.0 Alpha 1
+      </span>
+    </div>
+  </footer>
+
+  <dialog id="installDialog" class="install-dialog" aria-labelledby="installTitle">
+    <div class="dialog-card">
+      <div class="dialog-heading">
+        <div>
+          <p class="toolbar-kicker">Installable PWA</p>
+          <h2 id="installTitle">Install Halloween Escape Map</h2>
+        </div>
+        <button type="button" class="dialog-close" data-p8-dialog-close aria-label="Close install instructions">×</button>
+      </div>
+
+      <p class="dialog-intro">
+        GitHub Pages serves this app over HTTPS, so supported browsers can install it.
+        Browser wording varies by version.
+      </p>
+
+      <div class="install-grid">
+        <section>
+          <h3>Android</h3>
+          <p><strong>Chrome / Edge:</strong> use this app's Install button when the browser offers it, or open the browser menu and choose <em>Install app</em> or <em>Add to Home screen</em>.</p>
+          <p><strong>Samsung Internet:</strong> use the browser menu and choose its Add page to / Home screen option.</p>
+        </section>
+
+        <section>
+          <h3>iPhone &amp; iPad</h3>
+          <p>Open the site in <strong>Safari</strong>, tap <strong>Share</strong>, choose <strong>Add to Home Screen</strong>, then tap <strong>Add</strong>.</p>
+          <p>If Add to Home Screen is not visible, scroll the Share sheet or use <strong>Edit Actions</strong> where available.</p>
+        </section>
+
+        <section>
+          <h3>Windows &amp; macOS</h3>
+          <p><strong>Chrome / Edge:</strong> use this app's Install button when available, the install icon in the address bar, or the browser menu's install option.</p>
+          <p>Other desktop browsers may offer different site-app or shortcut options.</p>
+        </section>
+      </div>
+
+      <p class="dialog-note">
+        When opened as the installed app, the footer Install button is hidden. If the app is later uninstalled,
+        returning to the website lets the app re-check install availability and show the option again when the browser exposes it.
+      </p>
+
+      <div class="dialog-actions">
+        <button type="button" class="primary-button" data-p8-dialog-close>Got it</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="appStatus" class="sr-only" role="status" aria-live="polite"></div>
+
+  <script src="./app-config.js"></script>
+  <script src="./core/p8riot-core.js"></script>
+  <script src="./core/modules/p8riot-storage.js"></script>
+  <script src="./core/modules/p8riot-dialog.js"></script>
+  <script src="./core/modules/p8riot-pwa.js"></script>
+  <script src="./data/maps.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

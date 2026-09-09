@@ -1,0 +1,65 @@
+/* p8riot Dialog 0.2.0
+   Appearance-neutral structural styles only. Products own visual identity. */
+
+.p8-dialog {
+  --p8-dialog-edge-gap: 16px;
+  --p8-dialog-max-inline-size: 100%;
+  --p8-dialog-max-block-size: 100%;
+  --p8-dialog-z-index: 1000;
+  --p8-dialog-backdrop: transparent;
+
+  max-inline-size: min(
+    var(--p8-dialog-max-inline-size),
+    calc(
+      var(--p8-visual-width, 100vw) -
+      var(--p8-safe-left, 0px) -
+      var(--p8-safe-right, 0px) -
+      (2 * var(--p8-dialog-edge-gap))
+    )
+  );
+  max-block-size: min(
+    var(--p8-dialog-max-block-size),
+    calc(
+      var(--p8-visual-height, 100dvh) -
+      var(--p8-safe-top, 0px) -
+      var(--p8-safe-bottom, 0px) -
+      (2 * var(--p8-dialog-edge-gap))
+    )
+  );
+}
+
+.p8-dialog::backdrop {
+  background: var(--p8-dialog-backdrop);
+}
+
+.p8-dialog[data-p8-dialog-fallback="true"] {
+  position: fixed;
+  z-index: var(--p8-dialog-z-index);
+  inset: 0;
+  inline-size: auto;
+  block-size: auto;
+  max-inline-size: none;
+  max-block-size: none;
+  margin: 0;
+  border: 0;
+  padding:
+    max(var(--p8-safe-top, 0px), var(--p8-dialog-edge-gap))
+    max(var(--p8-safe-right, 0px), var(--p8-dialog-edge-gap))
+    max(var(--p8-safe-bottom, 0px), var(--p8-dialog-edge-gap))
+    max(var(--p8-safe-left, 0px), var(--p8-dialog-edge-gap));
+  overflow: auto;
+  place-items: center;
+  overscroll-behavior: contain;
+  background: var(--p8-dialog-backdrop);
+}
+
+.p8-dialog[data-p8-dialog-fallback="true"][data-p8-dialog-open="true"] {
+  display: grid;
+}
+
+.p8-dialog[data-p8-dialog-fallback="true"] > [data-p8-dialog-panel] {
+  min-inline-size: 0;
+  max-inline-size: var(--p8-dialog-max-inline-size);
+  max-block-size: var(--p8-dialog-max-block-size);
+  overflow: auto;
+}
