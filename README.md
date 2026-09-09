@@ -4,13 +4,18 @@ Static-first interactive map PWA for Halloween: The Game.
 
 ## Current product identity
 - Product: HTG Maps
-- Product version: 1.0.4
-- PWA cache: `halloween-escape-map-v1.0.4`
+- Product version: 1.0.17
+- PWA cache: `halloween-escape-map-v1.0.17`
 
 The browser tab, install/app name, and product identity are `HTG Maps`. The header keeps
-`Halloween: The Game` and displays `Maps by p8riot`, with `p8riot` linked to the canonical Linktree.
+`Halloween: The Game` and displays `Created by p8riot · Interactive App`, with only `p8riot` linked to the canonical Linktree.
 The visible footer shows the product version and `p8riotCore` attribution without displaying Core version/build.
 Core compatibility identity remains internal release metadata for QA and runtime checks.
+
+## Version 1.0.17
+- Added `Interactive App` beside the header creator credit so the credit identifies p8riot as the creator of this interactive app, not the creator of *Halloween: The Game*.
+- Preserved the existing header title, p8riot link target, map data, marker coordinates, storage semantics, and interaction behavior.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.17`.
 
 ## Version 1.0.4
 - Renamed the six visible themes to Halloween-film-inspired names while preserving their internal theme IDs so saved user theme preferences continue to work.

@@ -1,25 +1,25 @@
 {
   "product": "HTG Maps",
-  "productVersion": "1.0.16",
+  "productVersion": "1.0.17",
   "coreVersion": "0.2.0",
   "coreBuild": "Alpha 1",
   "releaseChannel": "development",
-  "baseline": "exact user-supplied HTG-Maps-1.0.15.zip",
+  "baseline": "exact user-supplied HTG-Maps-1.0.16.zip",
   "files": [
     {
       "path": "CHANGELOG.md",
-      "bytes": 13232,
-      "sha256": "8986b570bbee42cbbab8218dd3018d267f776e75c1e8c0c852cec74af41c082c"
+      "bytes": 13694,
+      "sha256": "cde313bb1c429c7f00912e995c595ea84d18cc5a0db2dc541625e9bcf6914b63"
     },
     {
       "path": "QA-REPORT.md",
-      "bytes": 1805,
-      "sha256": "b98dc33a87bddb2c3a64041a97bfc268ac4d83f3eb5323bc1a34feb29cf54bf2"
+      "bytes": 2276,
+      "sha256": "5c429963796e8c5ae7a2cbe4900c33c29ba9172853e102e5abe2976b9f0ad366"
     },
     {
       "path": "README.md",
-      "bytes": 7467,
-      "sha256": "042965b62d3ae5eb74d6c982930af404f1c08e33d5ab545d76d435627238850d"
+      "bytes": 7902,
+      "sha256": "3db0aa393c65955fbbe859793ae45e43ef00cbfd3f7902733dcf4c0422c94b94"
     },
     {
       "path": "SOURCE-NOTES.md",
@@ -29,7 +29,7 @@
     {
       "path": "app-config.js",
       "bytes": 244,
-      "sha256": "1a02f54175ac7663f416e0fe9e02d4fc54b2a7bb3c96a3b2129565bcf02d21a9"
+      "sha256": "94f4753be9fd9546d2e8e0c143e2b1a1ef3fb4100a96a7e7569f13230d2bbe23"
     },
     {
       "path": "app.js",
@@ -133,8 +133,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 10647,
-      "sha256": "190dc534849f9b02186709a01f80bd3b9e2b14b86106e8f7440d68ed154e45ff"
+      "bytes": 10666,
+      "sha256": "2b473dc884554ee79e23228453232918764b2609953d432d554b8dc2c0461d2d"
     },
     {
       "path": "manifest.webmanifest",
@@ -149,7 +149,7 @@
     {
       "path": "sw.js",
       "bytes": 2296,
-      "sha256": "daff7125f632aef2988d4ef4fe6b73a14c396ae1a4eee8faddb52e6669e87a6f"
+      "sha256": "3f1f5a8513cc781be7255c5653cd37c376767a8d71ee271be753898a1256b458"
     }
   ]
 }

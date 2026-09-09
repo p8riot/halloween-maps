@@ -1,45 +1,45 @@
 # HTG Maps — QA Report
 
 **Product:** HTG Maps  
-**Product version:** 1.0.16  
-**Baseline:** exact user-supplied `HTG-Maps-1.0.15.zip`  
+**Product version:** 1.0.17  
+**Baseline:** exact user-supplied `HTG-Maps-1.0.16.zip`  
 **Internal Core compatibility baseline:** p8riot Core 0.2.0 Alpha 1
 
-## Escape-marker accuracy — PASS (reference-image alignment)
-All four user-supplied reference screenshots were aligned to the bundled 4096×4096 map artwork using local image features and a robust similarity transform. Colored marker rings were then detected by center and matched one-to-one with the product's escape records by type.
-
-- East Haddonfield: 125 inlier alignment matches from 143 accepted feature matches.
-- Haddonfield Heights: 189 inlier alignment matches from 215 accepted feature matches.
-- Haddonfield Town Center: 169 inlier alignment matches from 186 accepted feature matches.
-- Orange Grove Estates: 542 inlier alignment matches from 567 accepted feature matches.
-
-All 45 escape records received corrected screenshot-derived coordinates:
-- East Haddonfield: 10
-- Haddonfield Heights: 15
-- Haddonfield Town Center: 8
-- Orange Grove Estates: 12
-
-Top-to-bottom numbering was revalidated after correction for every escape type on every map.
+## Requested header-credit change — PASS
+- Header now reads `Created by p8riot · Interactive App`.
+- Only `p8riot` remains linked.
+- Link target remains exactly `https://linktr.ee/p8riot`.
+- `Interactive App` is plain text.
+- Header title remains `Halloween: The Game`.
 
 ## Preservation checks — PASS
-- Escape IDs preserved.
-- Escape types preserved.
-- Required-item data preserved.
-- Address/street data preserved.
-- Map images preserved byte-for-byte.
-- Product storage namespace preserved.
-- Core runtime/modules preserved.
+- Escape map dataset and all marker coordinates are byte-for-byte unchanged from 1.0.16.
+- Product storage namespace is unchanged: `halloween-escape-map`.
+- Public entry path remains `index.html`.
+- Core files and Core semantic/build identity are unchanged.
+- Existing p8riotCore footer attribution structure is unchanged.
+- Product version advanced to 1.0.17.
+- Service-worker cache identity advanced to `halloween-escape-map-v1.0.17`.
 
-## Static checks
-- JavaScript syntax: PASS
-- JSON/data parse: PASS
-- Marker counts/types: PASS
-- Top-to-bottom numbering: PASS
-- Product version/cache identity 1.0.16: PASS
-- Package integrity: PASS
+## Static validation — PASS
+- JavaScript syntax checks passed for all shipped `.js` files.
+- Web manifest JSON parsed successfully.
+- Local asset references from HTML, CSS, manifest, and service-worker app shell were checked.
+- No duplicate HTML IDs were found.
+- Release manifest was regenerated after the final file changes and verified against the package tree.
 
-## NOT TESTED
-- Physical-device rendering.
-- Live GitHub Pages origin.
-- Installed PWA update behavior.
-- Human visual inspection at every possible zoom level after deployment.
+## Responsive/header layout — PASS in inline browser automation
+The final product HTML and shipped Core/product CSS were composed into an inline browser fixture and exercised at 320, 360, 375, 390, 430, 768, 1024, 1366, and 1920 CSS-pixel widths in headless Chromium. At every tested width, the header credit stayed on one line and the document width matched the viewport width.
+
+Normal localhost navigation was blocked by this sandbox before application code could run, so this is browser-layout evidence only. It is not a real-origin, installed-PWA, or physical-device PASS.
+
+## PWA/offline
+- Service-worker syntax/app-shell references: PASS.
+- Cache identity bump for this cached HTML change: PASS.
+- Actual service-worker registration/control: NOT TESTED.
+- Offline reload: NOT TESTED.
+- Installed PWA update behavior: NOT TESTED.
+
+## Physical/manual validation
+- Physical phone/tablet behavior: NOT TESTED.
+- Manual screen-reader review: NOT TESTED.

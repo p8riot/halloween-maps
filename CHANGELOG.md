@@ -2,6 +2,11 @@
 
 This file records what was created or changed in each product build. It is separate from `QA-REPORT.md`, which records validation evidence, and `SOURCE-NOTES.md`, which records source/reference provenance.
 
+## 1.0.17
+- Clarified the header creator credit by adding `Interactive App` beside `Created by p8riot`, making the credit explicitly describe this interactive app rather than authorship of *Halloween: The Game*.
+- Preserved the existing `p8riot` Linktree destination and left `Interactive App` as plain text.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.17` so the updated cached HTML is not trapped behind the previous app shell.
+
 ## 1.0.16
 - Recalibrated all 45 escape-marker coordinates against the four user-supplied reference screenshots and the bundled 4096×4096 map artwork.
 - Corrected every Storm Cellar, Escape Gate, and Car marker center to the screenshot-derived reference position, including the large East Haddonfield and Haddonfield Heights offsets.
