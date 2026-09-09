@@ -1,4 +1,4 @@
-const CACHE_NAME = "halloween-escape-map-v1.0.6";
+const CACHE_NAME = "halloween-escape-map-v1.0.15";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -18,7 +18,7 @@ const APP_SHELL = [
   "./assets/app/icon-192.png",
   "./assets/app/icon-512.png",
   "./assets/app/apple-touch-icon.png",
-  "./assets/app/favicon-32.png",
+  "./assets/app/favicon-1.0.7.png",
   "./assets/maps/east-haddonfield.jpg",
   "./assets/maps/haddonfield-heights.jpg",
   "./assets/maps/haddonfield-town-center.jpg",

@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="HTG Maps">
   <title>HTG Maps</title>
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/app/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/app/favicon-1.0.7.png">
   <link rel="apple-touch-icon" href="./assets/app/apple-touch-icon.png">
   <link rel="stylesheet" href="./core/p8riot-core.css">
   <link rel="stylesheet" href="./core/modules/p8riot-dialog.css">
@@ -22,8 +22,8 @@
     <div class="brand-block">
       <img class="brand-logo" src="./assets/app/icon-192.png" alt="" width="56" height="56">
       <div class="brand-copy">
-        <p class="eyebrow">Halloween: The Game</p>
-        <h1>Maps</h1>
+        <h1 class="brand-title">Halloween: The Game</h1>
+        <p class="header-credit">Created by <a href="https://linktr.ee/p8riot" target="_blank" rel="noopener noreferrer">p8riot</a></p>
       </div>
     </div>
 
@@ -39,7 +39,6 @@
       <section id="mapPanel" class="map-panel" role="tabpanel" aria-labelledby="currentMapTitle">
         <div class="map-toolbar">
           <div>
-            <p class="toolbar-kicker">Current map</p>
             <h2 id="currentMapTitle">Loading map…</h2>
           </div>
           <div class="map-controls" aria-label="Map controls">
@@ -71,7 +70,12 @@
         </div>
       </section>
 
-      <aside class="escape-panel" aria-label="Escape information and map settings">
+      <aside class="escape-panel" aria-label="Map locations, escape information and settings">
+
+        <section id="selectedLocation" class="selected-location" aria-live="polite">
+          <h3>Selected location</h3>
+          <p>Tap a map location or choose a rally point.</p>
+        </section>
 
         <p class="spawn-note">
           These are possible spawn locations. The exits present in a match can vary.
@@ -79,17 +83,12 @@
 
         <div id="legendList" class="legend-list"></div>
 
-        <section id="selectedLocation" class="selected-location" aria-live="polite">
-          <h3>Selected location</h3>
-          <p>Select any escape icon on the map to see its location details here.</p>
-        </section>
-
         <aside class="player-tip" aria-labelledby="playerTipTitle">
-          <h3 id="playerTipTitle">Player Tip — House Addresses</h3>
+          <h3 id="playerTipTitle">Player Tip — Addresses & Streets</h3>
           <p>
-            Michael Myers cannot see house addresses on his in-game map. If survivors are using
-            proximity chat, they can call out a house address to coordinate without giving Michael
-            the same location information.
+            Michael Myers cannot see house addresses or street names on his in-game map. If survivors
+            are using proximity chat, they can use either to coordinate without giving Michael the
+            same location information.
           </p>
         </aside>
 
@@ -121,7 +120,7 @@
               </div>
             </div>
             <div class="layer-option">
-              <label class="layer-toggle"><input id="toggleGrid" type="checkbox"> A–G / 1–8 grid</label>
+              <label class="layer-toggle"><input id="toggleGrid" type="checkbox"> A–J / 1–10 grid</label>
               <div class="layer-opacity">
                 <label for="opacityGrid">Opacity</label>
                 <input id="opacityGrid" type="range" min="10" max="100" step="5" value="35">
@@ -130,40 +129,41 @@
             </div>
           </div>
         </section>
+
+        <section class="panel-footer" aria-label="App options and attribution">
+      <div class="footer-controls">
+        <label for="themeSelect">Theme</label>
+        <select id="themeSelect" class="footer-select">
+          <option value="midnight-manor">Haddonfield Night</option>
+          <option value="jack-o-lantern-glow">Halloween Night</option>
+          <option value="witching-hour">The Shape</option>
+          <option value="graveyard-fog">Smith's Grove</option>
+          <option value="zombie-night">The Boogeyman</option>
+          <option value="blood-moon">Blackest Eyes</option>
+          <option value="myers-house">Myers House</option>
+          <option value="october-31st">October 31st</option>
+          <option value="lauries-porch">Laurie's Porch</option>
+          <option value="haddonfield-memorial">Haddonfield Memorial</option>
+          <option value="night-he-came-home">Night He Came Home</option>
+          <option value="final-girl">Final Girl</option>
+        </select>
+
+        <button id="installButton" type="button" class="footer-button" hidden>Install app</button>
+      </div>
+
+      <div class="footer-meta">
+        <span>HTG Maps 1.0.15</span>
+        <span aria-hidden="true"> · </span>
+        <span>
+          Built with
+          <span class="p8riotcore-brand"><a href="https://linktr.ee/p8riot" target="_blank" rel="noopener noreferrer">p8riot</a>Core</span>
+        </span>
+      </div>
+        </section>
       </aside>
     </div>
   </main>
 
-  <footer class="app-footer">
-    <div class="footer-controls">
-      <label for="themeSelect">Theme</label>
-      <select id="themeSelect" class="footer-select">
-        <option value="midnight-manor">Haddonfield Night</option>
-        <option value="jack-o-lantern-glow">Halloween Night</option>
-        <option value="witching-hour">The Shape</option>
-        <option value="graveyard-fog">Smith's Grove</option>
-        <option value="zombie-night">The Boogeyman</option>
-        <option value="blood-moon">Blackest Eyes</option>
-        <option value="myers-house">Myers House</option>
-        <option value="october-31st">October 31st</option>
-        <option value="lauries-porch">Laurie's Porch</option>
-        <option value="haddonfield-memorial">Haddonfield Memorial</option>
-        <option value="night-he-came-home">Night He Came Home</option>
-        <option value="final-girl">Final Girl</option>
-      </select>
-
-      <button id="installButton" type="button" class="footer-button" hidden>Install app</button>
-    </div>
-
-    <div class="footer-meta">
-      <span>HTG Maps 1.0.6</span>
-      <span aria-hidden="true"> · </span>
-      <span>
-        Built with
-        <span class="p8riotcore-brand"><a href="https://linktr.ee/p8riot" target="_blank" rel="noopener noreferrer">p8riot</a>Core</span>
-      </span>
-    </div>
-  </footer>
 
   <dialog id="installDialog" class="install-dialog" aria-labelledby="installTitle">
     <div class="dialog-card">

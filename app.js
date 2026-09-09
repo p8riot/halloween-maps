@@ -44,7 +44,10 @@
     minScale: 0.1,
     maxScale: 8,
     interacted: false,
+    selectedKind: null,
     selectedId: null,
+    selectedAddressIndex: null,
+    pinnedId: null,
     markerNodes: [],
     addressNodes: [],
     streetNodes: [],
@@ -196,7 +199,8 @@
       " on " +
       map.name +
       ". Items needed: " +
-      info.items.join("; ")
+      info.items.join("; ") +
+      ". Press P to pin or unpin map details."
     );
   }
 
@@ -214,13 +218,44 @@
     state.streetNodes = [];
     state.gridNodes = [];
 
-    (overlays.addresses || []).forEach(function (item) {
-      var label = document.createElement("span");
+    (overlays.addresses || []).forEach(function (item, index) {
+      var label = document.createElement("button");
+      label.type = "button";
       label.className = "map-label address-label";
       label.textContent = item.label;
-      label.setAttribute("aria-label", "House address " + item.label);
+      label.setAttribute("aria-label", "Select address " + item.label);
+
+      var pointerActivated = false;
+
+      label.addEventListener("pointerdown", function (event) {
+        if (event.button !== 0) {
+          return;
+        }
+        event.stopPropagation();
+      });
+
+      label.addEventListener("pointerup", function (event) {
+        if (event.button !== 0) {
+          return;
+        }
+        event.stopPropagation();
+        pointerActivated = true;
+        selectAddress(index);
+      });
+
+      label.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        if (pointerActivated) {
+          pointerActivated = false;
+          return;
+        }
+
+        selectAddress(index);
+      });
+
       addressLayer.appendChild(label);
-      state.addressNodes.push({ element: label, item: item });
+      state.addressNodes.push({ element: label, item: item, index: index });
     });
 
     (overlays.streets || []).forEach(function (item) {
@@ -424,6 +459,8 @@
       marker.dataset.type = location.type;
       marker.style.setProperty("--marker-color", info.color);
       marker.setAttribute("aria-label", markerLabel(map, location));
+      marker.setAttribute("aria-keyshortcuts", "P");
+      marker.setAttribute("aria-expanded", state.pinnedId === location.id ? "true" : "false");
 
       marker.appendChild(makeIcon(location.type));
 
@@ -433,17 +470,115 @@
       var tooltipTitle = document.createElement("strong");
       tooltipTitle.textContent = info.label + " · Location " + location.number;
 
-      var tooltipItems = document.createElement("span");
-      tooltipItems.textContent = "Items: " + info.items.join(" · ");
+      var nearestAddress = nearestAddressFor(map, location);
+      var gridReference = gridReferenceFor(map, location);
 
       tooltip.appendChild(tooltipTitle);
+
+      if (nearestAddress) {
+        var tooltipAddress = document.createElement("span");
+        tooltipAddress.className = "marker-tooltip-line";
+        tooltipAddress.textContent = "Nearest address: " + nearestAddress.label;
+        tooltip.appendChild(tooltipAddress);
+      }
+
+      if (gridReference) {
+        var tooltipGrid = document.createElement("span");
+        tooltipGrid.className = "marker-tooltip-line";
+        tooltipGrid.textContent = "Grid: " + gridReference;
+        tooltip.appendChild(tooltipGrid);
+      }
+
+      var tooltipItems = document.createElement("span");
+      tooltipItems.className = "marker-tooltip-line marker-tooltip-items";
+      tooltipItems.textContent = "Items: " + info.items.join(" · ");
       tooltip.appendChild(tooltipItems);
       marker.appendChild(tooltip);
 
+      var longPressTimer = null;
+      var longPressStart = null;
+      var longPressTriggered = false;
+
+      function cancelLongPress() {
+        if (longPressTimer !== null) {
+          window.clearTimeout(longPressTimer);
+          longPressTimer = null;
+        }
+        longPressStart = null;
+      }
+
+      function togglePinnedFromMarker() {
+        var shouldPin = state.pinnedId !== location.id;
+        state.pinnedId = shouldPin ? location.id : null;
+        selectLocation(location.id, false, true);
+        updateSelectionStyles();
+        announce(
+          info.label +
+            " location " +
+            location.number +
+            (shouldPin ? " details pinned." : " details unpinned.")
+        );
+      }
+
       marker.addEventListener("click", function (event) {
         event.stopPropagation();
+
+        if (longPressTriggered) {
+          longPressTriggered = false;
+          event.preventDefault();
+          return;
+        }
+
+        state.pinnedId = null;
         selectLocation(location.id);
       });
+
+      marker.addEventListener("contextmenu", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        togglePinnedFromMarker();
+      });
+
+      marker.addEventListener("keydown", function (event) {
+        if (event.key === "p" || event.key === "P") {
+          event.preventDefault();
+          event.stopPropagation();
+          togglePinnedFromMarker();
+        }
+      });
+
+      marker.addEventListener("pointerdown", function (event) {
+        if (event.button !== 0 || event.pointerType === "mouse") {
+          return;
+        }
+
+        cancelLongPress();
+        longPressTriggered = false;
+        longPressStart = { x: event.clientX, y: event.clientY };
+
+        longPressTimer = window.setTimeout(function () {
+          longPressTimer = null;
+          longPressTriggered = true;
+          togglePinnedFromMarker();
+        }, 900);
+      });
+
+      marker.addEventListener("pointermove", function (event) {
+        if (!longPressStart || longPressTimer === null) {
+          return;
+        }
+
+        if (
+          Math.abs(event.clientX - longPressStart.x) > 10 ||
+          Math.abs(event.clientY - longPressStart.y) > 10
+        ) {
+          cancelLongPress();
+        }
+      });
+
+      marker.addEventListener("pointerup", cancelLongPress);
+      marker.addEventListener("pointercancel", cancelLongPress);
+      marker.addEventListener("lostpointercapture", cancelLongPress);
 
       markerLayer.appendChild(marker);
       state.markerNodes.push({
@@ -452,6 +587,7 @@
       });
     });
 
+    updateSelectionStyles();
     updateMarkerPositions();
   }
 
@@ -494,56 +630,179 @@
     return grid.columns[colIndex] + grid.rows[rowIndex];
   }
 
-  function renderSelectedLocation() {
+  function rallyValue() {
+    if (state.selectedKind === "escape" && state.selectedId) {
+      return "escape:" + state.selectedId;
+    }
+    if (state.selectedKind === "address" && state.selectedAddressIndex !== null) {
+      return "address:" + state.selectedAddressIndex;
+    }
+    return "";
+  }
+
+  function renderRallySelector() {
     var map = currentMap();
-    var location = map.locations.find(function (candidate) {
-      return candidate.id === state.selectedId;
+    var wrapper = document.createElement("div");
+    wrapper.className = "rally-picker";
+
+    var label = document.createElement("label");
+    label.htmlFor = "rallyPointSelect";
+    label.textContent = "Rally point";
+
+    var select = document.createElement("select");
+    select.id = "rallyPointSelect";
+    select.className = "rally-select";
+    select.setAttribute("aria-label", "Choose a rally point on " + map.name);
+
+    var placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Choose a location";
+    select.appendChild(placeholder);
+
+    var escapeGroup = document.createElement("optgroup");
+    escapeGroup.label = "Escape locations";
+    ["cellar", "gate", "car"].forEach(function (type) {
+      map.locations
+        .filter(function (location) {
+          return location.type === type;
+        })
+        .sort(function (a, b) {
+          return a.number - b.number;
+        })
+        .forEach(function (location) {
+          var option = document.createElement("option");
+          option.value = "escape:" + location.id;
+          option.textContent = escapeType(location.type).label + " · Location " + location.number;
+          escapeGroup.appendChild(option);
+        });
+    });
+    select.appendChild(escapeGroup);
+
+    var addressGroup = document.createElement("optgroup");
+    addressGroup.label = "Addresses";
+    (map.overlays.addresses || []).forEach(function (address, index) {
+      var option = document.createElement("option");
+      option.value = "address:" + index;
+      option.textContent = address.label;
+      addressGroup.appendChild(option);
+    });
+    select.appendChild(addressGroup);
+
+    select.value = rallyValue();
+    select.addEventListener("change", function () {
+      if (!select.value) {
+        clearSelectedLocation();
+        return;
+      }
+
+      var parts = select.value.split(":");
+      if (parts[0] === "escape") {
+        selectLocation(parts.slice(1).join(":"), true);
+      } else if (parts[0] === "address") {
+        selectAddress(Number(parts[1]), true);
+      }
     });
 
+    wrapper.appendChild(label);
+    wrapper.appendChild(select);
+    selectedLocation.appendChild(wrapper);
+  }
+
+  function updateSelectionStyles() {
     state.markerNodes.forEach(function (entry) {
+      var selected =
+        state.selectedKind === "escape" && entry.location.id === state.selectedId;
+      var pinned = state.pinnedId === entry.location.id;
+
+      entry.element.classList.toggle("is-selected", selected);
+      entry.element.classList.toggle("is-pinned", pinned);
+      entry.element.setAttribute("aria-expanded", pinned ? "true" : "false");
+    });
+
+    state.addressNodes.forEach(function (entry) {
       entry.element.classList.toggle(
         "is-selected",
-        !!location && entry.location.id === location.id
+        state.selectedKind === "address" && entry.index === state.selectedAddressIndex
+      );
+      entry.element.setAttribute(
+        "aria-pressed",
+        state.selectedKind === "address" && entry.index === state.selectedAddressIndex ? "true" : "false"
       );
     });
+  }
+
+  function clearSelectedLocation() {
+    state.selectedKind = null;
+    state.selectedId = null;
+    state.selectedAddressIndex = null;
+    state.pinnedId = null;
+    renderSelectedLocation();
+    announce("Selection cleared.");
+  }
+
+  function renderSelectedLocation() {
+    var map = currentMap();
+    var location = null;
+    var address = null;
+
+    if (state.selectedKind === "escape") {
+      location = map.locations.find(function (candidate) {
+        return candidate.id === state.selectedId;
+      }) || null;
+    } else if (state.selectedKind === "address") {
+      address = (map.overlays.addresses || [])[state.selectedAddressIndex] || null;
+    }
+
+    updateSelectionStyles();
 
     selectedLocation.textContent = "";
     var heading = document.createElement("h3");
     heading.textContent = "Selected location";
     selectedLocation.appendChild(heading);
+    renderRallySelector();
 
-    if (!location) {
+    if (location || address) {
+      var clearButton = document.createElement("button");
+      clearButton.type = "button";
+      clearButton.className = "clear-selection-button";
+      clearButton.textContent = "Clear selection";
+      clearButton.addEventListener("click", clearSelectedLocation);
+      selectedLocation.appendChild(clearButton);
+    }
+
+    if (!location && !address) {
       var empty = document.createElement("p");
-      empty.textContent = "Select any escape icon on the map to see its location details here.";
+      empty.className = "selected-empty";
+      empty.textContent = "Tap a map location or choose a rally point.";
       selectedLocation.appendChild(empty);
       return;
     }
 
-    var info = escapeType(location.type);
-    selectedLocation.style.setProperty("--selected-color", info.color);
+    if (location) {
+      var info = escapeType(location.type);
+      selectedLocation.style.setProperty("--selected-color", info.color);
 
-    var summary = document.createElement("p");
-    var typeText = document.createElement("span");
-    typeText.className = "selected-type";
-    typeText.textContent = info.label;
-    summary.appendChild(typeText);
-    summary.appendChild(
-      document.createTextNode(
-        " · possible location " +
-          location.number +
-          " of " +
-          map.locations.filter(function (item) {
-            return item.type === location.type;
-          }).length +
-          " on " +
-          map.name
-      )
-    );
-    selectedLocation.appendChild(summary);
+      var summary = document.createElement("p");
+      var typeText = document.createElement("span");
+      typeText.className = "selected-type";
+      typeText.textContent = info.label;
+      summary.appendChild(typeText);
+      summary.appendChild(
+        document.createTextNode(
+          " · possible location " +
+            location.number +
+            " of " +
+            map.locations.filter(function (item) {
+              return item.type === location.type;
+            }).length +
+            " on " +
+            map.name
+        )
+      );
+      selectedLocation.appendChild(summary);
 
-    var nearestAddress = nearestAddressFor(map, location);
-    var gridReference = gridReferenceFor(map, location);
-    if (nearestAddress || gridReference) {
+      var nearestAddress = nearestAddressFor(map, location);
+      var gridReference = gridReferenceFor(map, location);
       var callout = document.createElement("dl");
       callout.className = "selected-callout";
 
@@ -566,38 +825,110 @@
       }
 
       selectedLocation.appendChild(callout);
+
+      var needed = document.createElement("p");
+      needed.className = "items-needed-label";
+      needed.textContent = "Items needed:";
+      selectedLocation.appendChild(needed);
+
+      var list = document.createElement("ul");
+      list.className = "item-list";
+      info.items.forEach(function (item) {
+        var li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+      });
+      selectedLocation.appendChild(list);
+      return;
     }
 
-    var needed = document.createElement("p");
-    needed.style.marginTop = "7px";
-    needed.textContent = "Items needed:";
-    selectedLocation.appendChild(needed);
+    selectedLocation.style.removeProperty("--selected-color");
 
-    var list = document.createElement("ul");
-    list.className = "item-list";
-    info.items.forEach(function (item) {
-      var li = document.createElement("li");
-      li.textContent = item;
-      list.appendChild(li);
-    });
-    selectedLocation.appendChild(list);
+    var addressCallout = document.createElement("dl");
+    addressCallout.className = "selected-callout";
+
+    var exactTerm = document.createElement("dt");
+    exactTerm.textContent = "Address";
+    var exactValue = document.createElement("dd");
+    exactValue.textContent = address.label;
+    addressCallout.appendChild(exactTerm);
+    addressCallout.appendChild(exactValue);
+
+    var addressGrid = gridReferenceFor(map, address);
+    if (addressGrid) {
+      var addressGridTerm = document.createElement("dt");
+      addressGridTerm.textContent = "Grid";
+      var addressGridValue = document.createElement("dd");
+      addressGridValue.textContent = addressGrid;
+      addressCallout.appendChild(addressGridTerm);
+      addressCallout.appendChild(addressGridValue);
+    }
+
+    selectedLocation.appendChild(addressCallout);
   }
 
-  function selectLocation(id) {
-    state.selectedId = id;
-    renderSelectedLocation();
+  function focusPoint(point) {
+    var rect = viewportRect();
+    var minimumRallyScale = state.fitScale * 1.8;
+
+    if (state.scale < minimumRallyScale) {
+      state.scale = Math.min(state.maxScale, minimumRallyScale);
+    }
+
+    state.tx = rect.width / 2 - point.x * state.scale;
+    state.ty = rect.height / 2 - point.y * state.scale;
+    state.interacted = true;
+    applyView();
+  }
+
+  function selectLocation(id, focus, preservePinned) {
     var map = currentMap();
     var location = map.locations.find(function (candidate) {
       return candidate.id === id;
     });
-    if (location) {
-      announce(
-        escapeType(location.type).label +
-          " location " +
-          location.number +
-          " selected."
-      );
+    if (!location) {
+      return;
     }
+
+    if (!preservePinned) {
+      state.pinnedId = null;
+    }
+
+    state.selectedKind = "escape";
+    state.selectedId = id;
+    state.selectedAddressIndex = null;
+    renderSelectedLocation();
+
+    if (focus) {
+      focusPoint(location);
+    }
+
+    announce(
+      escapeType(location.type).label +
+        " location " +
+        location.number +
+        " selected."
+    );
+  }
+
+  function selectAddress(index, focus) {
+    var map = currentMap();
+    var address = (map.overlays.addresses || [])[index];
+    if (!address) {
+      return;
+    }
+
+    state.pinnedId = null;
+    state.selectedKind = "address";
+    state.selectedId = null;
+    state.selectedAddressIndex = index;
+    renderSelectedLocation();
+
+    if (focus) {
+      focusPoint(address);
+    }
+
+    announce("Address " + address.label + " selected.");
   }
 
   function selectMap(index) {
@@ -607,7 +938,10 @@
     }
 
     state.mapIndex = index;
+    state.selectedKind = null;
     state.selectedId = null;
+    state.selectedAddressIndex = null;
+    state.pinnedId = null;
     state.interacted = false;
     renderMap();
     announce(currentMap().name + " map selected.");
@@ -672,9 +1006,17 @@
   }
 
   function updateMarkerPositions() {
+    var rect = viewportRect();
     state.markerNodes.forEach(function (entry) {
-      entry.element.style.left = state.tx + entry.location.x * state.scale + "px";
-      entry.element.style.top = state.ty + entry.location.y * state.scale + "px";
+      var x = state.tx + entry.location.x * state.scale;
+      var y = state.ty + entry.location.y * state.scale;
+
+      entry.element.style.left = x + "px";
+      entry.element.style.top = y + "px";
+
+      entry.element.classList.toggle("tooltip-below", y < 150);
+      entry.element.classList.toggle("tooltip-left", x < 130);
+      entry.element.classList.toggle("tooltip-right", x > rect.width - 130);
     });
   }
 
@@ -746,7 +1088,10 @@
   );
 
   viewport.addEventListener("pointerdown", function (event) {
-    if (event.button !== 0 || event.target.closest(".map-marker")) {
+    if (
+      event.button !== 0 ||
+      event.target.closest(".map-marker, .address-label")
+    ) {
       return;
     }
 

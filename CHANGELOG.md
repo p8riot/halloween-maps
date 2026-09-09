@@ -2,6 +2,76 @@
 
 This file records what was created or changed in each product build. It is separate from `QA-REPORT.md`, which records validation evidence, and `SOURCE-NOTES.md`, which records source/reference provenance.
 
+## 1.0.15
+- Removed the redundant selected-address summary line that repeated the map name above the Address/Grid details.
+- Removed the `Current map` kicker so the map toolbar shows only the active map name.
+- Reduced map-toolbar vertical padding to make the map header more compact.
+- Updated Player Tip copy to state that Michael Myers cannot see house addresses or street names on his in-game map.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.15`.
+
+## 1.0.14
+- Cumulative deployment patch for sites still running HTG Maps 1.0.6. This package includes every product/runtime change from 1.0.7 through 1.0.13.
+- Hardened direct house-address activation on the map by handling pointer activation on the address button itself while preserving keyboard click behavior.
+- Prevented map-pan pointer handling from competing with address activation.
+- Preserved explicit pointer interaction on address buttons while leaving the rest of the address overlay transparent to map gestures.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.14`.
+
+## 1.0.13
+- Removed the word `Maps` from the visible header.
+- Promoted `Halloween: The Game` to the primary header title and enlarged it on desktop while keeping tablet/mobile sizing compact.
+- Added a small `Created by p8riot` creator credit beneath the title, with only `p8riot` linked to `https://linktr.ee/p8riot`.
+- Removed the standalone footer and moved its theme selector, install control, product version, and p8riotCore attribution to the bottom of the information/legend panel.
+- Preserved the existing theme selector and install-button IDs so behavior remains unchanged.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.13`.
+
+## 1.0.12
+- Includes the previously undeployed 1.0.11 direct address-selection fix.
+- Normal click/tap now selects an escape without leaving its map popup open.
+- Escape popup pinning added: hold a touch/pen pointer for about 0.9 seconds, right-click on desktop, or press P while the marker has keyboard focus.
+- Long-press pinning cancels if the pointer moves more than 10 CSS pixels, reducing accidental pins while navigating.
+- Only one escape popup can be pinned at a time; normal location selection, address selection, clearing selection, or switching maps clears the pinned popup.
+- Changed temporary popup focus behavior from `:focus` to `:focus-visible`.
+- Added a 44 CSS-pixel Clear selection control to Selected Location.
+- Rally-point selection now recenters the chosen point but only increases zoom when the current view is too far out; it never forces an already closer view to zoom out.
+- Escape popups now consistently label the house callout as `Nearest address`.
+- Expanded the coordinate grid from A–G / 1–8 to A–J / 1–10 for more precise player callouts and reduced grid-label size to limit clutter.
+- Updated all grid references automatically through the existing coordinate-based grid calculation.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.12`.
+
+## 1.0.11
+- Fixed map address selection by preventing the map pan gesture from capturing pointer-down events that start on interactive address labels.
+- Address labels can now be clicked or tapped directly on the map, matching Rally point dropdown selection behavior.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.11`.
+
+## 1.0.10
+- Made the currently selected map location substantially more prominent with a Halloween-orange selection halo.
+- Escape markers keep their existing semantic red/green/blue type rings; the orange treatment is an outer selected-state highlight only.
+- Selected house addresses now use a stronger orange border, background, and glow while hover/focus states remain distinct.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.10`.
+
+## 1.0.9
+- Moved Selected Location to the top of the information panel, followed by the possible-spawn note and escape legend.
+- Added a Rally point selector for every escape location and confirmed house address on the current map.
+- Made house-address labels clickable/tappable and keyboard accessible.
+- Selecting an escape or address on the map synchronizes the Rally point selector and Selected Location panel.
+- Choosing a Rally point from the selector centers and zooms the map to that location.
+- Address selections show the exact address and grid block; escape selections retain nearest-address, grid, and required-item details.
+- Added selection highlighting for address labels.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.9`.
+
+## 1.0.8
+- Reformatted escape-marker popups so address, grid, and item information appear on separate lines.
+- Added edge-aware popup positioning near the top, left, and right sides of the map.
+- Reduced popup width and padding on phones for better mobile readability.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.8`.
+
+## 1.0.7
+- Renumbered every escape location within each escape type on each map from top to bottom; near-equal vertical positions are ordered left to right.
+- Preserved all marker coordinates, types, item requirements, and internal location IDs.
+- Added nearest confirmed address and grid block to the marker tooltip/popup so mobile users can see callout information immediately after selecting an escape.
+- Added a versioned Michael Myers favicon URL to bypass stale browser favicon caches.
+- Advanced the service-worker cache identity to `halloween-escape-map-v1.0.7`.
+
 ## 1.0.4
 - Renamed visible theme labels to Halloween-film-inspired names:
   - Haddonfield Night
