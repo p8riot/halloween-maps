@@ -1390,8 +1390,29 @@
   function ensureOnboardingTargetVisible(target) {
     var rect = target.getBoundingClientRect();
     var verticalMargin = 72;
-    if (rect.bottom < verticalMargin || rect.top > window.innerHeight - verticalMargin) {
-      target.scrollIntoView({ block: "center", inline: "nearest" });
+
+    if (rect.bottom >= verticalMargin && rect.top <= window.innerHeight - verticalMargin) {
+      return;
+    }
+
+    // Keep replay compatible with browsers that do not support the
+    // scrollIntoView options object. A failed scroll must never prevent
+    // the tip card itself from opening.
+    try {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+      var absoluteTop = rect.top + scrollTop;
+      var centeredTop = absoluteTop - Math.max(
+        verticalMargin,
+        (window.innerHeight - rect.height) / 2
+      );
+      window.scrollTo(0, Math.max(0, centeredTop));
+    } catch (error) {
+      try {
+        target.scrollIntoView(true);
+      } catch (fallbackError) {
+        // Positioning still runs below; replay remains usable even if
+        // programmatic scrolling is unavailable.
+      }
     }
   }
 
@@ -1406,6 +1427,10 @@
     clearOnboardingTarget();
     onboardingTarget = target;
     onboardingTarget.classList.add("tour-target-highlight");
+
+    // Unhide first so an unsupported scrolling API cannot leave replay
+    // looking like the button did nothing.
+    onboardingTour.hidden = false;
     ensureOnboardingTargetVisible(onboardingTarget);
 
     tourStep.textContent = "Tip " + (onboardingStepIndex + 1) + " of " + onboardingSteps.length;
@@ -1414,7 +1439,6 @@
     tourBackButton.hidden = onboardingStepIndex === 0;
     tourNextButton.textContent = onboardingStepIndex === onboardingSteps.length - 1 ? "Got it" : "Next";
 
-    onboardingTour.hidden = false;
     window.requestAnimationFrame(function () {
       positionOnboardingTour();
       tourNextButton.focus();
