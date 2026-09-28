@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 48" role="img" aria-label="Car escape icon">
+  <g fill="none" stroke="#f5d6b8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 31l5-12h11l7-9h18l8 9h5l4 12v7H8z"/>
+    <path d="M26 19h25"/>
+    <circle cx="21" cy="38" r="6" fill="#171717"/>
+    <circle cx="54" cy="38" r="6" fill="#171717"/>
+    <path d="M14 31h48"/>
+  </g>
+</svg>

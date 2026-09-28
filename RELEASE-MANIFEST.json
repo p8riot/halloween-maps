@@ -1,0 +1,180 @@
+{
+    "product": "HTG Maps",
+    "productVersion": "1.0.20",
+    "coreVersion": "0.2.0",
+    "coreBuild": "Alpha 1",
+    "releaseChannel": "development",
+    "baseline": {
+        "name": "HTG-Maps-1.0.20.zip",
+        "sha256": "40e508e45d9fdd4f966044c3cd568fa959d2f25788b0e4f23a6e4f04a0f1723c"
+    },
+    "validation": {
+        "static": "PASS",
+        "simulatedChromium": "PASS",
+        "liveOriginPwa": "NOT TESTED",
+        "physicalDevices": "NOT TESTED",
+        "structuredGoldStandard": "PASS"
+    },
+    "files": [
+        {
+            "path": "CHANGELOG.md",
+            "bytes": 14871,
+            "sha256": "decab5a005b73a5c872537467b906342e5b82d06b7c87275cc3dd4ec9bf8bf49"
+        },
+        {
+            "path": "QA-REPORT.md",
+            "bytes": 4669,
+            "sha256": "51bb10db8afae3284c8ced9a5e34173478311c57875a5e250602aeaab6af70d2"
+        },
+        {
+            "path": "README.md",
+            "bytes": 3239,
+            "sha256": "f506da8cd06b05df5aed81da60f3e293275e8d5008d43aec469e40655f716f5a"
+        },
+        {
+            "path": "SOURCE-NOTES.md",
+            "bytes": 6010,
+            "sha256": "a5968b92396143adc1b8d30b789c14e6261542b0c0e90cb6e2f16c0739d6842c"
+        },
+        {
+            "path": "STRUCTURED-AUDIT.md",
+            "bytes": 2036,
+            "sha256": "012890739bf9ec2300d2f5aeee27792ce6c1373fe6a6fd14252bb21cd9872ec7"
+        },
+        {
+            "path": "app-config.js",
+            "bytes": 377,
+            "sha256": "3df31eacde315ca435e68fc8bb0990b99979d7a04424bbc231d5e02a1d1b5d8e"
+        },
+        {
+            "path": "app.js",
+            "bytes": 66707,
+            "sha256": "41c64129fce0e53a32c31022af24cb3310ffdac008e2a00ec4ef057a91ff9cd9"
+        },
+        {
+            "path": "assets/app/apple-touch-icon.png",
+            "bytes": 28823,
+            "sha256": "883858e0b9ebbb8c2da4ab05dede7e1f7e02822ab39a28953b91e5e2a748534e"
+        },
+        {
+            "path": "assets/app/favicon-1.0.7.png",
+            "bytes": 1797,
+            "sha256": "d72901c45d885a0842eca452637eedbb493cbb5014d00ca15256aaad4c621825"
+        },
+        {
+            "path": "assets/app/favicon-32.png",
+            "bytes": 1641,
+            "sha256": "35c0aea27a0eb48a940c503b45348c97232a10f579b1a1ad45d3574049eda02e"
+        },
+        {
+            "path": "assets/app/icon-192.png",
+            "bytes": 32644,
+            "sha256": "07f4f8fe1c9f38845f0aa128f7170e0ee216d5e5390703be772781cdf684b5f1"
+        },
+        {
+            "path": "assets/app/icon-512.png",
+            "bytes": 210069,
+            "sha256": "396f218fe65bcd06f3fa1577bfbe23cce9a97930f746cc9fa7b3015c52dc5c24"
+        },
+        {
+            "path": "assets/icons/car.svg",
+            "bytes": 420,
+            "sha256": "c1cd18a8ce50016a4547beb28fd10eb2f1b3c427d14f340211189645528542c3"
+        },
+        {
+            "path": "assets/icons/escape-door.svg",
+            "bytes": 398,
+            "sha256": "d0543a8b325d6689242b4c8f07e2306b784e0d76babdedced850ff8e4b136d89"
+        },
+        {
+            "path": "assets/maps/east-haddonfield.jpg",
+            "bytes": 1212670,
+            "sha256": "819d9af4eb8f94ce0321ca2fcec2e3d6da0d73f2587c97cdec021df273d01271"
+        },
+        {
+            "path": "assets/maps/haddonfield-heights.jpg",
+            "bytes": 1300206,
+            "sha256": "6995a8bfb9c4bafaa85d9e2c88effc2876b1705b9276356df5c14c58007802e2"
+        },
+        {
+            "path": "assets/maps/haddonfield-town-center.jpg",
+            "bytes": 1352925,
+            "sha256": "ec5ca6043229bcfb0059a699ef3c8450ce59103779cf53b9850c919db6340d64"
+        },
+        {
+            "path": "assets/maps/orange-grove-estates.jpg",
+            "bytes": 1360705,
+            "sha256": "b9e35c2e10135a4e2818bf5682b05d8b5f13899ce39b7a77cae8ce57e1812aad"
+        },
+        {
+            "path": "assets/themes/README.txt",
+            "bytes": 161,
+            "sha256": "587c0cb8fb0e4972cb2124a6af4cbb2fe4b1409eda2b0d1ef34c1be0b25370f0"
+        },
+        {
+            "path": "core/modules/p8riot-dialog.css",
+            "bytes": 1721,
+            "sha256": "6cefa49fe1b25ab68a51f2a5e83169c64c2c59a6aa139d2fbfb836eff0170e4d"
+        },
+        {
+            "path": "core/modules/p8riot-dialog.js",
+            "bytes": 17749,
+            "sha256": "868326b32d5a568889c0c6697d8bed932443f806db7a07daefef86dc5c6707d8"
+        },
+        {
+            "path": "core/modules/p8riot-pwa.js",
+            "bytes": 11859,
+            "sha256": "8bbb326918b8601789f9afeb2cae20a27c9e2cdf5fc2443367d1d749b5862723"
+        },
+        {
+            "path": "core/modules/p8riot-storage.js",
+            "bytes": 10936,
+            "sha256": "14f5734f51042d8682d6019f57f11832b47e674e57032d433fe978c017528e5f"
+        },
+        {
+            "path": "core/p8riot-core.css",
+            "bytes": 2848,
+            "sha256": "9b29e48f6ded1c6799e649f6420fd7a9edd19b9c6d55b1343d918b365e0ac469"
+        },
+        {
+            "path": "core/p8riot-core.js",
+            "bytes": 24072,
+            "sha256": "649185296345ea341fa2287bce393ef06bb2af776ed928cd25c223b07a5a1144"
+        },
+        {
+            "path": "data/maps.js",
+            "bytes": 30211,
+            "sha256": "c37d2598cb88195830002763b8a363fd6f4d3a6528a7efd5d255a965dc4d8de1"
+        },
+        {
+            "path": "data/wiki.js",
+            "bytes": 24724,
+            "sha256": "344f6cd48a3740738250d00a9ed0af4ae6f78f9f2c64171ab0f33eb1669480b5"
+        },
+        {
+            "path": "index.html",
+            "bytes": 20600,
+            "sha256": "d110b398e6566b1f3ca7b54f848665dcf65ad7edd8ab1e02e642d319ab07808e"
+        },
+        {
+            "path": "manifest.webmanifest",
+            "bytes": 716,
+            "sha256": "863ae5bd67833abff9eeaf7c988bdec06868b003e18c06ef2f77ef16960f7753"
+        },
+        {
+            "path": "styles.css",
+            "bytes": 46165,
+            "sha256": "37d581134256b24ddaf3d9fa4046d4873a43e24c7f7847bc35ecbe0a0974a53c"
+        },
+        {
+            "path": "sw.js",
+            "bytes": 3347,
+            "sha256": "870799aee203826fd72b917b1699b09318334d6f5de04b65e975ec0ef5b2834f"
+        },
+        {
+            "path": "wiki.js",
+            "bytes": 10781,
+            "sha256": "56e00fcaeb45eaaf82ef2da177003fde980579fea16177d21a7982951f0684b6"
+        }
+    ]
+}
