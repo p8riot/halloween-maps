@@ -92,3 +92,11 @@ Marker coordinates were recalibrated from the four user-supplied screenshots dat
 - Orange Grove Estates
 
 The screenshots were used only as escape-marker position references. The bundled 4096×4096 map artwork remains the runtime map source.
+
+## Version 1.0.20 repair provenance
+
+The 1.0.20 repair used the exact uploaded package as the authoritative task baseline. The package contained unfinished Maps/Wiki/Settings markup but omitted the root Wiki controller and the CSS needed to operate those views. Matching HTG development/hotfix artifacts already present in the user's Library were used as recovery evidence for those missing product-owned pieces rather than inventing a new interaction model.
+
+The attached baseline's current map logic and map data already reflected the gas-marker accuracy rollback, so the stale gas-overlay HTML controls were removed instead of reintroducing unverified marker positions.
+
+The p8Core Structured pass changes source organization and readability, not source-derived map facts.

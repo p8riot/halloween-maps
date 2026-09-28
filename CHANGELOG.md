@@ -2,6 +2,16 @@
 
 This file records what was created or changed in each product build. It is separate from `QA-REPORT.md`, which records validation evidence, and `SOURCE-NOTES.md`, which records source/reference provenance.
 
+## 1.0.20
+- Fixed desktop scrolling for Wiki and Settings by replacing the old page-wide desktop scroll lock with view-specific Maps-only locking.
+- Restored the missing root `wiki.js` controller so primary navigation, Wiki search/categories, related entries, and Settings view switching function.
+- Restored the missing product CSS for primary navigation, Wiki, Settings, and view-specific scrolling.
+- Removed stale gas-can overlay controls that no longer had corresponding runtime logic or verified map-marker data.
+- Repaired the PWA app-shell reference to `wiki.js` and synchronized the cache identity to `halloween-escape-map-v1.0.20`.
+- Synchronized product version surfaces to 1.0.20 and updated visible framework attribution to `p8Core` without renaming legacy compatibility identifiers.
+- Applied the p8Core Structured Gold Standard to product source: source maps, section banners, four-space indentation, readable data, duplicate-selector cleanup, reduced unnecessary `!important` usage, and source-artifact checks.
+- Preserved map coordinates, escape data, storage namespace, Core runtime files, public paths, theme IDs, and current verified interaction behavior.
+
 ## 1.0.17
 - Clarified the header creator credit by adding `Interactive App` beside `Created by p8riot`, making the credit explicitly describe this interactive app rather than authorship of *Halloween: The Game*.
 - Preserved the existing `p8riot` Linktree destination and left `Interactive App` as plain text.
