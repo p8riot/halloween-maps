@@ -2193,6 +2193,14 @@ body[data-active-view="maps"] #mapsView {
     color: var(--accent-2);
 }
 
+.settings-app-version {
+    margin: 12px 0 0;
+}
+
+.settings-app-version strong {
+    color: var(--text);
+}
+
 /* Desktop Maps stays locked to the viewport. Wiki and Settings can scroll. */
 @media (min-width: 1024px) {
     .app-header {
@@ -2363,11 +2371,8 @@ body[data-active-view="wiki"] .map-picker,body[data-active-view="settings"] .map
 .escape-note h4 { margin: 0 0 5px; color: var(--accent-2); font-size: .87rem; }
 .escape-note p { margin: 0; color: var(--text); font-size: .8rem; line-height: 1.48; overflow-wrap: anywhere; }
 .spawn-disclaimer { margin: 8px 0 0; padding-top: 9px; border-top: 1px solid var(--border); color: var(--muted); font-size: .78rem; line-height: 1.5; }
-.settings-version-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 14px; margin-top: 18px; padding: 14px 4px 6px; border-top: 1px solid var(--border); color: var(--muted); font-size: .82rem; }
-.settings-version-footer strong { color: var(--text); }
 @media (max-width: 600px) {
     .escape-notes-grid { grid-template-columns: minmax(0, 1fr); }
-    .settings-version-footer { display: grid; }
 }
 
 /* 1.2.4 verified game texture icons. Keep existing marker hit targets and ring colors. */
@@ -2408,3 +2413,54 @@ body[data-active-view="wiki"] .map-picker,body[data-active-view="settings"] .map
 .map-marker--searchable > img {filter:drop-shadow(0 2px 1px #111)}
 .wiki-source-note {border-left:3px solid var(--accent-2);padding:9px 12px;margin:14px 0;color:var(--muted);background:rgba(128,128,128,.08);font-size:.88rem;line-height:1.5}
 .wiki-source-note strong {color:var(--text)}
+
+/* [CSS-11] Adaptive PWA installation guidance in Settings. */
+.settings-install-card {
+    min-width: 0;
+}
+.settings-install-card .install-device-label {
+    display: inline-block;
+    margin: 0 0 10px;
+    padding: 5px 9px;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    color: var(--text);
+    background: var(--surface-2);
+    font-size: .8rem;
+    overflow-wrap: anywhere;
+}
+.settings-install-card .install-status {
+    margin: 0 0 12px;
+    line-height: 1.5;
+}
+.settings-install-card .install-primary-button {
+    min-height: 44px;
+    padding: 9px 18px;
+    margin-bottom: 8px;
+}
+.install-guide {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: 2px;
+}
+.install-guide h4 {
+    font-size: .95rem;
+    margin: 0 0 9px;
+    color: var(--text);
+}
+.install-guide ol {
+    padding-left: 1.5rem;
+    margin: 0;
+    display: grid;
+    gap: 8px;
+}
+.install-guide li {
+    line-height: 1.5;
+    font-size: .87rem;
+    overflow-wrap: anywhere;
+}
+.install-guide .install-help {
+    margin: 12px 0 0;
+    font-size: .8rem;
+    color: var(--muted);
+}

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <!--
-Halloween Companion 1.3.0 Maps and Wiki Expansion Preview
+Halloween Companion 1.3.2 Adaptive Install and Map Tips Update
 Structured source edition
 
 Source map
@@ -10,7 +10,7 @@ Source map
   HTML-02  Maps workspace
   HTML-03  Wiki workspace
   HTML-04  Settings workspace
-  HTML-05  Install dialog and onboarding
+  HTML-05  Map onboarding
   HTML-06  Runtime scripts
 
 Product source
@@ -193,13 +193,6 @@ only change intentionally. Core runtime files remain external to product source.
                     </div>
                 </section>
 
-                <section class="panel-footer" aria-label="App attribution">
-                    <div class="footer-meta">
-                        <span>
-                            Built using the <a href="https://linktr.ee/MWHQ" target="_blank" rel="noopener noreferrer">p8Core</a> App Builder
-                        </span>
-                    </div>
-                </section>
             </aside>
         </div>
 
@@ -278,76 +271,32 @@ only change intentionally. Core runtime files remain external to product source.
                         <button id="showTipsButton" type="button" class="footer-button">Show map tips</button>
                     </section>
 
-                    <section class="settings-card">
-                        <h3>Install</h3>
-                        <p>Install Halloween Companion where your browser supports Progressive Web Apps.</p>
-                        <button id="installButton" type="button" class="footer-button" hidden>Install app</button>
+                    <section class="settings-card settings-install-card" aria-labelledby="settingsInstallTitle">
+                        <h3 id="settingsInstallTitle">Install</h3>
+                        <p id="installDeviceLabel" class="install-device-label">Checking your device and browser…</p>
+                        <p id="installStatus" class="install-status" role="status" aria-live="polite"></p>
+                        <button id="installButton" type="button" class="footer-button install-primary-button" hidden>Install app</button>
+                        <div id="installGuide" class="install-guide" hidden aria-labelledby="installGuideTitle">
+                            <h4 id="installGuideTitle">How to install</h4>
+                            <ol id="installStepsList"></ol>
+                            <p id="installHelp" class="install-help" hidden></p>
+                        </div>
                     </section>
 
                     <section class="settings-card">
                         <h3>About</h3>
-                        <p class="settings-credit">Built using the <a class="p8core-brand" href="https://linktr.ee/MWHQ" target="_blank" rel="noopener noreferrer">p8Core</a> App Builder</p>
+                        <p class="settings-credit">App created by <a href="https://linktr.ee/MWHQ" target="_blank" rel="noopener noreferrer">p8riot</a> using his p8Core App Builder</p>
+                        <p class="settings-app-version">Version <strong>1.3.2</strong></p>
                     </section>
                 </div>
-                <footer class="settings-version-footer" aria-label="App version">
-                    <span>Halloween: The Game Companion App</span>
-                    <span>Version <strong>1.3.0</strong> · Maps and Wiki Preview</span>
-                </footer>
             </div>
         </section>
     </main>
 
 
     <!-- ==================================================================
-         [HTML-05] INSTALL DIALOG + ONBOARDING
+         [HTML-05] MAP ONBOARDING
          ================================================================== -->
-    <dialog id="installDialog" class="install-dialog" aria-labelledby="installTitle">
-        <div class="dialog-card">
-            <div class="dialog-heading">
-                <div>
-                    <p class="toolbar-kicker">Installable PWA</p>
-                    <h2 id="installTitle">Install Halloween Companion</h2>
-                </div>
-                <button type="button" class="dialog-close" data-p8-dialog-close aria-label="Close install instructions">×</button>
-            </div>
-
-            <p class="dialog-intro">
-                GitHub Pages serves this app over HTTPS, so supported browsers can install it.
-                Browser wording varies by version.
-            </p>
-
-            <div class="install-grid">
-                <section>
-                    <h3>Android</h3>
-                    <p><strong>Chrome / Edge:</strong> use this app's Install button when the browser offers it, or open the browser menu and choose <em>Install app</em> or <em>Add to Home screen</em>.</p>
-                    <p><strong>Samsung Internet:</strong> use the browser menu and choose its Add page to / Home screen option.</p>
-                </section>
-
-                <section>
-                    <h3>iPhone &amp; iPad</h3>
-                    <p>Open the site in <strong>Safari</strong>, tap <strong>Share</strong>, choose <strong>Add to Home Screen</strong>, then tap <strong>Add</strong>.</p>
-                    <p>If Add to Home Screen is not visible, scroll the Share sheet or use <strong>Edit Actions</strong> where available.</p>
-                </section>
-
-                <section>
-                    <h3>Windows &amp; macOS</h3>
-                    <p><strong>Chrome / Edge:</strong> use this app's Install button when available, the install icon in the address bar, or the browser menu's install option.</p>
-                    <p>Other desktop browsers may offer different site-app or shortcut options.</p>
-                </section>
-            </div>
-
-            <p class="dialog-note">
-                When opened as the installed app, the footer Install button is hidden. If the app is later uninstalled,
-                returning to the website lets the app re-check install availability and show the option again when the browser exposes it.
-            </p>
-
-            <div class="dialog-actions">
-                <button type="button" class="primary-button" data-p8-dialog-close>Got it</button>
-            </div>
-        </div>
-    </dialog>
-
-
     <div
         id="onboardingTour"
         class="onboarding-tour"

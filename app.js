@@ -1,5 +1,5 @@
 /*
-Halloween Companion 1.2.4 Game Icon Preview
+Halloween Companion 1.3.2 Adaptive Install and Map Tips Update
 Structured source edition
 
 Source map
@@ -10,7 +10,7 @@ Source map
   JS-05  Viewport transform and direct map interaction
   JS-06  Persistence and themes
   JS-07  Onboarding
-  JS-08  Dialog and PWA lifecycle
+  JS-08  Adaptive installation and PWA lifecycle
   JS-09  Resize handling and startup
 */
 
@@ -51,7 +51,12 @@ Source map
     var selectedLocation = document.getElementById("selectedLocation");
     var themeSelect = document.getElementById("themeSelect");
     var installButton = document.getElementById("installButton");
-    var installDialog = document.getElementById("installDialog");
+    var installDeviceLabel = document.getElementById("installDeviceLabel");
+    var installStatus = document.getElementById("installStatus");
+    var installGuide = document.getElementById("installGuide");
+    var installGuideTitle = document.getElementById("installGuideTitle");
+    var installStepsList = document.getElementById("installStepsList");
+    var installHelp = document.getElementById("installHelp");
     var showTipsButton = document.getElementById("showTipsButton");
     var onboardingTour = document.getElementById("onboardingTour");
     var tourStep = document.getElementById("tourStep");
@@ -189,10 +194,9 @@ Source map
         renderMapSearchResults();
         announce(style === "paper" ? "Paper artwork, including the printed grid." : "Realistic artwork, no grid.");
     }
-    var dialogController = null;
     var pwaApi = null;
-    var installedThisSession = false;
-    var installKnown = false;
+    var installRequestAccepted = false;
+    var installedViaEvent = false;
     var onboardingComplete = false;
     var onboardingStepIndex = 0;
     var onboardingTarget = null;
@@ -1603,9 +1607,6 @@ Source map
                 initialTheme = saved.value;
             }
 
-            var installedState = storageStore.get("install-known", false);
-            installKnown = installedState && installedState.value === true;
-
             var overlayState = storageStore.get("map-overlays", null);
             if (overlayState && overlayState.value && typeof overlayState.value === "object") {
                 ["escapes", "addresses", "streets"].forEach(function (key) {
@@ -1624,7 +1625,7 @@ Source map
                 }
             }
 
-            var onboardingState = storageStore.get("onboarding-tour-v1-complete", false);
+            var onboardingState = storageStore.get("onboarding-tour-v2-complete", false);
             onboardingComplete = onboardingState && onboardingState.value === true;
         }
 
@@ -1657,18 +1658,53 @@ Source map
     var onboardingSteps = [
         {
             target: ".map-picker",
-            title: "Choose a map",
-            text: "Choose among five Haddonfield areas; the map icons show potential escape locations."
+            title: "Five maps to explore",
+            text: "Select Haddonfield Heights, Orange Grove Estates, Town Center, East Haddonfield, or Tower Farm. Your map choice changes the available locations."
+        },
+        {
+            target: ".map-style-controls",
+            title: "Choose the map artwork",
+            text: "Realistic has no grid. Paper contains its own printed grid; the app never adds a grid to the realistic view."
         },
         {
             target: "#mapViewport",
-            title: "Explore the map",
-            text: "Drag to move. Use the wheel, pinch, or the plus and minus controls to zoom. Tap an escape marker to see its details."
+            title: "Move, zoom, and inspect",
+            text: "Drag or swipe to pan, pinch or use + and − to zoom, and tap any marker to read details. Keyboard controls work in the map, too."
+        },
+        {
+            target: "#legendList",
+            title: "Understand the escape symbols",
+            text: "Storm cellars, gates, storm drains, civilian sedans, and vehicle departure areas have distinct icons. A departure area is not a parked car spawn."
+        },
+        {
+            target: ".map-custom-panel",
+            title: "Enable item-source markers",
+            text: "Under Customize map markers, switch on item spawns to see sources tagged for escape supplies. Item icons show possible items, not guaranteed loot in a match."
+        },
+        {
+            target: ".map-custom-panel",
+            title: "Optional searchable locations",
+            text: "The separate Searchable Locations layer reveals furniture/containers and searchable vehicles. Their coordinates come from game exports, but their contents are unknown."
+        },
+        {
+            target: ".map-custom-panel",
+            title: "Filter what matters",
+            text: "Use escape-type, item-type, escape-purpose, and searchable-source filters. Saved global settings can be overridden for an individual map."
+        },
+        {
+            target: ".map-find-panel",
+            title: "Find a location quickly",
+            text: "Search this map for exits, supplies, addresses, or street names, then select a result to jump to it."
+        },
+        {
+            target: "#selectedLocation",
+            title: "Read the marker details",
+            text: "Selecting a marker displays its location and any verified requirements. A searchable container never promises a specific escape item."
         },
         {
             target: ".layer-panel",
-            title: "Customize the overlays",
-            text: "Select Realistic or Paper. Customize escape types and optional item spawn markers, with automatic local saving."
+            title: "Other map information",
+            text: "Show or hide master exit markers, house addresses, and street labels. Adjust opacity for readability without losing the map background."
         }
     ];
 
@@ -1708,6 +1744,23 @@ Source map
     function ensureOnboardingTargetVisible(target) {
         var rect = target.getBoundingClientRect();
         var verticalMargin = 72;
+
+        // On desktop the map side panel scrolls independently of the page.
+        // Scroll the nearest clipped ancestor before positioning the tip card.
+        var ancestor = target.parentElement;
+        while (ancestor && ancestor !== document.body) {
+            var ancestorStyle = window.getComputedStyle(ancestor);
+            if (/auto|scroll/.test(ancestorStyle.overflowY) && ancestor.scrollHeight > ancestor.clientHeight + 2) {
+                var paneRect = ancestor.getBoundingClientRect();
+                var itemRect = target.getBoundingClientRect();
+                if (itemRect.top < paneRect.top + 12 || itemRect.bottom > paneRect.bottom - 12) {
+                    ancestor.scrollTop += itemRect.top - paneRect.top -
+                        Math.max(12, (paneRect.height - Math.min(itemRect.height, paneRect.height)) / 2);
+                }
+                return;
+            }
+            ancestor = ancestor.parentElement;
+        }
 
         if (rect.bottom >= verticalMargin && rect.top <= window.innerHeight - verticalMargin) {
             return;
@@ -1779,7 +1832,7 @@ Source map
         if (markComplete) {
             onboardingComplete = true;
             if (storageStore) {
-                storageStore.set("onboarding-tour-v1-complete", true);
+                storageStore.set("onboarding-tour-v2-complete", true);
             }
         }
 
@@ -1852,137 +1905,188 @@ Source map
     }
 
     // ============================================================================
-    // [JS-08] DIALOG + PWA LIFECYCLE
+    // [JS-08] ADAPTIVE INSTALLATION + PWA LIFECYCLE
     // ============================================================================
-    function setupDialog() {
-        if (!core || !core.modules) return;
-        var dialogApi = core.modules.get("dialog");
-        if (dialogApi && typeof dialogApi.create === "function") {
-            dialogController = dialogApi.create(installDialog);
-        }
+    // Automatic install is offered only when the browser supplies the actual
+    // beforeinstallprompt event. No user agent implies installability.
+    function installEnvironment() {
+        var agent = navigator.userAgent || "";
+        var isIpadDesktopAgent = /Macintosh/i.test(agent) && navigator.maxTouchPoints > 1;
+        var platform = /iPad|iPhone|iPod/i.test(agent) || isIpadDesktopAgent ? "ios" :
+            /Android/i.test(agent) ? "android" :
+            /Windows/i.test(agent) ? "windows" :
+            /Macintosh|Mac OS X/i.test(agent) ? "mac" :
+            /Linux/i.test(agent) ? "linux" : "unknown";
+        var browser = /SamsungBrowser/i.test(agent) ? "Samsung Internet" :
+            /EdgA|EdgiOS|Edg\//i.test(agent) ? "Edge" :
+            /FxiOS|Firefox/i.test(agent) ? "Firefox" :
+            /CriOS|Chrome|Chromium/i.test(agent) ? "Chrome" :
+            /Safari/i.test(agent) ? "Safari" : "your browser";
+        return {platform: platform, browser: browser};
     }
 
-    function openInstallInstructions(opener, event) {
-        if (dialogController && dialogController.open(opener, event) !== false) {
-            return;
+    function installGuidance(environment) {
+        if (environment.platform === "ios") {
+            return {
+                title: "Add to Home Screen",
+                steps: [
+                    "Open this site in your preferred browser and tap Share (square with an up arrow; Safari may show Page Menu → Share).",
+                    "Choose Add to Home Screen. If it is missing, scroll through the Share menu or check Edit Actions.",
+                    "Turn on Open as Web App if available, then tap Add. Launch the new icon from your Home Screen."
+                ],
+                help: "On older iOS versions, use Safari. The install button is not supported by iPhone and iPad browsers."
+            };
         }
-        if (typeof installDialog.showModal === "function" && !installDialog.open) {
-            installDialog.showModal();
-            return;
+        if (environment.platform === "android") {
+            return {
+                title: "Add the app to your phone",
+                steps: environment.browser === "Samsung Internet" ? [
+                    "Open the browser menu (☰ or ⋮).",
+                    "Choose Add page to → Home screen (menu wording may vary).",
+                    "Confirm Add or Install, then open the icon from your Home screen."
+                ] : [
+                    "Open your browser menu (usually ⋮ near the address bar).",
+                    "Choose Install app, Add to Home screen, or Add to Home Screen, if offered.",
+                    "Confirm the browser's prompts, then open the icon from your Home screen or app launcher."
+                ],
+                help: "Some Android browsers create a home-screen shortcut instead of a standalone app. This app still works in your browser."
+            };
         }
-        installDialog.setAttribute("open", "");
+        if (environment.platform === "mac" && environment.browser === "Safari") {
+            return {
+                title: "Add to Dock on Mac",
+                steps: [
+                    "In Safari 17 or later on macOS Sonoma or later, open the File menu.",
+                    "Choose Add to Dock, confirm the app name, and select Add.",
+                    "Open Halloween Companion from your Dock or Applications."
+                ],
+                help: "If Add to Dock is missing, use a newer Safari/macOS version or try a Chromium browser."
+            };
+        }
+        if (environment.browser === "Firefox" && environment.platform !== "ios") {
+            return {
+                title: "Install or save a shortcut",
+                steps: [
+                    "Firefox desktop may not offer full PWA installation through this site.",
+                    "To install a standalone app, open this site in Chrome or Edge.",
+                    "Alternatively, bookmark the page in Firefox for quick access."
+                ],
+                help: "The website is fully usable without installation."
+            };
+        }
+        return {
+            title: "Install using your browser menu",
+            steps: [
+                "Look for an Install icon near the browser address bar, or open the browser menu (usually ⋮).",
+                "Choose Install page as app, Install app, Apps → Install this site, or Add to Home screen, if offered.",
+                "Confirm the installation. The app opens from your applications list, Dock, or Home screen."
+            ],
+            help: "Browser menus vary. On Windows, macOS, and Linux, current Chrome or Edge versions generally support installation. The app also runs normally as a website."
+        };
     }
 
-    function setInstallKnown(value) {
-        installKnown = value === true;
-        if (storageStore) {
-            storageStore.set("install-known", installKnown);
-        }
+    function renderInstallGuide(guidance) {
+        installGuideTitle.textContent = guidance.title;
+        installStepsList.replaceChildren();
+        guidance.steps.forEach(function (instruction) {
+            var item = document.createElement("li");
+            item.textContent = instruction;
+            installStepsList.appendChild(item);
+        });
+        installHelp.textContent = guidance.help || "";
+        installHelp.hidden = !guidance.help;
+    }
+
+    function isLaunchedAsApp() {
+        return navigator.standalone === true || (typeof window.matchMedia === "function" &&
+            ["standalone", "fullscreen", "minimal-ui"].some(function (mode) {
+                return window.matchMedia("(display-mode: " + mode + ")").matches;
+            }));
     }
 
     function updateInstallButton() {
-        if (!pwaApi) {
-            installButton.hidden = false;
+        var environment = installEnvironment();
+        var deviceNames = {ios: "iPhone / iPad", android: "Android", windows: "Windows", mac: "macOS", linux: "Linux", unknown: "Device"};
+        installDeviceLabel.textContent = "Detected: " + deviceNames[environment.platform] + " · " + environment.browser;
+
+        var status = pwaApi && typeof pwaApi.status === "function" ? pwaApi.status() : null;
+        var runningInstalled = isLaunchedAsApp() || !!(status && status.installed);
+        var canPrompt = !!(status && status.installPromptAvailable && !installRequestAccepted);
+
+        installButton.hidden = !canPrompt || runningInstalled || installedViaEvent;
+        installGuide.hidden = runningInstalled || canPrompt || installedViaEvent;
+
+        if (installedViaEvent) {
+            installStatus.textContent = "App installed successfully. Open it from your Home screen, Dock, or apps list.";
             return;
         }
-
-        var status = pwaApi.status();
-        if (status.installed) {
-            installedThisSession = true;
-            setInstallKnown(true);
-            installButton.hidden = true;
+        if (runningInstalled) {
+            installStatus.textContent = "You're using the installed app. No further setup is needed.";
             return;
         }
-
-        if (status.installPromptAvailable) {
-            installedThisSession = false;
-            setInstallKnown(false);
-            installButton.hidden = false;
+        if (canPrompt) {
+            installStatus.textContent = "Your browser can install the app now.";
             return;
         }
-
-        installButton.hidden = installedThisSession || installKnown;
+        renderInstallGuide(installGuidance(environment));
+        if (installRequestAccepted) {
+            installStatus.textContent = "Install requested. Complete any browser prompts, then launch it from your device.";
+        } else if (window.location.protocol === "file:" || !window.isSecureContext) {
+            installStatus.textContent = "Installation needs the live HTTPS website (or localhost); a downloaded HTML file cannot install the app.";
+        } else {
+            installStatus.textContent = "Automatic installation isn't currently available in this browser. Use these steps instead:";
+        }
     }
 
     function setupPwa() {
-        if (!core || !core.modules) {
-            installButton.hidden = false;
-            return;
+        if (core && core.modules) {
+            pwaApi = core.modules.get("pwa");
         }
-
-        pwaApi = core.modules.get("pwa");
-        if (!pwaApi) {
-            installButton.hidden = false;
-            return;
-        }
-
-        pwaApi.start({
-            serviceWorkerUrl: "./sw.js",
-            scope: "./"
-        }).then(function (result) {
-            if (!result.ok && result.error) {
-                console.info("[HTG Maps] PWA helper:", result.error);
-            }
-            updateInstallButton();
-        });
-
-        window.addEventListener("p8riot:pwa-install-available", updateInstallButton);
-        window.addEventListener("p8riot:pwa-installed", function () {
-            installedThisSession = true;
-            setInstallKnown(true);
-            updateInstallButton();
-            announce("App installed.");
-        });
-
-        window.addEventListener("pageshow", updateInstallButton);
-        window.addEventListener("focus", updateInstallButton);
-        document.addEventListener("visibilitychange", function () {
-            if (!document.hidden) {
+        if (pwaApi) {
+            pwaApi.start({serviceWorkerUrl: "./sw.js", scope: "./"}).then(function (result) {
+                if (!result.ok && result.error) {
+                    console.info("[Halloween Companion] PWA helper:", result.error);
+                }
                 updateInstallButton();
-            }
+            }).catch(function () { updateInstallButton(); });
+        }
+        window.addEventListener("p8riot:pwa-install-available", function () {
+            installRequestAccepted = false;
+            updateInstallButton();
         });
-
+        window.addEventListener("p8riot:pwa-installed", function () {
+            installedViaEvent = true;
+            installRequestAccepted = false;
+            updateInstallButton();
+            announce("App installed. Open it from your Home screen or apps list.");
+        });
+        ["pageshow", "focus"].forEach(function (name) {window.addEventListener(name, updateInstallButton);});
+        document.addEventListener("visibilitychange", function () {
+            if (!document.hidden) updateInstallButton();
+        });
         if (typeof window.matchMedia === "function") {
             var standaloneQuery = window.matchMedia("(display-mode: standalone)");
             if (standaloneQuery.addEventListener) {
                 standaloneQuery.addEventListener("change", updateInstallButton);
             }
         }
-
         updateInstallButton();
     }
 
-    installButton.addEventListener("click", function (event) {
-        if (!pwaApi) {
-            openInstallInstructions(installButton, event);
-            return;
-        }
-
-        var status = pwaApi.status();
-        if (status.installed) {
+    installButton.addEventListener("click", function () {
+        if (!pwaApi || !pwaApi.status().installPromptAvailable) {
             updateInstallButton();
             return;
         }
-
-        if (!status.installPromptAvailable) {
-            openInstallInstructions(installButton, event);
-            return;
-        }
-
+        // Must be called in the click handler, rather than after another async
+        // operation, to preserve the browser's required user gesture.
         pwaApi.promptInstall().then(function (result) {
-            if (
-                result.ok &&
-                result.choice &&
-                result.choice.outcome === "accepted"
-            ) {
-                installedThisSession = true;
-                setInstallKnown(true);
-                installButton.hidden = true;
-                announce("Install accepted.");
-            } else {
-                updateInstallButton();
+            if (result.ok && result.choice && result.choice.outcome === "accepted") {
+                installRequestAccepted = true;
+                announce("Installation requested. Follow the browser's prompts.");
             }
-        });
+            updateInstallButton();
+        }).catch(function () { updateInstallButton(); });
     });
 
     // ============================================================================
@@ -2004,7 +2108,6 @@ Source map
     setupStorageAndTheme();
     setupOverlayControls();
     setupMapSearchAndFilters();
-    setupDialog();
     renderMap();
     setupOnboardingTour();
     setupPwa();
