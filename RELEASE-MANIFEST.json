@@ -1,180 +1,344 @@
 {
-    "product": "HTG Maps",
-    "productVersion": "1.0.20",
-    "coreVersion": "0.2.0",
-    "coreBuild": "Alpha 1",
-    "releaseChannel": "development",
-    "baseline": {
-        "name": "HTG-Maps-1.0.20.zip",
-        "sha256": "40e508e45d9fdd4f966044c3cd568fa959d2f25788b0e4f23a6e4f04a0f1723c"
+  "version": "1.2.5",
+  "stage": "PRIVATE_GAME_ITEM_MARKERS_DEVELOPMENT_PREVIEW",
+  "based_on_zip": "Halloween_Companion_v1.2.4.zip",
+  "based_on_sha256": "00eda1d99fef84f968efe04c335e22b26a8aff336a7e1850bdd60cb1d1a955b6",
+  "all_maps_preserved": 5,
+  "original_location_records_preserved": 448,
+  "redistribution_rights": "UNVERIFIED",
+  "file_count_excluding_manifest": 83,
+  "files": {
+    "BUILD-QA-RESULTS.json": {
+      "bytes": 4050,
+      "sha256": "43de9b3ce285a20b64682fde0e3262f80e1d420567583d3d4bf97731c3595aa9"
     },
-    "validation": {
-        "static": "PASS",
-        "simulatedChromium": "PASS",
-        "liveOriginPwa": "NOT TESTED",
-        "physicalDevices": "NOT TESTED",
-        "structuredGoldStandard": "PASS"
+    "CHANGELOG.md": {
+      "bytes": 20100,
+      "sha256": "456a9a352aee61ba15458cf7b2e3974ec0c5589a7589f2dd4f80220dc15b8e3a"
     },
-    "files": [
-        {
-            "path": "CHANGELOG.md",
-            "bytes": 14871,
-            "sha256": "decab5a005b73a5c872537467b906342e5b82d06b7c87275cc3dd4ec9bf8bf49"
-        },
-        {
-            "path": "QA-REPORT.md",
-            "bytes": 4669,
-            "sha256": "51bb10db8afae3284c8ced9a5e34173478311c57875a5e250602aeaab6af70d2"
-        },
-        {
-            "path": "README.md",
-            "bytes": 3239,
-            "sha256": "f506da8cd06b05df5aed81da60f3e293275e8d5008d43aec469e40655f716f5a"
-        },
-        {
-            "path": "SOURCE-NOTES.md",
-            "bytes": 6010,
-            "sha256": "a5968b92396143adc1b8d30b789c14e6261542b0c0e90cb6e2f16c0739d6842c"
-        },
-        {
-            "path": "STRUCTURED-AUDIT.md",
-            "bytes": 2036,
-            "sha256": "012890739bf9ec2300d2f5aeee27792ce6c1373fe6a6fd14252bb21cd9872ec7"
-        },
-        {
-            "path": "app-config.js",
-            "bytes": 377,
-            "sha256": "3df31eacde315ca435e68fc8bb0990b99979d7a04424bbc231d5e02a1d1b5d8e"
-        },
-        {
-            "path": "app.js",
-            "bytes": 66707,
-            "sha256": "41c64129fce0e53a32c31022af24cb3310ffdac008e2a00ec4ef057a91ff9cd9"
-        },
-        {
-            "path": "assets/app/apple-touch-icon.png",
-            "bytes": 28823,
-            "sha256": "883858e0b9ebbb8c2da4ab05dede7e1f7e02822ab39a28953b91e5e2a748534e"
-        },
-        {
-            "path": "assets/app/favicon-1.0.7.png",
-            "bytes": 1797,
-            "sha256": "d72901c45d885a0842eca452637eedbb493cbb5014d00ca15256aaad4c621825"
-        },
-        {
-            "path": "assets/app/favicon-32.png",
-            "bytes": 1641,
-            "sha256": "35c0aea27a0eb48a940c503b45348c97232a10f579b1a1ad45d3574049eda02e"
-        },
-        {
-            "path": "assets/app/icon-192.png",
-            "bytes": 32644,
-            "sha256": "07f4f8fe1c9f38845f0aa128f7170e0ee216d5e5390703be772781cdf684b5f1"
-        },
-        {
-            "path": "assets/app/icon-512.png",
-            "bytes": 210069,
-            "sha256": "396f218fe65bcd06f3fa1577bfbe23cce9a97930f746cc9fa7b3015c52dc5c24"
-        },
-        {
-            "path": "assets/icons/car.svg",
-            "bytes": 420,
-            "sha256": "c1cd18a8ce50016a4547beb28fd10eb2f1b3c427d14f340211189645528542c3"
-        },
-        {
-            "path": "assets/icons/escape-door.svg",
-            "bytes": 398,
-            "sha256": "d0543a8b325d6689242b4c8f07e2306b784e0d76babdedced850ff8e4b136d89"
-        },
-        {
-            "path": "assets/maps/east-haddonfield.jpg",
-            "bytes": 1212670,
-            "sha256": "819d9af4eb8f94ce0321ca2fcec2e3d6da0d73f2587c97cdec021df273d01271"
-        },
-        {
-            "path": "assets/maps/haddonfield-heights.jpg",
-            "bytes": 1300206,
-            "sha256": "6995a8bfb9c4bafaa85d9e2c88effc2876b1705b9276356df5c14c58007802e2"
-        },
-        {
-            "path": "assets/maps/haddonfield-town-center.jpg",
-            "bytes": 1352925,
-            "sha256": "ec5ca6043229bcfb0059a699ef3c8450ce59103779cf53b9850c919db6340d64"
-        },
-        {
-            "path": "assets/maps/orange-grove-estates.jpg",
-            "bytes": 1360705,
-            "sha256": "b9e35c2e10135a4e2818bf5682b05d8b5f13899ce39b7a77cae8ce57e1812aad"
-        },
-        {
-            "path": "assets/themes/README.txt",
-            "bytes": 161,
-            "sha256": "587c0cb8fb0e4972cb2124a6af4cbb2fe4b1409eda2b0d1ef34c1be0b25370f0"
-        },
-        {
-            "path": "core/modules/p8riot-dialog.css",
-            "bytes": 1721,
-            "sha256": "6cefa49fe1b25ab68a51f2a5e83169c64c2c59a6aa139d2fbfb836eff0170e4d"
-        },
-        {
-            "path": "core/modules/p8riot-dialog.js",
-            "bytes": 17749,
-            "sha256": "868326b32d5a568889c0c6697d8bed932443f806db7a07daefef86dc5c6707d8"
-        },
-        {
-            "path": "core/modules/p8riot-pwa.js",
-            "bytes": 11859,
-            "sha256": "8bbb326918b8601789f9afeb2cae20a27c9e2cdf5fc2443367d1d749b5862723"
-        },
-        {
-            "path": "core/modules/p8riot-storage.js",
-            "bytes": 10936,
-            "sha256": "14f5734f51042d8682d6019f57f11832b47e674e57032d433fe978c017528e5f"
-        },
-        {
-            "path": "core/p8riot-core.css",
-            "bytes": 2848,
-            "sha256": "9b29e48f6ded1c6799e649f6420fd7a9edd19b9c6d55b1343d918b365e0ac469"
-        },
-        {
-            "path": "core/p8riot-core.js",
-            "bytes": 24072,
-            "sha256": "649185296345ea341fa2287bce393ef06bb2af776ed928cd25c223b07a5a1144"
-        },
-        {
-            "path": "data/maps.js",
-            "bytes": 30211,
-            "sha256": "c37d2598cb88195830002763b8a363fd6f4d3a6528a7efd5d255a965dc4d8de1"
-        },
-        {
-            "path": "data/wiki.js",
-            "bytes": 24724,
-            "sha256": "344f6cd48a3740738250d00a9ed0af4ae6f78f9f2c64171ab0f33eb1669480b5"
-        },
-        {
-            "path": "index.html",
-            "bytes": 20600,
-            "sha256": "d110b398e6566b1f3ca7b54f848665dcf65ad7edd8ab1e02e642d319ab07808e"
-        },
-        {
-            "path": "manifest.webmanifest",
-            "bytes": 716,
-            "sha256": "863ae5bd67833abff9eeaf7c988bdec06868b003e18c06ef2f77ef16960f7753"
-        },
-        {
-            "path": "styles.css",
-            "bytes": 46165,
-            "sha256": "37d581134256b24ddaf3d9fa4046d4873a43e24c7f7847bc35ecbe0a0974a53c"
-        },
-        {
-            "path": "sw.js",
-            "bytes": 3347,
-            "sha256": "870799aee203826fd72b917b1699b09318334d6f5de04b65e975ec0ef5b2834f"
-        },
-        {
-            "path": "wiki.js",
-            "bytes": 10781,
-            "sha256": "56e00fcaeb45eaaf82ef2da177003fde980579fea16177d21a7982951f0684b6"
-        }
-    ]
+    "GAME_ICON_ASSET_PROVENANCE.json": {
+      "bytes": 3168,
+      "sha256": "fb601ccf97e5adc28b8ba3187657d486b533230fba823e889481b742ca735e7f"
+    },
+    "MAPS_1_2_2_QA.json": {
+      "bytes": 7723,
+      "sha256": "e2fe2357f8be7b82b73d167d4db7721f4c19d0981945769aee3aa181af7eafd6"
+    },
+    "MAPS_1_2_3_QA.json": {
+      "bytes": 2407,
+      "sha256": "79afbe662e426824bfbea0ae105ef19d5e58aaf862507091874684f26780c996"
+    },
+    "MAPS_1_2_4_QA.json": {
+      "bytes": 1351,
+      "sha256": "e775c918eee0d502d36de2792fef7bbb25248d1ce729e0dbe8e3b06ebcf2a511"
+    },
+    "MAPS_1_2_5_QA.json": {
+      "bytes": 2012,
+      "sha256": "d32198c47aeae5905ee816e363765a824dd86b6e96247554d6e625ab4ad45536"
+    },
+    "MAPS_BUILD_QA.md": {
+      "bytes": 2709,
+      "sha256": "072d1f5bfc958d9dddc471b2efff25f496cd08247d6bcaa0c27b5af13c03272b"
+    },
+    "MAPS_SOURCE_PROVENANCE.json": {
+      "bytes": 968,
+      "sha256": "1198b167de832334983a7479521b44a349676869e9739e67efd51d08356f8d38"
+    },
+    "ORIGINAL-QA-REPORT.md": {
+      "bytes": 4669,
+      "sha256": "51bb10db8afae3284c8ced9a5e34173478311c57875a5e250602aeaab6af70d2"
+    },
+    "ORIGINAL-RELEASE-MANIFEST.json": {
+      "bytes": 6370,
+      "sha256": "8c8ee6a62ebda651a066ffb63ace04a3058dd826a1f8cd9280a0053c713a2ed2"
+    },
+    "ORIGINAL-SOURCE-NOTES.md": {
+      "bytes": 6010,
+      "sha256": "a5968b92396143adc1b8d30b789c14e6261542b0c0e90cb6e2f16c0739d6842c"
+    },
+    "OVERLAY_LABEL_AUDIT.csv": {
+      "bytes": 21013,
+      "sha256": "17389969cc1f0aab309bc47dc57aa7eb3210db2cf9bca59967c6ec66e6db8766"
+    },
+    "QA_BROWSER/mobile-390.png": {
+      "bytes": 203684,
+      "sha256": "146e5dbca2f88078d278b39cfc900b9edb004e3c34c84928309b7e2e84cce7d6"
+    },
+    "QA_LABEL_AUDIT/east-haddonfield-paper-label-audit.jpg": {
+      "bytes": 189669,
+      "sha256": "672313adba9251efdaa06b9b1371968b031c26944e5f128a85093924e317c511"
+    },
+    "QA_LABEL_AUDIT/haddonfield-heights-paper-label-audit.jpg": {
+      "bytes": 197554,
+      "sha256": "6bffcd8ca61c33153058b70efcfedfe91f6a45472666aee33297d2550ce918a0"
+    },
+    "QA_LABEL_AUDIT/haddonfield-town-center-paper-label-audit.jpg": {
+      "bytes": 193784,
+      "sha256": "04c4063d4b50ad5e42e4ff6721993625a96bf3ab3be0dbba9d9f3f797c70c37b"
+    },
+    "QA_LABEL_AUDIT/orange-grove-estates-paper-label-audit.jpg": {
+      "bytes": 203694,
+      "sha256": "54d5c8a20894b842e5a5f25fc3844b3ea02b97f269b5475f85d84855f4e3fc3a"
+    },
+    "QA_LABEL_AUDIT/tower-farm-paper-label-audit.jpg": {
+      "bytes": 196903,
+      "sha256": "cbacb0aa0ebebf7378e7f63986237c410884d5a947216db41677fba3a0705958"
+    },
+    "QA_VISUALS/east-haddonfield-paper.jpg": {
+      "bytes": 185515,
+      "sha256": "b4c5caebf6244329b28609ee1c380034425d6151d4f3b4ba842c7132df131d4a"
+    },
+    "QA_VISUALS/east-haddonfield-realistic.jpg": {
+      "bytes": 122101,
+      "sha256": "1b7335f0e8507d7b58ecfd4e7c1d50702c87c022e1b5c09eb4f3fb888435bcc8"
+    },
+    "QA_VISUALS/haddonfield-heights-paper.jpg": {
+      "bytes": 190827,
+      "sha256": "8fafe355985447fb4103e8e334857ac7ef94966e9e99f7d15ef04761baa15a6b"
+    },
+    "QA_VISUALS/haddonfield-heights-realistic.jpg": {
+      "bytes": 136421,
+      "sha256": "9a07a32b61a35d1f700569299636097a6d7eba5363e090c7c12db0bad64954de"
+    },
+    "QA_VISUALS/haddonfield-town-center-paper.jpg": {
+      "bytes": 188572,
+      "sha256": "d32134f8991e043b591e20c2c2239db7d1fdb7235768da1d1b563da696d23e92"
+    },
+    "QA_VISUALS/haddonfield-town-center-realistic.jpg": {
+      "bytes": 140179,
+      "sha256": "b66d9a47c54398d866a7f343eb7af579c7d2cc9d6c8f050292f7595d7e8ef288"
+    },
+    "QA_VISUALS/orange-grove-estates-paper.jpg": {
+      "bytes": 197252,
+      "sha256": "4509a16928f9fb9b1342c303169703c2d1e5963ae740b79a010184a296fa19f8"
+    },
+    "QA_VISUALS/orange-grove-estates-realistic.jpg": {
+      "bytes": 149914,
+      "sha256": "466a8ce40db1ca5a03be84cbe838a45395ed481ed0e5c88c1814329e4b43f1ca"
+    },
+    "QA_VISUALS/tower-farm-paper.jpg": {
+      "bytes": 197719,
+      "sha256": "9250990c2f1ca2f366bb72dec85975e0c5f670a3e5637f047d24b6c77e7473f7"
+    },
+    "QA_VISUALS/tower-farm-realistic.jpg": {
+      "bytes": 125953,
+      "sha256": "708701765fdd11d904ff569b81adf482b82a82238244db4d65b37b78abf91635"
+    },
+    "README.md": {
+      "bytes": 4271,
+      "sha256": "b3ae1c565a6c9bd33050641248caea7315024b248aa562a2cf18891f74369539"
+    },
+    "STRUCTURED-AUDIT.md": {
+      "bytes": 2036,
+      "sha256": "012890739bf9ec2300d2f5aeee27792ce6c1373fe6a6fd14252bb21cd9872ec7"
+    },
+    "WORK_PACKAGE_1_2_4.md": {
+      "bytes": 959,
+      "sha256": "97af5bf766e7668cece6d8e93111f5b83b0bd100364f042d18d7f1a79f8fd68a"
+    },
+    "WORK_PACKAGE_1_2_5.md": {
+      "bytes": 1547,
+      "sha256": "9d292c55173d1b0e09ba06c4fc31b17e5d876a2af4813a28d267f9c6b10b1099"
+    },
+    "WORK_PACKAGE_RESULT.md": {
+      "bytes": 1453,
+      "sha256": "51ca7d449e0e29c1608ef8737094b5335a79e8227820fa95e334a2e3966aa2c9"
+    },
+    "app-config.js": {
+      "bytes": 412,
+      "sha256": "3a8e8cdcc15f4bf9f55a6657e87eebf841d04c864bc6b00bee2c5260b1c4d7a2"
+    },
+    "app.js": {
+      "bytes": 78931,
+      "sha256": "ccb9955b6dc7e6b68f63871bd18a9f6a9d270fb3a2d8702f7c3bccc40d21cc33"
+    },
+    "assets/app/apple-touch-icon.png": {
+      "bytes": 28823,
+      "sha256": "883858e0b9ebbb8c2da4ab05dede7e1f7e02822ab39a28953b91e5e2a748534e"
+    },
+    "assets/app/favicon-1.0.7.png": {
+      "bytes": 1797,
+      "sha256": "d72901c45d885a0842eca452637eedbb493cbb5014d00ca15256aaad4c621825"
+    },
+    "assets/app/favicon-32.png": {
+      "bytes": 1641,
+      "sha256": "35c0aea27a0eb48a940c503b45348c97232a10f579b1a1ad45d3574049eda02e"
+    },
+    "assets/app/icon-192.png": {
+      "bytes": 32644,
+      "sha256": "07f4f8fe1c9f38845f0aa128f7170e0ee216d5e5390703be772781cdf684b5f1"
+    },
+    "assets/app/icon-512.png": {
+      "bytes": 210069,
+      "sha256": "396f218fe65bcd06f3fa1577bfbe23cce9a97930f746cc9fa7b3015c52dc5c24"
+    },
+    "assets/icons/car.svg": {
+      "bytes": 420,
+      "sha256": "c1cd18a8ce50016a4547beb28fd10eb2f1b3c427d14f340211189645528542c3"
+    },
+    "assets/icons/escape-door.svg": {
+      "bytes": 398,
+      "sha256": "d0543a8b325d6689242b4c8f07e2306b784e0d76babdedced850ff8e4b136d89"
+    },
+    "assets/icons/game/game-car.png": {
+      "bytes": 2559,
+      "sha256": "07974b832cc2084b8c99f018cc0bea9e6c251f980406709f69ccd025ce719e30"
+    },
+    "assets/icons/game/game-cellar.png": {
+      "bytes": 1539,
+      "sha256": "696e499197c661cc891e80f02eade031ab1ab5affc9fa4ac205441dfc26125c9"
+    },
+    "assets/icons/game/game-gate.png": {
+      "bytes": 2182,
+      "sha256": "a2e1165e2ad6ed7fa018a812dd8f3f5e8079551f07865a47ba59c04df186901d"
+    },
+    "assets/icons/game/game-storm-drain.png": {
+      "bytes": 2393,
+      "sha256": "a940adc3392271c39e45a522e0b969ece916510988d4589c6e0e941ee769a733"
+    },
+    "assets/icons/game/item-bolt-cutters.png": {
+      "bytes": 2926,
+      "sha256": "9c68af5ddab0d08b7aac2082befa58efcdec1a3c9e609523200a16d3f6e1021c"
+    },
+    "assets/icons/game/item-fuse.png": {
+      "bytes": 2934,
+      "sha256": "726623fc5003308fc96060d7749778331e39e920fa57cd906dc09d6e3a675a36"
+    },
+    "assets/icons/game/item-gas-can.png": {
+      "bytes": 2173,
+      "sha256": "6816d78c3a93be06fd3c7ca8e3eb82d1d0793891005886698970998eea0474fc"
+    },
+    "assets/icons/game/item-repair-kit.png": {
+      "bytes": 2825,
+      "sha256": "9fb99bd6c88cb7d9368132d83320304d4ddc13b37e95b0df46a6615a911cce5a"
+    },
+    "assets/icons/game/item-sedan-key.png": {
+      "bytes": 1596,
+      "sha256": "4873697a49df72df8d264045de789915441abe7fed96eee313a5b72be1e75afe"
+    },
+    "assets/icons/storm-drain.svg": {
+      "bytes": 349,
+      "sha256": "1d6e8379f78283a52c835d13d973778c557a5594e2e9b86ba89d6448a8061883"
+    },
+    "assets/icons/supply.svg": {
+      "bytes": 285,
+      "sha256": "6871cb43d38efebcb2992c69af8f8f16eb289cfe91b175164aa872159c29d767"
+    },
+    "assets/icons/vehicle-route.svg": {
+      "bytes": 285,
+      "sha256": "fda99d704caf561f7c95672871f7b59cac78ece4f3ad2ebaa74f49c810a27c60"
+    },
+    "assets/maps/east-haddonfield-paper.webp": {
+      "bytes": 233024,
+      "sha256": "9c4c58f6ee7b214a4ee8a96f0617875b367e65bb11445639a1690651e112a0b7"
+    },
+    "assets/maps/east-haddonfield-realistic.webp": {
+      "bytes": 1161230,
+      "sha256": "811b1cac8bf2ede6fc9abd23a43db3a34abddf26ba4ce977a8e63bbb4d688f4e"
+    },
+    "assets/maps/east-haddonfield.jpg": {
+      "bytes": 1212670,
+      "sha256": "819d9af4eb8f94ce0321ca2fcec2e3d6da0d73f2587c97cdec021df273d01271"
+    },
+    "assets/maps/haddonfield-heights-paper.webp": {
+      "bytes": 433984,
+      "sha256": "6c6cecf96dfa237c8e02a6f4639c84402a8bd2b19443232491687f9687359e4f"
+    },
+    "assets/maps/haddonfield-heights-realistic.webp": {
+      "bytes": 1181212,
+      "sha256": "8b1d259de30a6119d6c760799dfd522d15b87fabda8c26525feac75927e6bad6"
+    },
+    "assets/maps/haddonfield-heights.jpg": {
+      "bytes": 1300206,
+      "sha256": "6995a8bfb9c4bafaa85d9e2c88effc2876b1705b9276356df5c14c58007802e2"
+    },
+    "assets/maps/haddonfield-town-center-paper.webp": {
+      "bytes": 441790,
+      "sha256": "03b0a09a300218a702b2aa72449a9757fb21d7772a1a4b5f9e8e01fdbc42b04d"
+    },
+    "assets/maps/haddonfield-town-center-realistic.webp": {
+      "bytes": 1217386,
+      "sha256": "3dccd9b92f5c0dbf701e70a5e7dc52b1813e3160db8ef0bb69906ac28badf4b3"
+    },
+    "assets/maps/haddonfield-town-center.jpg": {
+      "bytes": 1352925,
+      "sha256": "ec5ca6043229bcfb0059a699ef3c8450ce59103779cf53b9850c919db6340d64"
+    },
+    "assets/maps/orange-grove-estates-paper.webp": {
+      "bytes": 457580,
+      "sha256": "08c64776e6f670edfdcd0609e963dbd0859aef7f09aa087be9cbd776d97f2051"
+    },
+    "assets/maps/orange-grove-estates-realistic.webp": {
+      "bytes": 1215034,
+      "sha256": "ccd0c71fc65811325c6426a2c3c1516def623df137b3272e66806a3b50f04a0f"
+    },
+    "assets/maps/orange-grove-estates.jpg": {
+      "bytes": 1360705,
+      "sha256": "b9e35c2e10135a4e2818bf5682b05d8b5f13899ce39b7a77cae8ce57e1812aad"
+    },
+    "assets/maps/tower-farm-paper.webp": {
+      "bytes": 3997300,
+      "sha256": "5ac1e24714fa46fb2fed2ca491e999f2ce0b3a6b175ac6a31e9c66a7ba83c7fb"
+    },
+    "assets/maps/tower-farm-realistic.webp": {
+      "bytes": 2172140,
+      "sha256": "b6b02fa772efd4321eef92d3ca24d1c816528b68e4ecba0fc729c9ce6ef7e62a"
+    },
+    "assets/themes/README.txt": {
+      "bytes": 161,
+      "sha256": "587c0cb8fb0e4972cb2124a6af4cbb2fe4b1409eda2b0d1ef34c1be0b25370f0"
+    },
+    "core/modules/p8riot-dialog.css": {
+      "bytes": 1721,
+      "sha256": "6cefa49fe1b25ab68a51f2a5e83169c64c2c59a6aa139d2fbfb836eff0170e4d"
+    },
+    "core/modules/p8riot-dialog.js": {
+      "bytes": 17749,
+      "sha256": "868326b32d5a568889c0c6697d8bed932443f806db7a07daefef86dc5c6707d8"
+    },
+    "core/modules/p8riot-pwa.js": {
+      "bytes": 11859,
+      "sha256": "8bbb326918b8601789f9afeb2cae20a27c9e2cdf5fc2443367d1d749b5862723"
+    },
+    "core/modules/p8riot-storage.js": {
+      "bytes": 10936,
+      "sha256": "14f5734f51042d8682d6019f57f11832b47e674e57032d433fe978c017528e5f"
+    },
+    "core/p8riot-core.css": {
+      "bytes": 2848,
+      "sha256": "9b29e48f6ded1c6799e649f6420fd7a9edd19b9c6d55b1343d918b365e0ac469"
+    },
+    "core/p8riot-core.js": {
+      "bytes": 24072,
+      "sha256": "649185296345ea341fa2287bce393ef06bb2af776ed928cd25c223b07a5a1144"
+    },
+    "data/maps.js": {
+      "bytes": 249361,
+      "sha256": "269308e3f552efb61f1211ada9b5a0397750d65920f741dd45297d9c948c703a"
+    },
+    "data/wiki.js": {
+      "bytes": 21762,
+      "sha256": "1fa892508f43287b129f8b2fc3f8bfab10d611828d9cbc74409e37f17dd8d633"
+    },
+    "index.html": {
+      "bytes": 22011,
+      "sha256": "55e9299bc8635ce31d903f8b86fa609b80a565f915381b76ce81e868d4a2b1d2"
+    },
+    "manifest.webmanifest": {
+      "bytes": 691,
+      "sha256": "6cf9b8223b66ccf07a392b2daac4ec158616cfe60c899b463a2da388cbe537c1"
+    },
+    "styles.css": {
+      "bytes": 52863,
+      "sha256": "cc88985eb3223b79eaad8fb0c7bb4eaf6727e7d34d4249533f954aa49957c31e"
+    },
+    "sw.js": {
+      "bytes": 4397,
+      "sha256": "6f06cef2994d1295387e6fb2eacdbd992d58fa07ac4a4140180e690c50eadcc2"
+    },
+    "wiki.js": {
+      "bytes": 10781,
+      "sha256": "56e00fcaeb45eaaf82ef2da177003fde980579fea16177d21a7982951f0684b6"
+    }
+  }
 }

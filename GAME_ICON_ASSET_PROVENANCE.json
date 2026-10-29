@@ -1,0 +1,84 @@
+{
+  "version": "1.2.4",
+  "status": "private_development_preview",
+  "icon_license": "Unknown; supplied/connected game assets are not automatically licensed for public redistribution",
+  "conversion": "Direct decode of Texture2D PF_DXT5 or PF_B8G8R8A8 from Unreal Engine .uasset payload to lossless PNG, no artwork recreation",
+  "asset_mapping": {
+    "cellar": {
+      "file": "assets/icons/game/game-cellar.png",
+      "texture_name": "T_AltEscape_Cellar_Icon.uasset",
+      "source": "Textures.zip",
+      "width": 64,
+      "height": 64,
+      "sha256": "696e499197c661cc891e80f02eade031ab1ab5affc9fa4ac205441dfc26125c9"
+    },
+    "gate": {
+      "file": "assets/icons/game/game-gate.png",
+      "texture_name": "T_AltEscape_Gate_Icon.uasset",
+      "source": "Textures.zip",
+      "width": 64,
+      "height": 64,
+      "sha256": "a2e1165e2ad6ed7fa018a812dd8f3f5e8079551f07865a47ba59c04df186901d"
+    },
+    "drain": {
+      "file": "assets/icons/game/game-storm-drain.png",
+      "texture_name": "T_AltEscape_StormDrain_Icon.uasset",
+      "source": "Textures.zip",
+      "width": 64,
+      "height": 64,
+      "sha256": "a940adc3392271c39e45a522e0b969ece916510988d4589c6e0e941ee769a733"
+    },
+    "car": {
+      "file": "assets/icons/game/game-car.png",
+      "texture_name": "T_UI_CarEscape_ICN.uasset",
+      "source": "connected Google Drive Ravage/Content/UI/HUD/WorldIcons/POI",
+      "width": 64,
+      "height": 64,
+      "sha256": "07974b832cc2084b8c99f018cc0bea9e6c251f980406709f69ccd025ce719e30"
+    },
+    "sedan-key": {
+      "file": "assets/icons/game/item-sedan-key.png",
+      "texture_name": "T_SedanKey_Icon.uasset",
+      "source": "Items.zip",
+      "width": 64,
+      "height": 64,
+      "sha256": "4873697a49df72df8d264045de789915441abe7fed96eee313a5b72be1e75afe"
+    },
+    "gas-can": {
+      "file": "assets/icons/game/item-gas-can.png",
+      "texture_name": "T_GasCan_Icon_Small.uasset",
+      "source": "Items.zip",
+      "width": 64,
+      "height": 64,
+      "sha256": "6816d78c3a93be06fd3c7ca8e3eb82d1d0793891005886698970998eea0474fc"
+    },
+    "repair-kit": {
+      "file": "assets/icons/game/item-repair-kit.png",
+      "texture_name": "T_RepairKit_Icon.uasset",
+      "source": "Items.zip",
+      "width": 256,
+      "height": 256,
+      "sha256": "9fb99bd6c88cb7d9368132d83320304d4ddc13b37e95b0df46a6615a911cce5a"
+    },
+    "bolt-cutters": {
+      "file": "assets/icons/game/item-bolt-cutters.png",
+      "texture_name": "T_BoltCutters_Icon_Small.uasset",
+      "source": "Items.zip",
+      "width": 64,
+      "height": 64,
+      "sha256": "9c68af5ddab0d08b7aac2082befa58efcdec1a3c9e609523200a16d3f6e1021c"
+    },
+    "fuse": {
+      "file": "assets/icons/game/item-fuse.png",
+      "texture_name": "T_Fuse_Icon.uasset",
+      "source": "Items.zip",
+      "width": 64,
+      "height": 64,
+      "sha256": "726623fc5003308fc96060d7749778331e39e920fa57cd906dc09d6e3a675a36"
+    }
+  },
+  "preserved_legacy_svg_icons": true,
+  "generic_item_source_icon": "assets/icons/supply.svg",
+  "car_texture_source": "Ravage/Content/UI/HUD/WorldIcons/POI/T_UI_CarEscape_ICN.uasset",
+  "police_map_markers": "Excluded by approved scope"
+}

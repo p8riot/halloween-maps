@@ -2280,3 +2280,125 @@ body[data-active-view="maps"] #mapsView {
         padding: 16px;
     }
 }
+
+/* MAPS V1.2.0 | SOURCE-REGISTERED TWO-VIEW MARKERS + CUSTOMIZATION */
+.map-toolbar {flex-wrap:wrap}
+.map-style-controls{display:flex;gap:4px;padding:3px;border:1px solid var(--border-strong);border-radius:12px;background:var(--surface)}
+.style-choice{min-height:40px;padding:7px 13px;border:0;border-radius:9px;background:transparent;color:var(--text);cursor:pointer;font-weight:750}
+.style-choice.is-current{background:var(--accent);color:#101015}
+.style-choice:focus-visible,.custom-layer-row:focus-within,.map-settings-buttons button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.map-marker{width:var(--marker-size,34px);height:var(--marker-size,34px);min-width:30px;min-height:30px;border-width:3px}
+.map-marker img{width:var(--marker-glyph,21px);height:var(--marker-glyph,21px)}
+.map-marker[hidden],.map-overlay[hidden]{display:none!important}
+.map-marker--item{border-style:dashed;background:rgba(39,31,13,.93)}
+.map-custom-panel{padding:15px;border:1px solid var(--border);border-radius:14px;background:var(--surface);margin:12px 0}
+.map-layer-controls{display:grid;gap:12px}
+.custom-layer-group{border:1px solid var(--border);border-radius:11px;padding:10px;display:grid;gap:6px;min-width:0}
+.custom-layer-group legend{padding:0 6px;font-weight:800;color:var(--text)}
+.custom-layer-row,.custom-map-only{display:flex;align-items:center;gap:11px;cursor:pointer;min-height:37px;font-size:.86rem;color:var(--text)}
+.custom-layer-row input,.custom-map-only input{width:19px;height:19px;flex-shrink:0;accent-color:var(--accent)}
+.map-help-copy,.map-preference-status,.source-caution{font-size:.79rem;line-height:1.45;color:var(--muted)}
+.map-help-copy{margin:9px 0}.custom-map-only{margin-bottom:12px;font-weight:700}
+.map-settings-buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.map-settings-buttons button{flex:1 1 auto;min-height:42px}
+.nearby-choices{display:flex;flex-wrap:wrap;gap:8px;padding:10px 0}
+.nearby-choices strong{width:100%;font-size:.82rem}
+.nearby-choices button{font-size:.78rem}
+.legend-count{font-size:.73rem;white-space:nowrap}
+@media(max-width:690px){.map-style-controls{order:3;width:100%;justify-content:center}.style-choice{flex:1}}
+
+/* Maintain a >=44px pointer/keyboard hit target while the visible symbol follows zoom. */
+.map-marker {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    isolation: isolate;
+}
+.map-marker::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: var(--marker-size, 34px);
+    height: var(--marker-size, 34px);
+    box-sizing: border-box;
+    border: 3px solid var(--marker-color);
+    border-radius: 50%;
+    background: rgba(11,11,13,.9);
+    box-shadow: 0 3px 12px rgba(0,0,0,.75), inset 0 0 0 2px rgba(255,255,255,.08);
+}
+.map-marker--item::before {border-style:dashed;background:rgba(39,31,13,.95)}
+.map-marker:hover::before,.map-marker:focus-visible::before {box-shadow:0 0 0 3px rgba(255,255,255,.75),0 5px 18px rgba(0,0,0,.78)}
+.map-marker.is-selected::before {box-shadow:0 0 0 4px #ff8a1f,0 0 0 8px rgba(255,138,31,.25),0 0 22px rgba(255,138,31,.7)}
+.map-marker.is-selected,.map-marker:hover,.map-marker:focus-visible {box-shadow:none}
+
+
+/* Escape opacity dims pin artwork, not keyboard hit targets or explanatory tooltips. */
+.marker-layer .map-marker::before,
+.marker-layer .map-marker > img {
+    opacity: var(--escape-marker-opacity, 1);
+}
+
+/* 1.2.0 map accuracy/update refinement: selector is a full-width row beneath the app header. */
+.app-header {grid-template-columns: minmax(0,1fr) auto;align-items:center;}
+.map-picker {flex:0 0 auto;min-width:0;padding:8px max(16px, env(safe-area-inset-right)) 4px max(16px, env(safe-area-inset-left));background:rgba(8,8,10,.89);border-bottom:1px solid var(--border);}
+body[data-active-view="wiki"] .map-picker,body[data-active-view="settings"] .map-picker {display:none;}
+.map-tabs {max-width:1760px;margin:0 auto;justify-content:center;flex-wrap:wrap;overflow-x:visible;row-gap:6px;}
+@media(max-width:1023px){.app-header{grid-template-columns:1fr;}}
+@media(max-width:700px){.map-picker{padding-top:5px;padding-bottom:9px;}}
+
+/* Escape guide: compact, readable overview without repeating spawn warnings. */
+.escape-quick-notes {
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+}
+.escape-quick-notes > h3 { margin: 0 0 12px; font-size: 1.02rem; }
+.escape-notes-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.escape-note { min-width: 0; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,.025); }
+.escape-note h4 { margin: 0 0 5px; color: var(--accent-2); font-size: .87rem; }
+.escape-note p { margin: 0; color: var(--text); font-size: .8rem; line-height: 1.48; overflow-wrap: anywhere; }
+.spawn-disclaimer { margin: 8px 0 0; padding-top: 9px; border-top: 1px solid var(--border); color: var(--muted); font-size: .78rem; line-height: 1.5; }
+.settings-version-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 14px; margin-top: 18px; padding: 14px 4px 6px; border-top: 1px solid var(--border); color: var(--muted); font-size: .82rem; }
+.settings-version-footer strong { color: var(--text); }
+@media (max-width: 600px) {
+    .escape-notes-grid { grid-template-columns: minmax(0, 1fr); }
+    .settings-version-footer { display: grid; }
+}
+
+/* 1.2.4 verified game texture icons. Keep existing marker hit targets and ring colors. */
+.legend-icon img[src*="/icons/game/"] {width:33px;height:33px;object-fit:contain;}
+.item-list li.with-game-item-icon {display:flex;align-items:center;gap:8px;margin-left:-18px;}
+.item-list .game-item-icon {width:23px;height:23px;flex:0 0 23px;object-fit:contain;}
+
+/* 1.2.5: verified item icons on the actual spawn-source markers. */
+.map-marker .map-item-marker-art {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    align-items: center;
+    justify-items: center;
+    width: var(--marker-glyph, 24px);
+    height: var(--marker-glyph, 24px);
+    overflow: visible;
+    pointer-events: none;
+    opacity: var(--escape-marker-opacity, 1);
+}
+.map-marker .map-item-marker-art[data-count="1"] {grid-template-columns: 1fr;}
+.map-marker .map-item-marker-art > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,.8));
+}
+.map-marker .map-item-marker-art[data-count="3"] > img:last-child {
+    grid-column: 1 / -1;
+    width: 50%;
+}

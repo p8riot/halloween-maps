@@ -1,0 +1,34 @@
+{
+  "version": "1.2.4",
+  "status": "development_preview",
+  "static_node_syntax": "PASS: app.js, app-config.js, sw.js, data/maps.js, wiki.js",
+  "service_worker_shell": "PASS: 47 app shell paths present",
+  "game_texture_decoding": "PASS: 121 supplied Texture2D pixel payloads decoded to PNG; 9 selected for app, including car retrieved from same connected Ravage export",
+  "chromium_inline_browser": {
+    "status": "PASS",
+    "widths": [
+      320,
+      390,
+      768,
+      1366
+    ],
+    "checks": [
+      "all four game escape types mapped to real PNG pixel data",
+      "icon images decode to 64x64",
+      "all five maps still present",
+      "448 source records present",
+      "Tower Farm has nine drain markers",
+      "no horizontal page overflow",
+      "no JavaScript page errors"
+    ]
+  },
+  "preservation": "PASS: map location data byte-for-byte unchanged after reversing four icon path substitutions; Wiki, Core, map art, storage schema unchanged",
+  "archive_integrity": "PASS: CRC and all manifest hashes checked after packaging",
+  "not_tested": [
+    "physical device",
+    "real map PNGs inside browser automation due administrator URL restriction",
+    "service worker installed PWA on a live origin",
+    "gameplay verification of escape coordinates or icon usage",
+    "copyright/public redistribution permission"
+  ]
+}

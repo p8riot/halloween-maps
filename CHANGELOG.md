@@ -1,3 +1,57 @@
+## 1.2.5, Item Map Icon Development Preview
+
+- Display original in-game item textures directly on item spawn-source map pins, not only in location details.
+- Multi-tag random-source markers show multiple icons instead of implying fixed contents; an unverified Cellar Key uses the existing crate artwork.
+- Marker artwork tracks item category filters without changing source data, coordinates, map-specific settings, or 44px input targets.
+- Version and service-worker cache updated. Private evaluation only, game icon redistribution rights are not confirmed.
+
+## 1.2.4, Game Icon Development Preview
+
+- Integrated four verified original game HUD icons for cellar, gate, storm drain and civilian sedan; preserved original custom SVGs.
+- Added exact-match game item icons to selected-location details without claiming randomized item sources have fixed contents.
+- Advanced product version and PWA cache; no source coordinates, map textures, storage keys, wiki, or Core changes.
+- Third-party game art reuse rights remain unverified; this ZIP is not approved for public release.
+
+# 1.2.3 | Escape Guide Development Preview
+
+- Simplified sedan escape marker visibility to one control, including migration of older saved preferences.
+- Added six compact, individually labeled quick-escape guidance entries.
+- Moved duplicated randomized-spawn wording into short disclaimers at the bottom of escape and item filter groups.
+- Documented Tower Farm drain escape requirements as similar to storm cellars, per player report, with in-game prompt caveat.
+- Moved app version information to Settings footer and fixed stale 1.1.2 readout.
+- Kept original map and app artwork: user map research archives do not contain verified standalone game HUD escape icons.
+- Bumped PWA cache identifier and preserved all original map datasets, actor IDs, Wiki and Core.
+- Remains a development preview; see MAPS_1_2_3_QA.json.
+
+# 1.2.2 | Maps Interaction Development Preview
+
+- Desktop map tabs now support Left/Right Arrow and Home/End navigation with focus management.
+- Escape-pin opacity control now affects artwork without hiding tooltip text or shrinking the accessible hit target.
+- Renamed lingering visible install/meta “HTG Maps” identifiers to Halloween Companion.
+- Changed map help wording to “possible spawns” rather than “candidates”.
+- Linked only p8Core within the full attribution text to https://linktr.ee/MWHQ in Settings and map footer.
+- All five map datasets, 448 source records, artwork files, and Core runtime unchanged; see MAPS_1_2_2_QA.json.
+
+---
+
+# Halloween: The Game Companion App 1.2.0 | Maps Development Preview
+
+- Five source-researched maps, dual artwork, legacy marker ID compatibility, correct non-grid map styles.
+- Source-tagged possible exits/sedans/item candidates and non-destructive customizable local filters.
+- New storm-drain icon and written police-key / sewer uncertainty guidance.
+- Development preview only: see README and MAPS_BUILD_QA for remaining live-game gates.
+
+---
+
+# Halloween: The Game Companion App 1.2.0 | Maps Development Preview
+
+- Five source-researched maps, dual artwork, legacy marker ID compatibility, correct non-grid map styles.
+- Source-tagged possible exits/sedans/item candidates and non-destructive customizable local filters.
+- New storm-drain icon and written police-key / sewer uncertainty guidance.
+- Development preview only: see README and MAPS_BUILD_QA for remaining live-game gates.
+
+---
+
 # Changelog
 
 This file records what was created or changed in each product build. It is separate from `QA-REPORT.md`, which records validation evidence, and `SOURCE-NOTES.md`, which records source/reference provenance.
@@ -179,3 +233,16 @@ This file records what was created or changed in each product build. It is separ
 - Added a GitHub Pages-ready manifest, product service worker/offline shell, app icons, and install instructions for major mobile/desktop platforms.
 - Bundled p8riot Core 0.2.0 Alpha 1 Storage, Dialog, and PWA Helper modules.
 - Structured map data so additional maps can be added without rebuilding the map-selection UI.
+
+
+## 1.2.1 Maps Correction Preview (October 29, 2026)
+- Replaced both 1024px Tower Farm previews with accurate native **4096x4096** decoded game textures. No source file reupload required. Correct Unreal texture payload offset is 0x79 (121 bytes), not a naive end-of-file slice.
+- Added the six verified building numbers **300, 301, 302, 303, 305 and 309** and road labels **Ridgeline Rd.** and **Clover Way** to the optional Realistic view. Their positions were read from the original printed Paper artwork, then converted using the per-style alignment.
+- Moved the map chooser into a separate, responsive row immediately below the app header.
+- Removed the grid Player Tip and the word 'candidates' from count badges.
+- Kept both Town Center vehicle route source actors (#3/#5), but combined them as a **single visible marker** because their projected positions nearly coincide. The source data remains unaltered except for display-link metadata; same physical route not yet live-certified.
+- Audited every address and street marker against the printed Paper maps (69 address labels and 22 street labels total); corrected four Town Center roof-edge positions. The source-informed accuracy audit images are in QA_LABEL_AUDIT. Exact gameplay placement remains unverified.
+- Removed misleading nearest-address attribution from vehicle departure triggers and qualified nearby addresses for other markers.
+- Updated the app's personal Linktree destination to https://linktr.ee/MWHQ in both visible attribution links.
+- Changed the service-worker cache identity to prevent stale 1.2.0 images, scripts and map labels from mixing with this preview.
+- Verified 34 automated browser/static checks, exact original source preservation, 45 legacy IDs and unchanged p8Core runtime.

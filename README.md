@@ -1,41 +1,43 @@
-# HTG Maps
+# Halloween: The Game Companion App 1.2.5 | Item Map Icon Development Preview
 
-HTG Maps is a static-first interactive companion for *Halloween: The Game*. It combines four interactive maps, escape-location references, searchable map information, configurable overlays, an in-app Wiki, themes, onboarding, and optional PWA installation.
+**Development preview only. Not approved for public release.**
 
-## Release identity
-- Product: HTG Maps
-- Product version: **1.0.20**
-- Release channel: development
-- Core compatibility: p8Core 0.2.0 Alpha 1 runtime files, with legacy technical filenames and globals preserved for compatibility
-- Service-worker cache: `halloween-escape-map-v1.0.20`
-- Storage namespace: `halloween-escape-map`
+This complete, self-contained app is based on the exact verified 1.2.3 Escape Guide Preview. Unzip into its own folder and open `index.html`. Older ZIPs remain preserved. The app may also be hosted from a secure origin for PWA testing.
 
-The exact task input was `HTG-Maps-1.0.20.zip`, but its internal version sources had drifted. `app-config.js` still identified 1.0.19, while unfinished UI fragments displayed 1.1.0 and older release documents displayed 1.0.17. This repair treats the internal app configuration as the current-version source and produces the synchronized 1.0.20 patch.
+## Changes in 1.2.5
 
-## 1.0.20 repair
-- Fixed the desktop scroll lock so Wiki and Settings use normal document scrolling while the Maps view keeps its intentional desktop map/panel layout.
-- Restored the missing Maps/Wiki/Settings navigation behavior and Wiki controller required by the HTML.
-- Restored the missing CSS for primary navigation, Wiki, Settings, and view-specific scrolling.
-- Removed orphaned gas-can map controls from HTML because the current app logic and map data intentionally do not ship the unverified gas-marker overlay.
-- Fixed the PWA app shell by restoring the referenced root `wiki.js` file and synchronizing the cache identity.
-- Synchronized visible product version, app configuration, release documentation, and service-worker cache identity to 1.0.20.
-- Updated visible framework attribution to `Built with p8Core`; legacy runtime identifiers remain unchanged.
-- Ran the p8Core Structured Gold Standard refinement on product source without altering the bundled Core runtime files.
+- Map item-source markers now display the original game icons for verified sedan keys, gas cans, repair kits, and bolt cutters.
+- Mixed randomized sources show multiple small symbols so they are not presented as fixed single-item spawns. The unknown Cellar Key retains the original crate symbol.
+- Changing item filters updates each source marker to show only enabled item categories; location text still lists all possible recorded items.
+- Original marker sizes, positions, hit targets, colors, map data, storage keys and custom SVG assets remain unchanged.
+- This is a **private development preview**; publisher permissions for extracted game art remain unverified.
 
-## Main features
-- Four 4096×4096 maps: East Haddonfield, Haddonfield Heights, Haddonfield Town Center, and Orange Grove Estates.
-- Pan, zoom, reset, keyboard navigation, touch/pinch handling, map tabs/selectors, and rally-point navigation.
-- Escape markers for Storm Cellars, Escape Gates, and Cars, with selected-location details and item requirements.
-- Optional escape, house-address, street-name, and A–J / 1–10 grid overlays with locally persisted visibility and opacity.
-- Map search and escape-type filters.
-- Searchable in-app Wiki with category filters and related-entry navigation.
-- Multiple Halloween-inspired visual themes.
-- Install guidance and product-owned service-worker/offline shell.
+## Changes in 1.2.4
 
-## Deployment
-The product uses relative URLs and can be served as ordinary static files. For PWA behavior, deploy on a secure origin such as GitHub Pages or another HTTPS host. Keep `index.html` at the publishing root and preserve file paths and casing.
+- Four real game textures replace the previous custom map icons for cellar, gate, storm drain and civilian sedan. The distinct vehicle departure-route symbol remains custom.
+- Five real game item icons are added to selected-location requirements when there is an exact item match. Randomized supply source markers stay generic to avoid mislabeling uncertain contents.
+- The original custom SVGs remain in the package. No map records, coordinates, wiki, storage identifiers or Core files changed.
+- All game icon assets originate from the user's FModel export ZIPs or the same connected game export folder. Raw .uasset Texture2D payloads were decoded directly into lossless PNG files.
+- **Rights restriction:** FModel extraction proves asset provenance, not redistribution permission. This development preview is for personal evaluation only until rights to publish game artwork are verified.
 
-After replacing a prior build, reopen or reload the site so the new `halloween-escape-map-v1.0.20` cache can take control when supported.
+## Prior work
 
-## Validation
-See `QA-REPORT.md` for exact PASS, WARNING, and NOT TESTED evidence. See `STRUCTURED-AUDIT.md` for the Structured Gold Standard pass and `SOURCE-NOTES.md` for data provenance.
+## Changes in 1.2.3
+
+- One civilian sedan checkbox now controls all sedan spawn markers. Previously saved map profiles are accepted under the existing `map-display-v2` key. If either historical sedan control was disabled, new combined car toggle starts disabled.
+- A compact, individually organized **Quick Escape Notes** section summarizes storm cellars, gates, civilian sedans, Tower Farm drains, police escapes, and vehicle exit trigger areas.
+- Storm drains on Tower Farm are described as following cellar-style clearing and unlocking, based on player feedback. Check the in-match HUD for the exact variant; this has not been separately verified against the new map gameplay blueprint.
+- Repeated not-guaranteed location warnings have been removed from legends, tooltips and selection text. Two dedicated short disclaimers now appear at the bottom of **Escape Spawn Locations** and **Escape Items Locations** filter groups.
+- The version/build info is now only at the bottom of the Settings page, and the outdated `1.1.2` version readout was corrected. Map footer attribution remains.
+- Cosmetic labels for cars/item sources are simpler. Existing map artwork, 448 source records, marker IDs, theme settings, Wiki and Core unchanged.
+- PWA cache identifier advanced to avoid mixing old and new app shell files.
+
+## Source icons
+
+Four supplied map research ZIPs were inspected. Each has map imagery, research data or overlays, **not a distinct set of in-game HUD escape icons**. The previous research ZIPs had no separate icons. New FModel exports supplied later do contain the original Texture2D art, used in this private development preview. The original SVGs remain for rollback; publisher/rights permission is still unverified.
+
+## Checks and remaining gates
+
+See `MAPS_1_2_3_QA.json` for exact checks and caveats. Chromium simulated UI checks passed at 320, 390, 768, and 1366px with lightweight placeholder bitmaps. Node syntax, cached asset paths, archive integrity and source preservation have been audited. Live-origin/installed-PWA and real-game map coordinates remain untested.
+
+No destructive data migration: existing storage key `map-display-v2` retained. Revert by opening original v1.2.2 ZIP. User-controlled stored map visibility will remain available.

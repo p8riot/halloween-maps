@@ -1,0 +1,38 @@
+{
+  "original_user_source_sha256": "199988cfc1eab71b081da358dac77d8034bcd3edfa7b0864c85ab5551ee19e9a",
+  "prior_preview_sha256": "083ace854be43566953bf5ef7ca997785703d9d007245a683b37e8bf2bbc8709",
+  "map_count": 5,
+  "source_records": 448,
+  "visible_default_source_locations": 94,
+  "item_source_actors": 353,
+  "native_map5_decoder": {
+    "source": "User Map5.part1.rar and Map5.part2.rar",
+    "texture_pixel_resolution": [
+      4096,
+      4096
+    ],
+    "payload_offset_hex": "0x79",
+    "formats": {
+      "realistic": "PF_DXT1",
+      "paper": "PF_DXT5"
+    }
+  },
+  "map5_address_names": [
+    "300",
+    "301",
+    "302",
+    "303",
+    "305",
+    "309"
+  ],
+  "map5_street_names": [
+    "Ridgeline Rd.",
+    "Clover Way"
+  ],
+  "grouped_route_record": {
+    "anchor": "source-5800c67f51f71a3592",
+    "secondary": "source-ae7d26b5d3a30d1488",
+    "map": "haddonfield-town-center"
+  },
+  "accuracy_status": "source-grounded, not live gameplay certified"
+}

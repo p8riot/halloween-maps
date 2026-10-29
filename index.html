@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <!--
-HTG Maps 1.1.2
+Halloween Companion 1.2.5 Item Map Icons Preview
 Structured source edition
 
 Source map
@@ -27,10 +27,10 @@ only change intentionally. Core runtime files remain external to product source.
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes">
     <meta name="theme-color" content="#151217">
-    <meta name="description" content="Interactive Halloween: The Game maps with escape locations, map overlays, search, and an in-app game Wiki.">
-    <meta name="application-name" content="HTG Maps">
-    <meta name="apple-mobile-web-app-title" content="HTG Maps">
-    <title>HTG Maps</title>
+    <meta name="description" content="Offline-ready Halloween: The Game companion with five maps, possible exits, possible item spawns and an in-app Wiki.">
+    <meta name="application-name" content="Halloween: The Game Companion App">
+    <meta name="apple-mobile-web-app-title" content="Halloween Companion">
+    <title>Halloween: The Game Companion App</title>
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/app/favicon-1.0.7.png">
     <link rel="apple-touch-icon" href="./assets/app/apple-touch-icon.png">
@@ -48,8 +48,8 @@ only change intentionally. Core runtime files remain external to product source.
         <div class="brand-block">
             <img class="brand-logo" src="./assets/app/icon-192.png" alt="" width="56" height="56">
             <div class="brand-copy">
-                <h1 class="brand-title">Halloween: The Game</h1>
-                <p class="header-credit">Interactive App · Created by <a href="https://linktr.ee/p8riot" target="_blank" rel="noopener noreferrer">p8riot</a></p>
+                <h1 class="brand-title">Halloween: The Game Companion App</h1>
+                <p class="header-credit">Interactive App · Created by <a href="https://linktr.ee/MWHQ" target="_blank" rel="noopener noreferrer">p8riot</a></p>
             </div>
         </div>
 
@@ -60,12 +60,13 @@ only change intentionally. Core runtime files remain external to product source.
             <button type="button" class="primary-nav-button" data-app-view="settings" aria-controls="settingsView">Settings</button>
         </nav>
 
+    </header>
+
         <div class="map-picker" data-map-only>
             <label class="mobile-map-label" for="mapSelect">Map</label>
             <select id="mapSelect" class="map-select" aria-label="Choose map"></select>
-            <div id="mapTabs" class="map-tabs" role="tablist" aria-label="Choose map"></div>
+            <div id="mapTabs" class="map-tabs" role="tablist" aria-label="Choose map. Use left and right arrow keys to switch maps."></div>
         </div>
-    </header>
 
     <!-- ==================================================================
          [HTML-02] MAPS WORKSPACE
@@ -78,6 +79,10 @@ only change intentionally. Core runtime files remain external to product source.
                     <div>
                         <h2 id="currentMapTitle">Loading map…</h2>
                     </div>
+                    <div class="map-style-controls" role="group" aria-label="Map artwork style">
+                    <button type="button" class="style-choice is-current" data-map-style="realistic" aria-pressed="true">Realistic</button>
+                    <button type="button" class="style-choice" data-map-style="paper" aria-pressed="false">Paper</button>
+                </div>
                     <div class="map-controls" aria-label="Map controls">
                         <button type="button" class="icon-button" data-map-action="zoom-out" aria-label="Zoom out">−</button>
                         <button type="button" class="icon-button" data-map-action="reset" aria-label="Reset and fit map">⌂</button>
@@ -99,7 +104,7 @@ only change intentionally. Core runtime files remain external to product source.
                         Keyboard users can use arrow keys to pan, plus and minus to zoom, and zero to reset.
                     </p>
                     <img id="mapImage" class="map-image" alt="" draggable="false">
-                    <div id="gridLayer" class="map-overlay grid-layer" aria-hidden="true"></div>
+                    
                     <div id="streetLayer" class="map-overlay street-layer" aria-label="Street names"></div>
                     <div id="addressLayer" class="map-overlay address-layer" aria-label="House addresses"></div>
                     <div id="markerLayer" class="marker-layer" aria-label="Possible escape locations"></div>
@@ -114,13 +119,8 @@ only change intentionally. Core runtime files remain external to product source.
                     <h3 id="mapFindTitle">Find on this map</h3>
                     <label class="sr-only" for="mapSearch">Search map locations</label>
                     <div class="map-search-row">
-                        <input id="mapSearch" type="search" placeholder="Search escape, address, street, grid…" autocomplete="off">
+                        <input id="mapSearch" type="search" placeholder="Search exits, supplies, addresses, streets…" autocomplete="off">
                         <button id="clearMapSearch" type="button" class="compact-button">Clear</button>
-                    </div>
-                    <div class="escape-filter-row" aria-label="Filter escape locations">
-                        <label><input id="filterCellar" type="checkbox" checked> Cellars</label>
-                        <label><input id="filterGate" type="checkbox" checked> Gates</label>
-                        <label><input id="filterCar" type="checkbox" checked> Cars</label>
                     </div>
                     <div id="mapSearchResults" class="map-search-results" aria-live="polite"></div>
                 </section>
@@ -130,28 +130,42 @@ only change intentionally. Core runtime files remain external to product source.
                     <p>Tap a map location or choose a rally point.</p>
                 </section>
 
-                <p class="spawn-note">
-                    These are possible spawn locations. The exits present in a match can vary.
-                </p>
-
                 <div id="legendList" class="legend-list"></div>
 
-                <aside class="player-tip" aria-labelledby="playerTipTitle">
-                    <h3 id="playerTipTitle">Player Tip — Addresses & Streets</h3>
-                    <p>
-                        Michael Myers cannot see house addresses or street names on his in-game map. If survivors
-                        are using proximity chat, they can use either to coordinate without giving Michael the
-                        same location information.
-                    </p>
-                </aside>
+                <section class="escape-quick-notes" aria-labelledby="escapeQuickNotesTitle">
+                    <h3 id="escapeQuickNotesTitle">Quick Escape Notes</h3>
+                    <div class="escape-notes-grid">
+                        <div class="escape-note"><h4>Storm Cellars</h4><p>Clear boards or overgrowth if present. Unlock using an Escape Key or Bolt Cutters, as required by the entrance.</p></div>
+                        <div class="escape-note"><h4>Escape Gates</h4><p>Bring a Fuse and the required unlocking tool. Clear obstacles if present, then complete the exit interaction.</p></div>
+                        <div class="escape-note"><h4>Civilian Sedans</h4><p>Find the car, Repair Kit, Gas Can, and Sedan Key. Repair, fuel, and start it before driving to an exit.</p></div>
+                        <div class="escape-note"><h4>Tower Farm Drains</h4><p>Work like storm cellar escapes: clear any obstruction and unlock with the tool the game requests. Follow the on-screen prompt for the current match.</p></div>
+                        <div class="escape-note"><h4>Police Escapes</h4><p>Police wagons and police cars are situational escapes. Their vehicles and keys are not shown as starting map markers; see the Wiki for details.</p></div>
+                        <div class="escape-note"><h4>Vehicle Exit Areas</h4><p>Route markers show where a drivable escape vehicle can leave the map. They are not parked-sedan spawn points.</p></div>
+                    </div>
+                </section>
+
+
+
+
+                <section class="map-custom-panel" aria-labelledby="mapCustomizationTitle">
+                    <div class="layer-panel-heading"><h3 id="mapCustomizationTitle">Customize map markers</h3></div>
+                    <p class="map-help-copy">Choose which escape routes and item categories appear on the map.</p>
+                    <label class="custom-map-only"><input id="customizeThisMap" type="checkbox"> Different settings for this map</label>
+                    <div id="mapLayerControls" class="map-layer-controls"></div>
+                    <div class="map-settings-buttons">
+                        <button id="applyAllMaps" type="button" class="compact-button">Apply to all maps</button>
+                        <button id="resetMapSettings" type="button" class="compact-button">Reset Map Settings</button>
+                    </div>
+                    <p id="mapPreferencesStatus" class="map-preference-status" role="status" aria-live="polite"></p>
+                </section>
 
                 <section class="layer-panel" aria-labelledby="layerTitle">
                     <div class="layer-panel-heading">
-                        <h3 id="layerTitle">Map overlays</h3>
+                        <h3 id="layerTitle">Other map information</h3>
                     </div>
                     <div class="layer-options">
                         <div class="layer-option">
-                            <label class="layer-toggle"><input id="toggleEscapes" type="checkbox" checked> Escape locations</label>
+                            <label class="layer-toggle"><input id="toggleEscapes" type="checkbox" checked> Show exit markers (master)</label>
                             <div class="layer-opacity">
                                 <label for="opacityEscapes">Opacity</label>
                                 <input id="opacityEscapes" type="range" min="10" max="100" step="5" value="50">
@@ -174,24 +188,15 @@ only change intentionally. Core runtime files remain external to product source.
                                 <output id="opacityStreetsValue" for="opacityStreets">50%</output>
                             </div>
                         </div>
-                        <div class="layer-option">
-                            <label class="layer-toggle"><input id="toggleGrid" type="checkbox" checked> A–J / 1–10 grid</label>
-                            <div class="layer-opacity">
-                                <label for="opacityGrid">Opacity</label>
-                                <input id="opacityGrid" type="range" min="10" max="100" step="5" value="50">
-                                <output id="opacityGridValue" for="opacityGrid">50%</output>
-                            </div>
+
                         </div>
                     </div>
                 </section>
 
                 <section class="panel-footer" aria-label="App attribution">
                     <div class="footer-meta">
-                        <span>HTG Maps 1.1.2</span>
-                        <span aria-hidden="true"> · </span>
                         <span>
-                            Built with
-                            <a class="p8core-brand" href="https://linktr.ee/p8riot" target="_blank" rel="noopener noreferrer">p8Core</a>
+                            Built using the <a href="https://linktr.ee/MWHQ" target="_blank" rel="noopener noreferrer">p8Core</a> App Builder
                         </span>
                     </div>
                 </section>
@@ -275,18 +280,19 @@ only change intentionally. Core runtime files remain external to product source.
 
                     <section class="settings-card">
                         <h3>Install</h3>
-                        <p>Install HTG Maps where your browser supports Progressive Web Apps.</p>
+                        <p>Install Halloween Companion where your browser supports Progressive Web Apps.</p>
                         <button id="installButton" type="button" class="footer-button" hidden>Install app</button>
                     </section>
 
                     <section class="settings-card">
                         <h3>About</h3>
-                        <dl class="about-list">
-                            <div><dt>Version</dt><dd>1.1.2</dd></div>
-                        </dl>
-                        <p class="settings-credit">Built with <a class="p8core-brand" href="https://linktr.ee/p8riot" target="_blank" rel="noopener noreferrer">p8Core</a></p>
+                        <p class="settings-credit">Built using the <a class="p8core-brand" href="https://linktr.ee/MWHQ" target="_blank" rel="noopener noreferrer">p8Core</a> App Builder</p>
                     </section>
                 </div>
+                <footer class="settings-version-footer" aria-label="App version">
+                    <span>Halloween: The Game Companion App</span>
+                    <span>Version <strong>1.2.5</strong> · Item Map Icons Preview</span>
+                </footer>
             </div>
         </section>
     </main>
@@ -300,7 +306,7 @@ only change intentionally. Core runtime files remain external to product source.
             <div class="dialog-heading">
                 <div>
                     <p class="toolbar-kicker">Installable PWA</p>
-                    <h2 id="installTitle">Install HTG Maps</h2>
+                    <h2 id="installTitle">Install Halloween Companion</h2>
                 </div>
                 <button type="button" class="dialog-close" data-p8-dialog-close aria-label="Close install instructions">×</button>
             </div>

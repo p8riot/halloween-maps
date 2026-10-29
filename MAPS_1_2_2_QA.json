@@ -1,0 +1,334 @@
+{
+  "version": "1.2.2",
+  "baseline_sha256": "df3dbea3479cac5747a54fdde11c162148e57fcb7e9a0a306c83a4fb64de9e74",
+  "test_mode": "STATIC and SIMULATED BROWSER (inlined-origin Chromium); no live HTTP/PWA certification",
+  "passed": 59,
+  "failed": 0,
+  "tests": [
+    {
+      "test": "data/maps.js unchanged from latest verified baseline",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "data/wiki.js unchanged from latest verified baseline",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "core/p8riot-core.js unchanged from latest verified baseline",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "core/p8riot-core.css unchanged from latest verified baseline",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "core/modules/p8riot-dialog.js unchanged from latest verified baseline",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "core/modules/p8riot-storage.js unchanged from latest verified baseline",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "core/modules/p8riot-pwa.js unchanged from latest verified baseline",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "core/modules/p8riot-dialog.css unchanged from latest verified baseline",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "assets/maps/tower-farm-realistic.webp unchanged from latest verified baseline",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "assets/maps/tower-farm-paper.webp unchanged from latest verified baseline",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Source provenance preserved",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "PWA cache bump",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "App version triple",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Install name remains full product name",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "HTML meta product name is correct",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Outdated visible name removed",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "No outdated candidate terminology in UI",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Attribution links have updated MWHQ destination",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Attribution wording consistent",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "320px full app renders",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "320px no horizontal document overflow",
+      "result": "PASS",
+      "detail": {
+        "doc": 320,
+        "viewport": 320
+      }
+    },
+    {
+      "test": "320px no JavaScript load errors",
+      "result": "PASS",
+      "detail": []
+    },
+    {
+      "test": "320px map options count",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "320px no JavaScript runtime errors after actions",
+      "result": "PASS",
+      "detail": []
+    },
+    {
+      "test": "390px full app renders",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "390px no horizontal document overflow",
+      "result": "PASS",
+      "detail": {
+        "doc": 390,
+        "viewport": 390
+      }
+    },
+    {
+      "test": "390px no JavaScript load errors",
+      "result": "PASS",
+      "detail": []
+    },
+    {
+      "test": "390px map options count",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Mobile selection reaches Tower Farm",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Mobile tower artwork loads",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "390px no JavaScript runtime errors after actions",
+      "result": "PASS",
+      "detail": []
+    },
+    {
+      "test": "768px full app renders",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "768px no horizontal document overflow",
+      "result": "PASS",
+      "detail": {
+        "doc": 768,
+        "viewport": 768
+      }
+    },
+    {
+      "test": "768px no JavaScript load errors",
+      "result": "PASS",
+      "detail": []
+    },
+    {
+      "test": "768px map options count",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "768px no JavaScript runtime errors after actions",
+      "result": "PASS",
+      "detail": []
+    },
+    {
+      "test": "1366px full app renders",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "1366px no horizontal document overflow",
+      "result": "PASS",
+      "detail": {
+        "doc": 1366,
+        "viewport": 1366
+      }
+    },
+    {
+      "test": "1366px no JavaScript load errors",
+      "result": "PASS",
+      "detail": []
+    },
+    {
+      "test": "1366px map options count",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Map tabs ArrowRight activates next map",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Map tabs ArrowRight moves keyboard focus",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Map tabs End activates Tower Farm",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Map tabs Home returns to first map",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Map tabs ArrowLeft wraps to last map",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Exit pin artwork visibly respects opacity slider",
+      "result": "PASS",
+      "detail": {
+        "pin": "0.3",
+        "img": "0.3",
+        "tooltip": "0",
+        "hit": 44,
+        "layer": ""
+      }
+    },
+    {
+      "test": "Pin tooltip and 44px target unaffected by opacity",
+      "result": "PASS",
+      "detail": {
+        "pin": "0.3",
+        "img": "0.3",
+        "tooltip": "0",
+        "hit": 44,
+        "layer": ""
+      }
+    },
+    {
+      "test": "Address and street overlays present on Realistic",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Paper view hides duplicate address and street overlays",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Realistic view restores selected reference overlays",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "east-haddonfield default map image loaded",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "haddonfield-heights default map image loaded",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "haddonfield-town-center default map image loaded",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "orange-grove-estates default map image loaded",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "tower-farm default map image loaded",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Original 94 visible default escape and sedan locations preserved",
+      "result": "PASS",
+      "detail": {
+        "east-haddonfield": 14,
+        "haddonfield-heights": 22,
+        "haddonfield-town-center": 16,
+        "orange-grove-estates": 17,
+        "tower-farm": 25
+      }
+    },
+    {
+      "test": "Tower Farm street overlays",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "Tower Farm address overlays",
+      "result": "PASS",
+      "detail": null
+    },
+    {
+      "test": "1366px no JavaScript runtime errors after actions",
+      "result": "PASS",
+      "detail": []
+    }
+  ]
+}

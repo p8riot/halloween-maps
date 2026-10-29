@@ -1,9 +1,9 @@
 /* HTG Maps product configuration. Storage namespace and module IDs are compatibility-sensitive. */
 
 window.p8riotAppConfig = {
-    name: "HTG Maps",
-    shortName: "HTG Maps",
-    version: "1.0.20",
+    name: "Halloween: The Game Companion App",
+    shortName: "Halloween Companion",
+    version: "1.2.5",
     coreVersion: "0.2.0",
     modules: {
         storage: true,

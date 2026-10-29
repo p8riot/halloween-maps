@@ -1,0 +1,66 @@
+{
+  "version": "1.2.3",
+  "stage": "development_preview",
+  "baseline_file": "Halloween_The_Game_Companion_App_1.2.2_Maps_Interaction_Preview.zip",
+  "baseline_sha256": "f4ed409ec01c6c1dc421e8e398a2c3b2d01963c8f11381f04dbb33d19886674e",
+  "source_data": {
+    "maps": 5,
+    "source_records": 448,
+    "actor_location_lines_changed": 0,
+    "image_assets_modified": 0,
+    "wiki_modified": false,
+    "core_modified": false
+  },
+  "browser_checks": {
+    "method": "Chromium Playwright simulated via inline source + 1x1 stub map imagery because file navigation was blocked",
+    "viewports_px": [
+      320,
+      390,
+      768,
+      1366
+    ],
+    "result": "PASS",
+    "asserted": "no JS exceptions; five maps present; six quick-note entries; exactly one sedan checkbox; duplicate legacy checkbox removed; both localized disclaimers rendered; legend rendered; car markers hide/show solely by checkbox; version at Settings bottom only; no overflow at tested widths"
+  },
+  "other_checks": {
+    "node_js_syntax": "PASS",
+    "sw_precache_assets": "PASS",
+    "map_record_id_count_preserved": "PASS",
+    "all_asset_hashes_unchanged": "PASS",
+    "wiki_and_core_unchanged": "PASS",
+    "four_map_research_zip_icon_audit": "PASS: no standalone game escape icon assets"
+  },
+  "limits": [
+    "No physical-device gameplay verification",
+    "No live-origin service worker/PWA install verification",
+    "Map-image rendering in browser was stubbed; original image assets preserved",
+    "Tower Farm drain requirements reflect player-provided behavior, not independent game-code confirmation",
+    "Third-party game HUD/icon reuse rights not established"
+  ],
+  "researched_references": [
+    "https://www.halloweengamewiki.com/multiplayer/escape-routes-and-required-items/",
+    "https://www.gamesradar.com/games/horror/halloween-the-game-exits/"
+  ],
+  "audited_research_archives": [
+    {
+      "file": "East_Haddonfield_Map4_Research_CP01.zip",
+      "entries": 11,
+      "separate_escape_icon_assets": []
+    },
+    {
+      "file": "Map2_Map3_Research_CP01.zip",
+      "entries": 21,
+      "separate_escape_icon_assets": []
+    },
+    {
+      "file": "TowerFarm_Map5_Research_CP01.zip",
+      "entries": 12,
+      "separate_escape_icon_assets": []
+    },
+    {
+      "file": "WaterTower_HaddonfieldHeights_Map_Research_CP01.zip",
+      "entries": 11,
+      "separate_escape_icon_assets": []
+    }
+  ]
+}

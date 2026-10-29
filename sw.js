@@ -10,7 +10,7 @@ SW-03  Fetch strategy
 // ============================================================================
 // [SW-01] CACHE IDENTITY + APP SHELL
 // ============================================================================
-const CACHE_NAME = "halloween-escape-map-v1.0.20";
+const CACHE_NAME = "halloween-escape-map-v1.2.5-item-map-icons";
 const APP_SHELL = [
     "./",
     "./index.html",
@@ -29,11 +29,33 @@ const APP_SHELL = [
     "./core/modules/p8riot-pwa.js",
     "./assets/icons/escape-door.svg",
     "./assets/icons/car.svg",
+    "./assets/icons/storm-drain.svg",
+    "./assets/icons/vehicle-route.svg",
+    "./assets/icons/supply.svg",
+    "./assets/icons/game/game-cellar.png",
+    "./assets/icons/game/game-gate.png",
+    "./assets/icons/game/game-storm-drain.png",
+    "./assets/icons/game/game-car.png",
+    "./assets/icons/game/item-sedan-key.png",
+    "./assets/icons/game/item-gas-can.png",
+    "./assets/icons/game/item-repair-kit.png",
+    "./assets/icons/game/item-bolt-cutters.png",
+    "./assets/icons/game/item-fuse.png",
     "./assets/app/icon-192.png",
     "./assets/app/icon-512.png",
     "./assets/app/apple-touch-icon.png",
     "./assets/app/favicon-1.0.7.png",
     "./assets/maps/east-haddonfield.jpg",
+    "./assets/maps/tower-farm-paper.webp",
+    "./assets/maps/tower-farm-realistic.webp",
+    "./assets/maps/orange-grove-estates-paper.webp",
+    "./assets/maps/orange-grove-estates-realistic.webp",
+    "./assets/maps/haddonfield-town-center-paper.webp",
+    "./assets/maps/haddonfield-town-center-realistic.webp",
+    "./assets/maps/haddonfield-heights-paper.webp",
+    "./assets/maps/haddonfield-heights-realistic.webp",
+    "./assets/maps/east-haddonfield-paper.webp",
+    "./assets/maps/east-haddonfield-realistic.webp",
     "./assets/maps/haddonfield-heights.jpg",
     "./assets/maps/haddonfield-town-center.jpg",
     "./assets/maps/orange-grove-estates.jpg"

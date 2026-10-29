@@ -1,5 +1,5 @@
 /*
-HTG Maps 1.0.20
+Halloween Companion 1.2.4 Game Icon Preview
 Structured source edition
 
 Source map
@@ -31,19 +31,19 @@ Source map
     var markerLayer = document.getElementById("markerLayer");
     var addressLayer = document.getElementById("addressLayer");
     var streetLayer = document.getElementById("streetLayer");
-    var gridLayer = document.getElementById("gridLayer");
+
     var toggleEscapes = document.getElementById("toggleEscapes");
     var toggleAddresses = document.getElementById("toggleAddresses");
     var toggleStreets = document.getElementById("toggleStreets");
-    var toggleGrid = document.getElementById("toggleGrid");
+
     var opacityEscapes = document.getElementById("opacityEscapes");
     var opacityAddresses = document.getElementById("opacityAddresses");
     var opacityStreets = document.getElementById("opacityStreets");
-    var opacityGrid = document.getElementById("opacityGrid");
+
     var opacityEscapesValue = document.getElementById("opacityEscapesValue");
     var opacityAddressesValue = document.getElementById("opacityAddressesValue");
     var opacityStreetsValue = document.getElementById("opacityStreetsValue");
-    var opacityGridValue = document.getElementById("opacityGridValue");
+
     var mapTitle = document.getElementById("currentMapTitle");
     var mapTabs = document.getElementById("mapTabs");
     var mapSelect = document.getElementById("mapSelect");
@@ -64,9 +64,9 @@ Source map
     var mapSearch = document.getElementById("mapSearch");
     var clearMapSearch = document.getElementById("clearMapSearch");
     var mapSearchResults = document.getElementById("mapSearchResults");
-    var filterCellar = document.getElementById("filterCellar");
-    var filterGate = document.getElementById("filterGate");
-    var filterCar = document.getElementById("filterCar");
+
+
+
 
     // ============================================================================
     // [JS-02] LIVE APP STATE + SHARED HELPERS
@@ -87,30 +87,108 @@ Source map
         markerNodes: [],
         addressNodes: [],
         streetNodes: [],
-        gridNodes: [],
+
         overlays: {
             escapes: true,
-            addresses: true,
-            streets: true,
-            grid: true
+            addresses: false,
+            streets: false,
         },
         overlayOpacity: {
-            escapes: 0.5,
+            escapes: 1,
             addresses: 0.5,
-            streets: 0.5,
-            grid: 0.5
+            streets: 0.5
         },
         activePointers: new Map(),
         drag: null,
         pinch: null,
-        escapeFilters: {
-            cellar: true,
-            gate: true,
-            car: true
-        }
+        escapeFilters: {}
     };
 
     var storageStore = null;
+    var mapPreferenceState = null;
+    var prefsReady = false;
+    var MAP_LAYER_DEFAULTS = {cellar: true, gate: true, car: true, drain: true, vehicleExit: true, items: false};
+    var ITEM_TAG_LABELS = data.itemTypes;
+    // Match only verified item names. Generic/randomized sources retain their generic marker.
+    var ITEM_ICON_BY_LABEL = {
+        "Sedan Key": "./assets/icons/game/item-sedan-key.png",
+        "Gas Can": "./assets/icons/game/item-gas-can.png",
+        "Repair Kit": "./assets/icons/game/item-repair-kit.png",
+        "Bolt Cutters": "./assets/icons/game/item-bolt-cutters.png",
+        "Fuse": "./assets/icons/game/item-fuse.png"
+    };
+    // Original game images are mapped to verified source tags, not inferred loot.
+    // Cellar Key has no confirmed matching exported icon, so its map symbol stays generic.
+    var ITEM_ICON_BY_TAG = {
+        "ID.Item.SedanKey.Default": ITEM_ICON_BY_LABEL["Sedan Key"],
+        "ID.Item.Gascan.Default": ITEM_ICON_BY_LABEL["Gas Can"],
+        "ID.Item.RepairKit.Default": ITEM_ICON_BY_LABEL["Repair Kit"],
+        "ID.Item.BoltCutters.Default": ITEM_ICON_BY_LABEL["Bolt Cutters"]
+    };
+    var ITEM_PURPOSE_TAGS = {
+        car: ["ID.Item.SedanKey.Default", "ID.Item.Gascan.Default", "ID.Item.RepairKit.Default"],
+        cellar: ["ID.Item.CellarKey.Default", "ID.Item.BoltCutters.Default"],
+        gate: ["ID.Item.BoltCutters.Default"]
+    };
+    function defaultMapProfile() {
+        return {style: "realistic", layers: Object.assign({}, MAP_LAYER_DEFAULTS),
+            itemTags: Object.keys(ITEM_TAG_LABELS).reduce(function (acc, k) {acc[k] = true; return acc;}, {}),
+            purposes: {car: true, cellar: true, gate: true}};
+    }
+    function cleanMapProfile(raw) {
+        var out = defaultMapProfile();
+        if (!raw || typeof raw !== "object") return out;
+        if (raw.style === "realistic" || raw.style === "paper") out.style = raw.style;
+        ["layers", "itemTags", "purposes"].forEach(function (section) {
+            if (!raw[section] || typeof raw[section] !== "object") return;
+            Object.keys(out[section]).forEach(function (key) {
+                if (typeof raw[section][key] === "boolean") out[section][key] = raw[section][key];
+            });
+        });
+        // In earlier versions car visibility required TWO controls. Keep cars hidden
+        // if either of the old controls had been disabled in a saved profile.
+        if (raw.layers && raw.layers.sedanSpawns === false) out.layers.car = false;
+        return out;
+    }
+    function effectiveMapProfile() {
+        if (!mapPreferenceState) return defaultMapProfile();
+        return mapPreferenceState.perMap[currentMap().id] || mapPreferenceState.global;
+    }
+    function editingThisMap() {
+        return !!(mapPreferenceState && mapPreferenceState.perMap[currentMap().id]);
+    }
+    function persistMapProfile() {
+        if (!storageStore) return;
+        var result = storageStore.set("map-display-v2", mapPreferenceState);
+        var status = document.getElementById("mapPreferencesStatus");
+        if (status) status.textContent = result && result.ok === true ? "Saved locally." : "Settings apply this session, but local saving is unavailable.";
+    }
+    function updateMapProfile(change) {
+        if (!mapPreferenceState) return;
+        var mapId = currentMap().id;
+        var profile = editingThisMap() ? mapPreferenceState.perMap[mapId] : mapPreferenceState.global;
+        change(profile);
+        persistMapProfile();
+        syncMapPreferenceControls();
+        syncEscapeFilters();
+        renderMapSearchResults();
+    }
+    function mapStyle() {return effectiveMapProfile().style;}
+    function styleDelta(map, style) {return (map.pixelOffset && Number(map.pixelOffset[style])) || 0;}
+    function locationPosition(point) {return {x: point.x + styleDelta(currentMap(), mapStyle()), y: point.y};}
+    function switchMapStyle(style) {
+        if (style !== "realistic" && style !== "paper" || style === mapStyle()) return;
+        var before = styleDelta(currentMap(), mapStyle());
+        updateMapProfile(function (p) { p.style = style; });
+        var after = styleDelta(currentMap(), style);
+        state.tx -= (after - before) * state.scale;
+        mapImage.src = currentMap().styles[style];
+        mapImage.alt = currentMap().name + " " + style + " map";
+        syncOverlayVisibility();
+        applyView();
+        renderMapSearchResults();
+        announce(style === "paper" ? "Paper artwork, including the printed grid." : "Realistic artwork, no grid.");
+    }
     var dialogController = null;
     var pwaApi = null;
     var installedThisSession = false;
@@ -135,6 +213,50 @@ Source map
         return data.maps[state.mapIndex];
     }
 
+    function itemNames(location) {
+        return (location.itemTags || []).map(function (tag) {return ITEM_TAG_LABELS[tag] || tag;});
+    }
+    function markerItems(location) {
+        return location.type === "item" ? itemNames(location) : escapeType(location.type).items;
+    }
+    function allowedItemTags(location) {
+        var prefs = effectiveMapProfile();
+        if (!prefs.layers.items) return [];
+        var allowed = Object.keys(prefs.purposes).filter(function (key) {
+            return prefs.purposes[key];
+        }).reduce(function (out, key) {return out.concat(ITEM_PURPOSE_TAGS[key]);}, []);
+        return (location.itemTags || []).filter(function (tag) {
+            return prefs.itemTags[tag] === true && allowed.indexOf(tag) !== -1;
+        });
+    }
+    function makeItemMarkerArt(location) {
+        var art = document.createElement("span");
+        art.className = "map-item-marker-art";
+        art.setAttribute("aria-hidden", "true");
+        updateItemMarkerArt(art, location);
+        return art;
+    }
+    function updateItemMarkerArt(art, location) {
+        var tags = allowedItemTags(location);
+        art.dataset.count = String(tags.length);
+        art.replaceChildren();
+        // One marker represents one item *source*. Multiple icons mean possible
+        // alternatives, not that every item spawns together or every match.
+        tags.forEach(function (tag) {
+            var icon = document.createElement("img");
+            icon.src = ITEM_ICON_BY_TAG[tag] || escapeType("item").icon;
+            icon.alt = "";
+            icon.draggable = false;
+            art.appendChild(icon);
+        });
+    }
+    function markerSummary(location) {
+        if (location.type === "item") return "Item source: " + itemNames(location).join(", ") + ". Contents and indoor/outdoor placement are not verified.";
+        if (location.type === "car") return "Civilian escape sedan parking spot.";
+        if (location.type === "vehicleExit") return (location.alternateTriggerIds ? "Adjacent route triggers are grouped here. " : "") + "Vehicle departure area, not a parked sedan or police car.";
+        if (location.type === "drain") return "Tower Farm drain escape; clear obstacles and unlock as you would a storm cellar. Check the in-game prompt.";
+        return "See Quick Escape Notes for the required items and steps.";
+    }
     function makeIcon(type, className) {
         var icon = document.createElement("img");
         icon.src = escapeType(type).icon;
@@ -163,6 +285,17 @@ Source map
             tab.addEventListener("click", function () {
                 selectMap(index);
             });
+            tab.addEventListener("keydown", function (event) {
+                var nextIndex = index;
+                if (event.key === "ArrowRight") nextIndex = (index + 1) % data.maps.length;
+                else if (event.key === "ArrowLeft") nextIndex = (index - 1 + data.maps.length) % data.maps.length;
+                else if (event.key === "Home") nextIndex = 0;
+                else if (event.key === "End") nextIndex = data.maps.length - 1;
+                else return;
+                event.preventDefault();
+                selectMap(nextIndex);
+                mapTabs.children[nextIndex].focus();
+            });
             mapTabs.appendChild(tab);
         });
 
@@ -190,68 +323,33 @@ Source map
     function renderLegend() {
         var map = currentMap();
         legendList.textContent = "";
-
-        ["cellar", "gate", "car"].forEach(function (type) {
+        ["cellar", "gate", "car", "drain", "vehicleExit"].forEach(function (type) {
+            var count = map.locations.filter(function (loc) { return loc.type === type && !loc.displayAliasOf; }).length;
+            if (!count) return;
             var info = escapeType(type);
-            var count = map.locations.filter(function (location) {
-                return location.type === type;
-            }).length;
-
             var card = document.createElement("article");
             card.className = "legend-card";
             card.style.setProperty("--legend-color", info.color);
-
             var iconWrap = document.createElement("div");
             iconWrap.className = "legend-icon";
             iconWrap.appendChild(makeIcon(type));
-
             var copy = document.createElement("div");
             copy.className = "legend-copy";
-
-            var heading = document.createElement("h3");
-            heading.textContent = info.label;
-
-            var needed = document.createElement("p");
-            needed.textContent = "Items needed";
-
-            var list = document.createElement("ul");
-            list.className = "item-list";
-            info.items.forEach(function (item) {
-                var li = document.createElement("li");
-                li.textContent = item;
-                list.appendChild(li);
-            });
-
-            copy.appendChild(heading);
-            copy.appendChild(needed);
-            copy.appendChild(list);
-
-            var countBadge = document.createElement("div");
-            countBadge.className = "legend-count";
-            countBadge.textContent = String(count);
-            countBadge.setAttribute("aria-label", count + " possible locations");
-
-            card.appendChild(iconWrap);
-            card.appendChild(copy);
-            card.appendChild(countBadge);
+            var title = document.createElement("h3"); title.textContent = info.label;
+            var note = document.createElement("p");
+            note.textContent = type === "drain" ? "Same approach as storm cellars" : type === "vehicleExit" ? "Departure route, not a parked car" : "";
+            copy.appendChild(title);
+            if (note.textContent) copy.appendChild(note);
+            var badge = document.createElement("div");badge.className="legend-count";
+            badge.textContent = String(count);
+            card.appendChild(iconWrap);card.appendChild(copy);card.appendChild(badge);
             legendList.appendChild(card);
         });
     }
 
     function markerLabel(map, location) {
-        var info = escapeType(location.type);
-        return (
-            info.label +
-            " possible location " +
-            location.number +
-            " on " +
-            map.name +
-            ". Items needed: " +
-            info.items.join("; ") +
-            ". Press P to pin or unpin map details."
-        );
+        return escapeType(location.type).label + " location " + location.number + " on " + map.name + ". " + (location.type === "item" ? "Possible item types: " + itemNames(location).join(", ") + ". " : "") + markerSummary(location) + " Press P to pin details.";
     }
-
 
     function currentOverlays() {
         return currentMap().overlays || { addresses: [], streets: [], grid: null };
@@ -261,10 +359,10 @@ Source map
         var overlays = currentOverlays();
         addressLayer.textContent = "";
         streetLayer.textContent = "";
-        gridLayer.textContent = "";
+
         state.addressNodes = [];
         state.streetNodes = [];
-        state.gridNodes = [];
+
 
         (overlays.addresses || []).forEach(function (item, index) {
             var label = document.createElement("button");
@@ -315,117 +413,50 @@ Source map
             state.streetNodes.push({ element: label, item: item });
         });
 
-        if (overlays.grid) {
-            var surface = document.createElement("div");
-            surface.className = "grid-surface";
-            gridLayer.appendChild(surface);
-            state.gridSurface = surface;
-
-            (overlays.grid.columns || []).forEach(function (value, index) {
-                var node = document.createElement("span");
-                node.className = "grid-label";
-                node.textContent = value;
-                gridLayer.appendChild(node);
-                state.gridNodes.push({
-                    element: node,
-                    kind: "column",
-                    index: index,
-                    count: overlays.grid.columns.length
-                });
-            });
-
-            (overlays.grid.rows || []).forEach(function (value, index) {
-                var node = document.createElement("span");
-                node.className = "grid-label";
-                node.textContent = value;
-                gridLayer.appendChild(node);
-                state.gridNodes.push({
-                    element: node,
-                    kind: "row",
-                    index: index,
-                    count: overlays.grid.rows.length
-                });
-            });
-        } else {
-            state.gridSurface = null;
-        }
-
         syncOverlayVisibility();
         updateOverlayPositions();
     }
 
     function overlayControlSet(name) {
-        if (name === "escapes") {
-            return { toggle: toggleEscapes, slider: opacityEscapes, output: opacityEscapesValue, layer: markerLayer, label: "Escape locations" };
-        }
-        if (name === "addresses") {
-            return { toggle: toggleAddresses, slider: opacityAddresses, output: opacityAddressesValue, layer: addressLayer, label: "House addresses" };
-        }
-        if (name === "streets") {
-            return { toggle: toggleStreets, slider: opacityStreets, output: opacityStreetsValue, layer: streetLayer, label: "Street names" };
-        }
-        return { toggle: toggleGrid, slider: opacityGrid, output: opacityGridValue, layer: gridLayer, label: "Map grid" };
+        if (name === "escapes") return {toggle:toggleEscapes,slider:opacityEscapes,output:opacityEscapesValue,layer:markerLayer,label:"Escape locations"};
+        if (name === "addresses") return {toggle:toggleAddresses,slider:opacityAddresses,output:opacityAddressesValue,layer:addressLayer,label:"Addresses"};
+        if (name === "streets") return {toggle:toggleStreets,slider:opacityStreets,output:opacityStreetsValue,layer:streetLayer,label:"Street names"};
+        return null;
     }
 
     function syncOverlayVisibility() {
-        ["escapes", "addresses", "streets", "grid"].forEach(function (name) {
+        ["escapes", "addresses", "streets"].forEach(function (name) {
             var controls = overlayControlSet(name);
             var enabled = state.overlays[name] === true;
             var opacity = state.overlayOpacity[name];
-
-            controls.layer.hidden = !enabled;
-            controls.layer.style.opacity = String(opacity);
+            if (name !== "escapes") controls.layer.hidden = !enabled || mapStyle() === "paper";
+            if (name === "escapes") {
+                // Keep marker tooltips fully readable while fading only pin artwork.
+                controls.layer.style.setProperty("--escape-marker-opacity", String(opacity));
+            } else {
+                controls.layer.style.opacity = String(opacity);
+            }
             controls.toggle.checked = enabled;
             controls.slider.disabled = !enabled;
             controls.slider.value = String(Math.round(opacity * 100));
-            controls.output.value = Math.round(opacity * 100) + "%";
-            controls.output.textContent = controls.output.value;
+            controls.output.textContent = Math.round(opacity * 100) + "%";
+            controls.output.value = controls.output.textContent;
         });
+        if (prefsReady) syncEscapeFilters();
     }
 
     function updateOverlayPositions() {
-        var map = currentMap();
-
         state.addressNodes.forEach(function (entry) {
-            entry.element.style.left = state.tx + entry.item.x * state.scale + "px";
-            entry.element.style.top = state.ty + entry.item.y * state.scale + "px";
+            var p=locationPosition(entry.item);
+            entry.element.style.left = state.tx + p.x * state.scale + "px";
+            entry.element.style.top = state.ty + p.y * state.scale + "px";
         });
-
         state.streetNodes.forEach(function (entry) {
-            entry.element.style.left = state.tx + entry.item.x * state.scale + "px";
-            entry.element.style.top = state.ty + entry.item.y * state.scale + "px";
-            entry.element.style.transform =
-                "translate(-50%, -50%) rotate(" + (entry.item.rotation || 0) + "deg)";
+            var p=locationPosition(entry.item);
+            entry.element.style.left = state.tx + p.x * state.scale + "px";
+            entry.element.style.top = state.ty + p.y * state.scale + "px";
+            entry.element.style.transform = "translate(-50%, -50%) rotate(" + (entry.item.rotation || 0) + "deg)";
         });
-
-        if (state.gridSurface) {
-            var renderedWidth = map.width * state.scale;
-            var renderedHeight = map.height * state.scale;
-            var overlays = currentOverlays();
-            var colCount = overlays.grid.columns.length;
-            var rowCount = overlays.grid.rows.length;
-
-            state.gridSurface.style.left = state.tx + "px";
-            state.gridSurface.style.top = state.ty + "px";
-            state.gridSurface.style.width = renderedWidth + "px";
-            state.gridSurface.style.height = renderedHeight + "px";
-            state.gridSurface.style.setProperty("--grid-col-size", renderedWidth / colCount + "px");
-            state.gridSurface.style.setProperty("--grid-row-size", renderedHeight / rowCount + "px");
-
-            state.gridNodes.forEach(function (entry) {
-                var x;
-                var y;
-                if (entry.kind === "column") {
-                    x = state.tx + ((entry.index + 0.5) / entry.count) * renderedWidth;
-                    y = state.ty + Math.max(14, Math.min(24, renderedHeight * 0.025));
-                } else {
-                    x = state.tx + Math.max(14, Math.min(24, renderedWidth * 0.025));
-                    y = state.ty + ((entry.index + 0.5) / entry.count) * renderedHeight;
-                }
-                entry.element.style.left = x + "px";
-                entry.element.style.top = y + "px";
-            });
-        }
     }
 
     function persistOverlayState() {
@@ -434,12 +465,10 @@ Source map
                 escapes: state.overlays.escapes,
                 addresses: state.overlays.addresses,
                 streets: state.overlays.streets,
-                grid: state.overlays.grid,
                 opacity: {
                     escapes: state.overlayOpacity.escapes,
                     addresses: state.overlayOpacity.addresses,
-                    streets: state.overlayOpacity.streets,
-                    grid: state.overlayOpacity.grid
+                    streets: state.overlayOpacity.streets
                 }
             });
         }
@@ -472,8 +501,7 @@ Source map
         [
             ["escapes", toggleEscapes, opacityEscapes],
             ["addresses", toggleAddresses, opacityAddresses],
-            ["streets", toggleStreets, opacityStreets],
-            ["grid", toggleGrid, opacityGrid]
+            ["streets", toggleStreets, opacityStreets]
         ].forEach(function (entry) {
             var name = entry[0];
             var toggle = entry[1];
@@ -499,10 +527,11 @@ Source map
         state.markerNodes = [];
 
         map.locations.forEach(function (location) {
+            if (location.displayAliasOf) return;
             var info = escapeType(location.type);
             var marker = document.createElement("button");
             marker.type = "button";
-            marker.className = "map-marker";
+            marker.className = "map-marker" + (location.type === "item" ? " map-marker--item" : "");
             marker.dataset.locationId = location.id;
             marker.dataset.type = location.type;
             marker.style.setProperty("--marker-color", info.color);
@@ -510,7 +539,7 @@ Source map
             marker.setAttribute("aria-keyshortcuts", "P");
             marker.setAttribute("aria-expanded", state.pinnedId === location.id ? "true" : "false");
 
-            marker.appendChild(makeIcon(location.type));
+            marker.appendChild(location.type === "item" ? makeItemMarkerArt(location) : makeIcon(location.type));
 
             var tooltip = document.createElement("span");
             tooltip.className = "marker-tooltip";
@@ -518,15 +547,15 @@ Source map
             var tooltipTitle = document.createElement("strong");
             tooltipTitle.textContent = info.label + " · Location " + location.number;
 
-            var nearestAddress = nearestAddressFor(map, location);
-            var gridReference = gridReferenceFor(map, location);
+            var nearestAddress = location.type === "vehicleExit" ? null : nearestAddressFor(map, location);
+            var gridReference = null;
 
             tooltip.appendChild(tooltipTitle);
 
             if (nearestAddress) {
                 var tooltipAddress = document.createElement("span");
                 tooltipAddress.className = "marker-tooltip-line";
-                tooltipAddress.textContent = "Nearest address: " + nearestAddress.label;
+                tooltipAddress.textContent = "Nearby building (approx.): " + nearestAddress.label;
                 tooltip.appendChild(tooltipAddress);
             }
 
@@ -539,8 +568,10 @@ Source map
 
             var tooltipItems = document.createElement("span");
             tooltipItems.className = "marker-tooltip-line marker-tooltip-items";
-            tooltipItems.textContent = "Items: " + info.items.join(" · ");
+            tooltipItems.textContent = location.type === "item" ? "Possible: " + itemNames(location).join(" · ") : "Requirements: " + info.items.join(" · ");
             tooltip.appendChild(tooltipItems);
+            var note=document.createElement("span");note.className="marker-tooltip-line";note.textContent=markerSummary(location);
+            tooltip.appendChild(note);
             marker.appendChild(tooltip);
 
             var longPressTimer = null;
@@ -657,30 +688,15 @@ Source map
                 nearestDistance = distance;
             }
         });
-        return nearest;
+        return nearestDistance <= 280 ? nearest : null;
     }
 
-    function gridReferenceFor(map, location) {
-        var overlays = map.overlays || {};
-        var grid = overlays.grid;
-        if (!grid || !grid.columns || !grid.columns.length || !grid.rows || !grid.rows.length) {
-            return null;
-        }
-
-        var colIndex = Math.max(
-            0,
-            Math.min(grid.columns.length - 1, Math.floor((location.x / map.width) * grid.columns.length))
-        );
-        var rowIndex = Math.max(
-            0,
-            Math.min(grid.rows.length - 1, Math.floor((location.y / map.height) * grid.rows.length))
-        );
-        return grid.columns[colIndex] + grid.rows[rowIndex];
+    function gridReferenceFor() {
+        // No generated grid and no artificial grid reference system.
+        // Paper uses only its existing printed grid artwork.
+        return null;
     }
 
-    // ============================================================================
-    // [JS-04] SELECTION + RALLY POINTS + MAP SEARCH
-    // ============================================================================
     function rallyValue() {
         if (state.selectedKind === "escape" && state.selectedId) {
             return "escape:" + state.selectedId;
@@ -712,10 +728,10 @@ Source map
 
         var escapeGroup = document.createElement("optgroup");
         escapeGroup.label = "Escape locations";
-        ["cellar", "gate", "car"].forEach(function (type) {
+        ["cellar", "gate", "car", "drain", "vehicleExit"].forEach(function (type) {
             map.locations
                 .filter(function (location) {
-                    return location.type === type;
+                    return location.type === type && !location.displayAliasOf;
                 })
                 .sort(function (a, b) {
                     return a.number - b.number;
@@ -840,11 +856,11 @@ Source map
             summary.appendChild(typeText);
             summary.appendChild(
                 document.createTextNode(
-                    " · possible location " +
+                    " · Location " +
                         location.number +
                         " of " +
                         map.locations.filter(function (item) {
-                            return item.type === location.type;
+                            return item.type === location.type && !item.displayAliasOf;
                         }).length +
                         " on " +
                         map.name
@@ -852,14 +868,14 @@ Source map
             );
             selectedLocation.appendChild(summary);
 
-            var nearestAddress = nearestAddressFor(map, location);
-            var gridReference = gridReferenceFor(map, location);
+            var nearestAddress = location.type === "vehicleExit" ? null : nearestAddressFor(map, location);
+            var gridReference = null;
             var callout = document.createElement("dl");
             callout.className = "selected-callout";
 
             if (nearestAddress) {
                 var addressTerm = document.createElement("dt");
-                addressTerm.textContent = "Nearest address";
+                addressTerm.textContent = "Nearby building (approximate)";
                 var addressValue = document.createElement("dd");
                 addressValue.textContent = nearestAddress.label;
                 callout.appendChild(addressTerm);
@@ -879,17 +895,34 @@ Source map
 
             var needed = document.createElement("p");
             needed.className = "items-needed-label";
-            needed.textContent = "Items needed:";
+            needed.textContent = location.type === "item" ? "Possible items at this location:" : "Items / requirements:";
             selectedLocation.appendChild(needed);
 
             var list = document.createElement("ul");
             list.className = "item-list";
-            info.items.forEach(function (item) {
+            markerItems(location).forEach(function (item) {
                 var li = document.createElement("li");
-                li.textContent = item;
+                var verifiedItemIcon = ITEM_ICON_BY_LABEL[item];
+                if (verifiedItemIcon) {
+                    var itemIcon = document.createElement("img");
+                    itemIcon.src = verifiedItemIcon;
+                    itemIcon.alt = "";
+                    itemIcon.setAttribute("aria-hidden", "true");
+                    itemIcon.className = "game-item-icon";
+                    li.className = "with-game-item-icon";
+                    li.appendChild(itemIcon);
+                }
+                var itemText = document.createElement("span");
+                itemText.textContent = item;
+                li.appendChild(itemText);
                 list.appendChild(li);
             });
             selectedLocation.appendChild(list);
+            var caution = document.createElement("p");
+            caution.className = "source-caution";
+            caution.textContent = markerSummary(location);
+            selectedLocation.appendChild(caution);
+            renderNearbyChoices(location);
             return;
         }
 
@@ -918,6 +951,26 @@ Source map
         selectedLocation.appendChild(addressCallout);
     }
 
+    function renderNearbyChoices(location) {
+        var p = locationPosition(location);
+        var nearby = currentMap().locations.filter(function (other) {
+            if (other.id === location.id || !markerIsVisible(other)) return false;
+            var q = locationPosition(other);
+            return Math.hypot(p.x-q.x, p.y-q.y)*state.scale < 38;
+        }).slice(0,24);
+        if (!nearby.length) return;
+        var panel=document.createElement("div");panel.className="nearby-choices";
+        var title=document.createElement("strong");title.textContent="Nearby / overlapping markers (" + (nearby.length+1) + ")";
+        panel.appendChild(title);
+        nearby.forEach(function (other) {
+            var b=document.createElement("button"); b.type="button"; b.className="compact-button";
+            b.textContent=escapeType(other.type).label + " · " + other.number;
+            b.addEventListener("click",function(){selectLocation(other.id,true);});
+            panel.appendChild(b);
+        });
+        selectedLocation.appendChild(panel);
+    }
+
     function focusPoint(point) {
         var rect = viewportRect();
         var minimumRallyScale = state.fitScale * 1.8;
@@ -926,8 +979,9 @@ Source map
             state.scale = Math.min(state.maxScale, minimumRallyScale);
         }
 
-        state.tx = rect.width / 2 - point.x * state.scale;
-        state.ty = rect.height / 2 - point.y * state.scale;
+        var p = locationPosition(point);
+        state.tx = rect.width / 2 - p.x * state.scale;
+        state.ty = rect.height / 2 - p.y * state.scale;
         state.interacted = true;
         applyView();
     }
@@ -1000,58 +1054,43 @@ Source map
 
 
 
+    function markerIsVisible(location) {
+        var prefs = effectiveMapProfile();
+        if (location.type === "item") return allowedItemTags(location).length > 0;
+        if (location.type === "car") return prefs.layers.car && state.overlays.escapes;
+        return prefs.layers[location.type] === true && state.overlays.escapes;
+    }
     function syncEscapeFilters() {
-        state.escapeFilters.cellar = filterCellar.checked;
-        state.escapeFilters.gate = filterGate.checked;
-        state.escapeFilters.car = filterCar.checked;
         state.markerNodes.forEach(function (entry) {
-            entry.element.classList.toggle("is-filtered-out", state.escapeFilters[entry.location.type] !== true);
+            var visible=markerIsVisible(entry.location);
+            if (entry.location.type === "item") {
+                var art = entry.element.querySelector(".map-item-marker-art");
+                if (art) updateItemMarkerArt(art, entry.location);
+            }
+            entry.element.hidden=!visible;
+            entry.element.style.opacity=entry.location.type === "item" ? "1" : String(state.overlayOpacity.escapes);
+            entry.element.tabIndex=visible?0:-1;
         });
     }
 
     function mapSearchEntries() {
-        var map = currentMap();
-        var entries = [];
-
+        var map = currentMap(), entries=[];
         map.locations.forEach(function (location) {
-            if (state.escapeFilters[location.type] !== true) {
-                return;
-            }
-            var info = escapeType(location.type);
-            var nearest = nearestAddressFor(map, location);
-            var grid = gridReferenceFor(map, location);
-            entries.push({
-                kind: "escape",
-                label: info.label + " · Location " + location.number,
-                meta: [nearest ? "Near " + nearest.label : "", grid ? "Grid " + grid : ""].filter(Boolean).join(" · "),
-                search: [info.label, location.type, location.number, nearest && nearest.label, grid, (info.items || []).join(" ")].join(" "),
-                point: location,
-                id: location.id
-            });
+            if (location.displayAliasOf || !markerIsVisible(location)) return;
+            var info=escapeType(location.type);
+            var near=location.type === "vehicleExit" ? null : nearestAddressFor(map,location);
+            entries.push({kind:"escape",label:info.label + " · " + location.number,
+                meta: location.type === "item" ? itemNames(location).join(" / ") : markerSummary(location),
+                search:[info.label,location.type,location.number,near&&near.label,markerItems(location).join(" ")].join(" "),
+                point:location,id:location.id});
         });
-
-        (map.overlays.addresses || []).forEach(function (address, index) {
-            entries.push({
-                kind: "address",
-                label: "Address " + address.label,
-                meta: "Grid " + (gridReferenceFor(map, address) || "—"),
-                search: ["address", address.label, gridReferenceFor(map, address)].join(" "),
-                point: address,
-                index: index
-            });
+        (map.overlays.addresses||[]).forEach(function (address,index) {
+            entries.push({kind:"address",label:"Address "+address.label,meta:"Address",
+                search:["address",address.label].join(" "),point:address,index:index});
         });
-
-        (map.overlays.streets || []).forEach(function (street) {
-            entries.push({
-                kind: "street",
-                label: street.label,
-                meta: "Street",
-                search: ["street", street.label].join(" "),
-                point: street
-            });
+        (map.overlays.streets||[]).forEach(function (street) {
+            entries.push({kind:"street",label:street.label,meta:"Street",search:"street "+street.label,point:street});
         });
-
-
         return entries;
     }
 
@@ -1101,27 +1140,115 @@ Source map
     }
 
     function setupMapSearchAndFilters() {
-        [filterCellar, filterGate, filterCar].forEach(function (control) {
-            control.addEventListener("change", function () {
-                syncEscapeFilters();
-                renderMapSearchResults();
+        mapSearch.addEventListener("input",renderMapSearchResults);
+        clearMapSearch.addEventListener("click",function () {
+            mapSearch.value="";renderMapSearchResults();mapSearch.focus();
+        });
+    }
+
+    function makeCheckbox(label, checked, onChange) {
+        var wrap=document.createElement("label");wrap.className="custom-layer-row";
+        var check=document.createElement("input");check.type="checkbox";check.checked=checked;
+        check.addEventListener("change",function(){onChange(check.checked);});
+        var text=document.createElement("span");text.textContent=label;
+        wrap.appendChild(check);wrap.appendChild(text);
+        return wrap;
+    }
+    function layerSection(title) {
+        var s=document.createElement("fieldset");s.className="custom-layer-group";
+        var legend=document.createElement("legend");legend.textContent=title;s.appendChild(legend);
+        return s;
+    }
+    function syncMapPreferenceControls() {
+        if (!mapPreferenceState) return;
+        var profile=effectiveMapProfile();
+        document.getElementById("customizeThisMap").checked=editingThisMap();
+        Array.prototype.forEach.call(document.querySelectorAll("[data-map-style]"),function(button){
+            var pressed=button.dataset.mapStyle===profile.style;
+            button.setAttribute("aria-pressed",pressed?"true":"false");
+            button.classList.toggle("is-current",pressed);
+        });
+        var root=document.getElementById("mapLayerControls");root.textContent="";
+        var exitGroup=layerSection("Escape Spawn Locations");
+        [["cellar","Storm Cellars"],["gate","Escape Gates"],["vehicleExit","Vehicle exit trigger areas"],
+         ["drain","Sewer / Storm Drains"],["car","Civilian escape sedans"]].forEach(function(entry){
+            exitGroup.appendChild(makeCheckbox(entry[1],profile.layers[entry[0]],function (value) {
+                updateMapProfile(function(p){p.layers[entry[0]]=value;});
+            }));
+        });
+        var spawnNote=document.createElement("p");spawnNote.className="spawn-disclaimer";
+        spawnNote.textContent="All possible escape spawn locations are shown; active locations vary from match to match.";
+        exitGroup.appendChild(spawnNote);
+        root.appendChild(exitGroup);
+        var itemGroup=layerSection("Escape Items Locations");
+        itemGroup.appendChild(makeCheckbox("Show possible item spawn markers",profile.layers.items,function(value){
+            updateMapProfile(function(p){p.layers.items=value;});
+        }));
+        [["car","Car-related"],["cellar","Cellar-related"],["gate","Gate-related"]].forEach(function(entry){
+            itemGroup.appendChild(makeCheckbox("Include " + entry[1] + " supplies",profile.purposes[entry[0]],function(value){
+                updateMapProfile(function(p){p.purposes[entry[0]]=value;});
+            }));
+        });
+        Object.keys(ITEM_TAG_LABELS).forEach(function(tag){
+            itemGroup.appendChild(makeCheckbox(ITEM_TAG_LABELS[tag],profile.itemTags[tag],function(value){
+                updateMapProfile(function(p){p.itemTags[tag]=value;});
+            }));
+        });
+        var help=document.createElement("p");help.className="map-help-copy";
+        help.textContent="Item sources may contain different supplies each match. Indoor/outdoor placement and container contents remain unverified; Fuse positions are not source-confirmed.";
+        itemGroup.appendChild(help);
+        var iconNote=document.createElement("p");iconNote.className="map-help-copy";
+        iconNote.textContent="Game icons identify possible supplies. Grouped icons mark sources with more than one possible item, not guaranteed combined loot. The crate symbol is used where the exact game icon is unconfirmed.";
+        itemGroup.appendChild(iconNote);
+        var itemSpawnNote=document.createElement("p");itemSpawnNote.className="spawn-disclaimer";
+        itemSpawnNote.textContent="All mapped possible item spawn sources are shown; actual items and availability vary from match to match.";
+        itemGroup.appendChild(itemSpawnNote);
+        root.appendChild(itemGroup);
+    }
+    function setupMapPreferences() {
+        var saved=storageStore && storageStore.get("map-display-v2",null);
+        mapPreferenceState={version:2,global:defaultMapProfile(),perMap:{}};
+        if (saved && saved.value && typeof saved.value==="object" && saved.value.version===2) {
+            mapPreferenceState.global=cleanMapProfile(saved.value.global);
+            Object.keys(saved.value.perMap || {}).forEach(function(id){
+                if (data.maps.some(function(m){return m.id===id;})) {
+                    mapPreferenceState.perMap[id]=cleanMapProfile(saved.value.perMap[id]);
+                }
             });
+        }
+        prefsReady=true;
+        Array.prototype.forEach.call(document.querySelectorAll("[data-map-style]"),function(button){
+            button.addEventListener("click",function(){switchMapStyle(button.dataset.mapStyle);});
         });
-        mapSearch.addEventListener("input", renderMapSearchResults);
-        clearMapSearch.addEventListener("click", function () {
-            mapSearch.value = "";
-            renderMapSearchResults();
-            mapSearch.focus();
+        document.getElementById("customizeThisMap").addEventListener("change",function(e){
+            var id=currentMap().id;
+            if (e.target.checked) mapPreferenceState.perMap[id]=cleanMapProfile(effectiveMapProfile());
+            else delete mapPreferenceState.perMap[id];
+            persistMapProfile();syncMapPreferenceControls();
+            mapImage.src=currentMap().styles[mapStyle()];renderMap();
         });
-        syncEscapeFilters();
+        document.getElementById("applyAllMaps").addEventListener("click",function(){
+            mapPreferenceState.global=cleanMapProfile(effectiveMapProfile());
+            mapPreferenceState.perMap={};persistMapProfile();syncMapPreferenceControls();
+            announce("Current map appearance preferences applied to all maps.");
+        });
+        document.getElementById("resetMapSettings").addEventListener("click",function(){
+            mapPreferenceState={version:2,global:defaultMapProfile(),perMap:{}};
+            state.overlays.escapes=true;state.overlays.addresses=false;state.overlays.streets=false;
+            state.overlayOpacity.escapes=1;
+            persistMapProfile();persistOverlayState();syncMapPreferenceControls();
+            renderMap();announce("Map settings restored. All possible exits and civilian sedans shown; supplies hidden. Other app data preserved.");
+        });
+        syncMapPreferenceControls();
     }
 
     function renderMap() {
         var map = currentMap();
         mapTitle.textContent = map.name;
-        mapImage.src = map.image;
-        mapImage.alt = map.name + " map";
+        mapImage.src = map.styles[mapStyle()];
+        mapImage.alt = map.name + " " + mapStyle() + " map";
         syncSelectorState();
+        syncMapPreferenceControls();
         renderLegend();
         renderReferenceOverlays();
         renderMarkers();
@@ -1182,8 +1309,14 @@ Source map
     function updateMarkerPositions() {
         var rect = viewportRect();
         state.markerNodes.forEach(function (entry) {
-            var x = state.tx + entry.location.x * state.scale;
-            var y = state.ty + entry.location.y * state.scale;
+            var pos = locationPosition(entry.location);
+            var x = state.tx + pos.x * state.scale;
+            var y = state.ty + pos.y * state.scale;
+            var ratio=Math.max(1,state.scale/Math.max(0.0001,state.fitScale));
+            var diameter=Math.min(50,34+8*Math.log2(ratio));
+            if (entry.location.type === "item") diameter=Math.max(30,diameter-6);
+            entry.element.style.setProperty("--marker-size",diameter+"px");
+            entry.element.style.setProperty("--marker-glyph",Math.round(diameter*0.78)+"px");
 
             entry.element.style.left = x + "px";
             entry.element.style.top = y + "px";
@@ -1459,14 +1592,14 @@ Source map
 
             var overlayState = storageStore.get("map-overlays", null);
             if (overlayState && overlayState.value && typeof overlayState.value === "object") {
-                ["escapes", "addresses", "streets", "grid"].forEach(function (key) {
+                ["escapes", "addresses", "streets"].forEach(function (key) {
                     if (typeof overlayState.value[key] === "boolean") {
                         state.overlays[key] = overlayState.value[key];
                     }
                 });
 
                 if (overlayState.value.opacity && typeof overlayState.value.opacity === "object") {
-                    ["escapes", "addresses", "streets", "grid"].forEach(function (key) {
+                    ["escapes", "addresses", "streets"].forEach(function (key) {
                         var savedOpacity = Number(overlayState.value.opacity[key]);
                         if (Number.isFinite(savedOpacity)) {
                             state.overlayOpacity[key] = Math.max(0.1, Math.min(1, savedOpacity));
@@ -1479,6 +1612,7 @@ Source map
             onboardingComplete = onboardingState && onboardingState.value === true;
         }
 
+        setupMapPreferences();
         syncOverlayVisibility();
         applyTheme(initialTheme, false);
 
@@ -1508,7 +1642,7 @@ Source map
         {
             target: ".map-picker",
             title: "Choose a map",
-            text: "Use the map selector to switch between Haddonfield locations."
+            text: "Choose among five Haddonfield areas; the map icons show potential escape locations."
         },
         {
             target: "#mapViewport",
@@ -1518,7 +1652,7 @@ Source map
         {
             target: ".layer-panel",
             title: "Customize the overlays",
-            text: "Map overlays control escape locations, addresses, street names, and the grid. Your overlay changes save automatically."
+            text: "Select Realistic or Paper. Customize escape types and optional item spawn markers, with automatic local saving."
         }
     ];
 
