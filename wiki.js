@@ -73,7 +73,9 @@ Source map
             entry.type,
             entry.summary,
             (entry.details || []).join(" "),
-            (entry.tags || []).join(" ")
+            (entry.tags || []).join(" "),
+            (entry.sourceIds || []).join(" "),
+            entry.evidenceStatus || ""
         ].join(" ");
     }
 
@@ -213,6 +215,14 @@ Source map
                 escapeHtml(relatedEntry.id) + '">' + escapeHtml(relatedEntry.title) + "</button>";
         }).join("");
 
+        var evidence = entry.evidenceStatus || "";
+        var evidenceCopy = "";
+        if (/community|unconfirmed|review|disput|not_verified|unknown|legacy|draft|conditional|unverified|source_only|not_implemented/i.test(evidence)) {
+            evidenceCopy = "Some values or mechanics in this article remain unverified against current gameplay. Check in-game prompts and recent updates.";
+        } else if (/verified|official|developer|patch|gamefiles|source/i.test(evidence)) {
+            evidenceCopy = "Source-supported research; match variants and later updates may differ.";
+        }
+        var evidenceHtml = evidenceCopy ? '<p class="wiki-source-note"><strong>Source confidence:</strong> ' + escapeHtml(evidenceCopy) + '</p>' : '';
         article.innerHTML =
             '<p class="wiki-article-kicker">' +
                 escapeHtml(entry.category || "Wiki") +
@@ -220,6 +230,7 @@ Source map
             '</p>' +
             '<h2>' + escapeHtml(entry.title) + '</h2>' +
             '<p class="wiki-article-summary">' + escapeHtml(entry.summary || "") + '</p>' +
+            evidenceHtml +
             (details ? '<ul class="wiki-detail-list">' + details + '</ul>' : '') +
             (tags ? '<div class="wiki-tags" aria-label="Tags">' + tags + '</div>' : '') +
             (related ? '<section class="wiki-related-section"><h3>Related</h3><div class="wiki-related-list">' + related + '</div></section>' : '');
@@ -256,6 +267,9 @@ Source map
         article.addEventListener("click", function (event) {
             var button = event.target.closest("[data-wiki-entry]");
             if (!button) return;
+            wikiCategory = "All";
+            if (searchInput) searchInput.value = "";
+            renderCategoryFilters();
             renderArticle(button.getAttribute("data-wiki-entry"), false);
         });
     }

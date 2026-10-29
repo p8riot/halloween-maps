@@ -10,7 +10,7 @@ SW-03  Fetch strategy
 // ============================================================================
 // [SW-01] CACHE IDENTITY + APP SHELL
 // ============================================================================
-const CACHE_NAME = "halloween-escape-map-v1.2.5-item-map-icons";
+const CACHE_NAME = "halloween-escape-map-v1.3.0-item-map-icons";
 const APP_SHELL = [
     "./",
     "./index.html",
@@ -32,6 +32,7 @@ const APP_SHELL = [
     "./assets/icons/storm-drain.svg",
     "./assets/icons/vehicle-route.svg",
     "./assets/icons/supply.svg",
+  "./assets/icons/search-source.svg",
     "./assets/icons/game/game-cellar.png",
     "./assets/icons/game/game-gate.png",
     "./assets/icons/game/game-storm-drain.png",

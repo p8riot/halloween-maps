@@ -107,7 +107,7 @@ Source map
     var storageStore = null;
     var mapPreferenceState = null;
     var prefsReady = false;
-    var MAP_LAYER_DEFAULTS = {cellar: true, gate: true, car: true, drain: true, vehicleExit: true, items: false};
+    var MAP_LAYER_DEFAULTS = {cellar: true, gate: true, car: true, drain: true, vehicleExit: true, items: false, searchable: false};
     var ITEM_TAG_LABELS = data.itemTypes;
     // Match only verified item names. Generic/randomized sources retain their generic marker.
     var ITEM_ICON_BY_LABEL = {
@@ -128,18 +128,18 @@ Source map
     var ITEM_PURPOSE_TAGS = {
         car: ["ID.Item.SedanKey.Default", "ID.Item.Gascan.Default", "ID.Item.RepairKit.Default"],
         cellar: ["ID.Item.CellarKey.Default", "ID.Item.BoltCutters.Default"],
-        gate: ["ID.Item.BoltCutters.Default"]
+        gate: ["ID.Item.CellarKey.Default", "ID.Item.BoltCutters.Default"]
     };
     function defaultMapProfile() {
         return {style: "realistic", layers: Object.assign({}, MAP_LAYER_DEFAULTS),
             itemTags: Object.keys(ITEM_TAG_LABELS).reduce(function (acc, k) {acc[k] = true; return acc;}, {}),
-            purposes: {car: true, cellar: true, gate: true}};
+            purposes: {car: true, cellar: true, gate: true}, searchableKinds: {furniture: true, vehicle: true}};
     }
     function cleanMapProfile(raw) {
         var out = defaultMapProfile();
         if (!raw || typeof raw !== "object") return out;
         if (raw.style === "realistic" || raw.style === "paper") out.style = raw.style;
-        ["layers", "itemTags", "purposes"].forEach(function (section) {
+        ["layers", "itemTags", "purposes", "searchableKinds"].forEach(function (section) {
             if (!raw[section] || typeof raw[section] !== "object") return;
             Object.keys(out[section]).forEach(function (key) {
                 if (typeof raw[section][key] === "boolean") out[section][key] = raw[section][key];
@@ -251,7 +251,8 @@ Source map
         });
     }
     function markerSummary(location) {
-        if (location.type === "item") return "Item source: " + itemNames(location).join(", ") + ". Contents and indoor/outdoor placement are not verified.";
+        if (location.type === "searchable") return "Searchable " + (location.searchKind === "vehicle" ? "vehicle" : "furniture") + ": contents unknown. This does not confirm an escape item can spawn here. Exported position, not gameplay validated.";
+        if (location.type === "item") return "Tagged escape-supply source: " + itemNames(location).join(", ") + ". Contents and indoor/outdoor placement are not verified.";
         if (location.type === "car") return "Civilian escape sedan parking spot.";
         if (location.type === "vehicleExit") return (location.alternateTriggerIds ? "Adjacent route triggers are grouped here. " : "") + "Vehicle departure area, not a parked sedan or police car.";
         if (location.type === "drain") return "Tower Farm drain escape; clear obstacles and unlock as you would a storm cellar. Check the in-game prompt.";
@@ -531,7 +532,7 @@ Source map
             var info = escapeType(location.type);
             var marker = document.createElement("button");
             marker.type = "button";
-            marker.className = "map-marker" + (location.type === "item" ? " map-marker--item" : "");
+            marker.className = "map-marker" + (location.type === "item" ? " map-marker--item" : location.type === "searchable" ? " map-marker--searchable" : "");
             marker.dataset.locationId = location.id;
             marker.dataset.type = location.type;
             marker.style.setProperty("--marker-color", info.color);
@@ -545,7 +546,7 @@ Source map
             tooltip.className = "marker-tooltip";
 
             var tooltipTitle = document.createElement("strong");
-            tooltipTitle.textContent = info.label + " · Location " + location.number;
+            tooltipTitle.textContent = info.label + " · " + location.number;
 
             var nearestAddress = location.type === "vehicleExit" ? null : nearestAddressFor(map, location);
             var gridReference = null;
@@ -568,7 +569,7 @@ Source map
 
             var tooltipItems = document.createElement("span");
             tooltipItems.className = "marker-tooltip-line marker-tooltip-items";
-            tooltipItems.textContent = location.type === "item" ? "Possible: " + itemNames(location).join(" · ") : "Requirements: " + info.items.join(" · ");
+            tooltipItems.textContent = location.type === "item" ? "Possible tagged items: " + itemNames(location).join(" · ") : location.type === "searchable" ? "Unknown loot, no guaranteed escape supplies" : "Requirements: " + info.items.join(" · ");
             tooltip.appendChild(tooltipItems);
             var note=document.createElement("span");note.className="marker-tooltip-line";note.textContent=markerSummary(location);
             tooltip.appendChild(note);
@@ -895,7 +896,7 @@ Source map
 
             var needed = document.createElement("p");
             needed.className = "items-needed-label";
-            needed.textContent = location.type === "item" ? "Possible items at this location:" : "Items / requirements:";
+            needed.textContent = location.type === "searchable" ? "What is known:" : location.type === "item" ? "Possible items at this tagged source:" : "Items / requirements:";
             selectedLocation.appendChild(needed);
 
             var list = document.createElement("ul");
@@ -1056,6 +1057,7 @@ Source map
 
     function markerIsVisible(location) {
         var prefs = effectiveMapProfile();
+        if (location.type === "searchable") return prefs.layers.searchable === true && prefs.searchableKinds[location.searchKind] === true;
         if (location.type === "item") return allowedItemTags(location).length > 0;
         if (location.type === "car") return prefs.layers.car && state.overlays.escapes;
         return prefs.layers[location.type] === true && state.overlays.escapes;
@@ -1068,7 +1070,7 @@ Source map
                 if (art) updateItemMarkerArt(art, entry.location);
             }
             entry.element.hidden=!visible;
-            entry.element.style.opacity=entry.location.type === "item" ? "1" : String(state.overlayOpacity.escapes);
+            entry.element.style.opacity=(entry.location.type === "item" || entry.location.type === "searchable") ? "1" : String(state.overlayOpacity.escapes);
             entry.element.tabIndex=visible?0:-1;
         });
     }
@@ -1181,7 +1183,7 @@ Source map
         exitGroup.appendChild(spawnNote);
         root.appendChild(exitGroup);
         var itemGroup=layerSection("Escape Items Locations");
-        itemGroup.appendChild(makeCheckbox("Show possible item spawn markers",profile.layers.items,function(value){
+        itemGroup.appendChild(makeCheckbox("Show tagged escape-item sources",profile.layers.items,function(value){
             updateMapProfile(function(p){p.layers.items=value;});
         }));
         [["car","Car-related"],["cellar","Cellar-related"],["gate","Gate-related"]].forEach(function(entry){
@@ -1201,9 +1203,23 @@ Source map
         iconNote.textContent="Game icons identify possible supplies. Grouped icons mark sources with more than one possible item, not guaranteed combined loot. The crate symbol is used where the exact game icon is unconfirmed.";
         itemGroup.appendChild(iconNote);
         var itemSpawnNote=document.createElement("p");itemSpawnNote.className="spawn-disclaimer";
-        itemSpawnNote.textContent="All mapped possible item spawn sources are shown; actual items and availability vary from match to match.";
+        itemSpawnNote.textContent="This layer shows positive-weight, tagged direct spawners only, not every item location. Contents and activation vary by match.";
         itemGroup.appendChild(itemSpawnNote);
         root.appendChild(itemGroup);
+        var searchableGroup=layerSection("Searchable Locations (loot unknown)");
+        searchableGroup.appendChild(makeCheckbox("Show searchable objects",profile.layers.searchable,function(value){
+            updateMapProfile(function(p){p.layers.searchable=value;});
+        }));
+        [["furniture","Furniture and containers"],["vehicle","Searchable vehicles"]].forEach(function(entry){
+            searchableGroup.appendChild(makeCheckbox(entry[1],profile.searchableKinds[entry[0]],function(value){
+                updateMapProfile(function(p){p.searchableKinds[entry[0]]=value;});
+            }));
+        });
+        var searchCount=currentMap().locations.filter(function(loc){return loc.type==="searchable";}).length;
+        var caution=document.createElement("p");caution.className="spawn-disclaimer";
+        caution.textContent=searchCount+" source-identified searchable object locations. Exact loot, whether escape supplies can appear, and match activation are unknown. No item-specific icons are used.";
+        searchableGroup.appendChild(caution);
+        root.appendChild(searchableGroup);
     }
     function setupMapPreferences() {
         var saved=storageStore && storageStore.get("map-display-v2",null);
@@ -1237,7 +1253,7 @@ Source map
             state.overlays.escapes=true;state.overlays.addresses=false;state.overlays.streets=false;
             state.overlayOpacity.escapes=1;
             persistMapProfile();persistOverlayState();syncMapPreferenceControls();
-            renderMap();announce("Map settings restored. All possible exits and civilian sedans shown; supplies hidden. Other app data preserved.");
+            renderMap();announce("Map settings restored. Escape markers visible; optional supply and searchable layers hidden. Other app data preserved.");
         });
         syncMapPreferenceControls();
     }

@@ -1,7 +1,7 @@
 {
   "name": "Halloween: The Game Companion App",
   "short_name": "Halloween Companion",
-  "description": "Interactive offline-ready companion with five source-researched maps, possible escape locations and supplies, and an in-app Wiki.",
+  "description": "Offline-ready Halloween game companion with five source-researched maps, optional searchable-object markers of unverified loot, and a 92-article Wiki.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
