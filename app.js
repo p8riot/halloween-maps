@@ -1,5 +1,5 @@
 /*
-Halloween Companion 1.3.3 Map Orientation Correction
+Halloween Companion 1.3.6 Map Watermark Adjustment
 Structured source edition
 
 Source map

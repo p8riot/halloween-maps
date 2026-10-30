@@ -81,12 +81,16 @@ window.HalloweenEscapeData = {
       },
       "pixelOffset": {
         "realistic": 0,
-        "paper": -84.3
+        "paper": {
+          "x": -84.3,
+          "y": -96.0
+        }
       },
       "registration": {
         "actorToRealisticX": 175.94,
         "paperRelativeX": -84.3,
-        "source": "CP07+CP08 feature registration; not live-game certified"
+        "source": "CP07+CP08 feature registration; not live-game certified; v1.3.4 paper border cleanup",
+        "paperRelativeY": -96.0
       },
       "overlays": {
         "addresses": [
@@ -2588,12 +2592,16 @@ window.HalloweenEscapeData = {
       },
       "pixelOffset": {
         "realistic": 0,
-        "paper": -88.4
+        "paper": {
+          "x": -88.4,
+          "y": -70.217
+        }
       },
       "registration": {
         "actorToRealisticX": 183.85,
         "paperRelativeX": -88.4,
-        "source": "CP07+CP08 feature registration; not live-game certified"
+        "source": "CP07+CP08 feature registration; not live-game certified; v1.3.4 paper border cleanup",
+        "paperRelativeY": -70.217
       },
       "overlays": {
         "addresses": [
@@ -5760,12 +5768,16 @@ window.HalloweenEscapeData = {
       },
       "pixelOffset": {
         "realistic": 0,
-        "paper": -84.1
+        "paper": {
+          "x": -84.1,
+          "y": -70.217
+        }
       },
       "registration": {
         "actorToRealisticX": 175.79,
         "paperRelativeX": -84.1,
-        "source": "CP07+CP08 feature registration; not live-game certified"
+        "source": "CP07+CP08 feature registration; not live-game certified; v1.3.4 paper border cleanup",
+        "paperRelativeY": -70.217
       },
       "overlays": {
         "addresses": [
@@ -7525,12 +7537,16 @@ window.HalloweenEscapeData = {
       },
       "pixelOffset": {
         "realistic": 0,
-        "paper": -84.3
+        "paper": {
+          "x": -84.3,
+          "y": -70.217
+        }
       },
       "registration": {
         "actorToRealisticX": 175.9,
         "paperRelativeX": -84.3,
-        "source": "CP07+CP08 feature registration; not live-game certified"
+        "source": "CP07+CP08 feature registration; not live-game certified; v1.3.4 paper border cleanup",
+        "paperRelativeY": -70.217
       },
       "overlays": {
         "addresses": [
@@ -10348,12 +10364,16 @@ window.HalloweenEscapeData = {
       },
       "pixelOffset": {
         "realistic": 0,
-        "paper": -84.7
+        "paper": {
+          "x": -84.7,
+          "y": -104.0
+        }
       },
       "registration": {
         "actorToRealisticX": 176.0,
         "paperRelativeX": -84.7,
-        "source": "CP07+CP08 feature registration; not live-game certified"
+        "source": "CP07+CP08 feature registration; not live-game certified; v1.3.4 paper border cleanup",
+        "paperRelativeY": -104.0
       },
       "overlays": {
         "addresses": [
