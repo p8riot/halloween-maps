@@ -1,5 +1,5 @@
 /*
-Halloween Companion 1.3.2 Adaptive Install and Map Tips Update
+Halloween Companion 1.3.3 Map Orientation Correction
 Structured source edition
 
 Source map
@@ -179,14 +179,42 @@ Source map
         renderMapSearchResults();
     }
     function mapStyle() {return effectiveMapProfile().style;}
-    function styleDelta(map, style) {return (map.pixelOffset && Number(map.pixelOffset[style])) || 0;}
-    function locationPosition(point) {return {x: point.x + styleDelta(currentMap(), mapStyle()), y: point.y};}
+    function mapOrientation(map) { return map && map.orientation ? map.orientation : "rotate-cw-90"; }
+    function styleOffset(map, style) {
+        var raw = map && map.pixelOffset ? map.pixelOffset[style] : null;
+        if (raw && typeof raw === "object") {
+            return { x: Number(raw.x) || 0, y: Number(raw.y) || 0 };
+        }
+        return { x: Number(raw) || 0, y: 0 };
+    }
+    function orientedOffset(map, style) {
+        var offset = styleOffset(map, style);
+        if (mapOrientation(map) === "rotate-cw-90") {
+            return { x: -offset.y, y: offset.x };
+        }
+        return offset;
+    }
+    function locationPosition(point) {
+        var map = currentMap();
+        var offset = styleOffset(map, mapStyle());
+        var x = point.x + offset.x;
+        var y = point.y + offset.y;
+        if (mapOrientation(map) === "rotate-cw-90") {
+            return { x: map.height - y, y: x };
+        }
+        return { x: x, y: y };
+    }
+    function displayRotation(rotation) {
+        var value = Number(rotation) || 0;
+        return mapOrientation(currentMap()) === "rotate-cw-90" ? value + 90 : value;
+    }
     function switchMapStyle(style) {
         if (style !== "realistic" && style !== "paper" || style === mapStyle()) return;
-        var before = styleDelta(currentMap(), mapStyle());
+        var before = orientedOffset(currentMap(), mapStyle());
         updateMapProfile(function (p) { p.style = style; });
-        var after = styleDelta(currentMap(), style);
-        state.tx -= (after - before) * state.scale;
+        var after = orientedOffset(currentMap(), style);
+        state.tx -= (after.x - before.x) * state.scale;
+        state.ty -= (after.y - before.y) * state.scale;
         mapImage.src = currentMap().styles[style];
         mapImage.alt = currentMap().name + " " + style + " map";
         syncOverlayVisibility();
@@ -460,7 +488,7 @@ Source map
             var p=locationPosition(entry.item);
             entry.element.style.left = state.tx + p.x * state.scale + "px";
             entry.element.style.top = state.ty + p.y * state.scale + "px";
-            entry.element.style.transform = "translate(-50%, -50%) rotate(" + (entry.item.rotation || 0) + "deg)";
+            entry.element.style.transform = "translate(-50%, -50%) rotate(" + displayRotation(entry.item.rotation) + "deg)";
         });
     }
 

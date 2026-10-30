@@ -10,7 +10,7 @@ SW-03  Fetch strategy
 // ============================================================================
 // [SW-01] CACHE IDENTITY + APP SHELL
 // ============================================================================
-const CACHE_NAME = "halloween-escape-map-v1.3.2-install-map-tips";
+const CACHE_NAME = "halloween-escape-map-v1.3.3-map-orientation";
 const APP_SHELL = [
     "./",
     "./index.html",
