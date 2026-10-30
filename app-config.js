@@ -3,7 +3,7 @@
 window.p8riotAppConfig = {
     name: "Halloween: The Game Companion App",
     shortName: "Halloween Companion",
-    version: "1.3.6",
+    version: "1.3.7",
     coreVersion: "0.2.0",
     modules: {
         storage: true,

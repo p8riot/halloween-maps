@@ -2464,3 +2464,40 @@ body[data-active-view="wiki"] .map-picker,body[data-active-view="settings"] .map
     font-size: .8rem;
     color: var(--muted);
 }
+
+/* [CSS-10] Automatic update guidance in Settings > About. */
+.settings-update-note {
+    margin: 12px 0;
+    line-height: 1.55;
+    font-size: .87rem;
+    max-width: 65ch;
+}
+.settings-update-note kbd {
+    font: inherit;
+    font-size: .83rem;
+    font-weight: 750;
+    color: var(--text);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    white-space: nowrap;
+}
+.settings-update-status {
+    min-height: 1.1em;
+    font-size: .82rem;
+    margin: 8px 0 0;
+}
+
+/* [CSS-11] Copyright notice in Settings > About. */
+.settings-copyright-notice {
+    border-top: 1px solid var(--border);
+    margin-top: 14px;
+    padding-top: 12px;
+    font-size: .79rem;
+    line-height: 1.5;
+    color: var(--text-muted, var(--text));
+}
+.settings-copyright-notice p { margin: 0 0 7px; }
+.settings-copyright-notice p:last-child { margin-bottom: 0; }
+.settings-copyright-notice strong { color: var(--text); font-size: .86rem; }

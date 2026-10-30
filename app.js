@@ -1,5 +1,5 @@
 /*
-Halloween Companion 1.3.6 Map Watermark Adjustment
+Halloween Companion 1.3.7 Automatic Update Repair
 Structured source edition
 
 Source map
@@ -58,6 +58,8 @@ Source map
     var installStepsList = document.getElementById("installStepsList");
     var installHelp = document.getElementById("installHelp");
     var showTipsButton = document.getElementById("showTipsButton");
+    var checkUpdatesButton = document.getElementById("checkUpdatesButton");
+    var updateCheckStatus = document.getElementById("updateCheckStatus");
     var onboardingTour = document.getElementById("onboardingTour");
     var tourStep = document.getElementById("tourStep");
     var tourTitle = document.getElementById("tourTitle");
@@ -2066,6 +2068,45 @@ Source map
         }
     }
 
+    // Poll for new versions when the site is reopened, refocused, or comes online.
+    // The service worker itself installs the new release and reloads old clients.
+    var lastUpdateCheckAt = 0;
+    var updateCheckRunning = false;
+
+    function checkForAppUpdates(manual) {
+        if (!pwaApi || typeof pwaApi.checkForUpdate !== "function") {
+            if (manual) updateCheckStatus.textContent = "Update checks are unavailable in this browser.";
+            return Promise.resolve(false);
+        }
+        if (navigator.onLine === false) {
+            if (manual) updateCheckStatus.textContent = "You're offline. Connect to the internet to check for updates.";
+            return Promise.resolve(false);
+        }
+        if (updateCheckRunning || (!manual && Date.now() - lastUpdateCheckAt < 120000)) {
+            return Promise.resolve(false);
+        }
+        lastUpdateCheckAt = Date.now();
+        updateCheckRunning = true;
+        if (manual) {
+            checkUpdatesButton.disabled = true;
+            updateCheckStatus.textContent = "Checking for updates…";
+        }
+        return pwaApi.checkForUpdate().then(function (result) {
+            if (manual) {
+                updateCheckStatus.textContent = result.ok
+                    ? "Update check completed. If a new release is available, the app will reload automatically."
+                    : "Couldn't check for updates. Try again when the connection is stable.";
+            }
+            return !!result.ok;
+        }).catch(function () {
+            if (manual) updateCheckStatus.textContent = "Couldn't check for updates. Try again when the connection is stable.";
+            return false;
+        }).finally(function () {
+            updateCheckRunning = false;
+            checkUpdatesButton.disabled = false;
+        });
+    }
+
     function setupPwa() {
         if (core && core.modules) {
             pwaApi = core.modules.get("pwa");
@@ -2076,8 +2117,18 @@ Source map
                     console.info("[Halloween Companion] PWA helper:", result.error);
                 }
                 updateInstallButton();
+                if (result.ok) checkForAppUpdates(false);
             }).catch(function () { updateInstallButton(); });
         }
+        checkUpdatesButton.addEventListener("click", function () {
+            checkForAppUpdates(true);
+        });
+        ["pageshow", "focus", "online"].forEach(function (name) {
+            window.addEventListener(name, function () {checkForAppUpdates(false);});
+        });
+        document.addEventListener("visibilitychange", function () {
+            if (!document.hidden) checkForAppUpdates(false);
+        });
         window.addEventListener("p8riot:pwa-install-available", function () {
             installRequestAccepted = false;
             updateInstallButton();
