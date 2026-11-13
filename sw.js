@@ -11,7 +11,7 @@ SW-03  Fetch strategy
 // [SW-01] VERSIONED, ATOMIC APP SHELL
 // ============================================================================
 const CACHE_PREFIX = "halloween-escape-map-";
-const CACHE_NAME = "halloween-escape-map-v1.3.7-automatic-updates";
+const CACHE_NAME = "halloween-escape-map-v1.3.8-automatic-updates";
 const APP_SHELL = [
     "./",
     "./index.html",
